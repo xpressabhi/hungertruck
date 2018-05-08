@@ -1,4 +1,26 @@
 <template name="truckdetails">
-  <h3>truck start details</h3>
+  <h3>truck start details</h3> {{editTruckBasic}}
+  {{#if editTruckBasic}}
+  <form class="saveTruckBasic">
+    <div class="form-group">
+      <label for="truckName">Truck Name</label>
+      <input type="text" class="form-control" name="truckName" value="{{truck.name}}" id="truckName" aria-describedby="emailHelp" placeholder="Truck Name" required>
+    </div>
+    <div class="form-group">
+      <label for="mobileNumber">Mobile Number</label>
+      <input type="text" class="form-control" name="mobileNumber" value="{{truck.mobile}}" id="mobileNumber" placeholder="Mobile Number" required>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <textarea class="form-control" name="address" id="address" value="{{truck.address}}" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+    {{else}}
+    <button type="button" class="btn btn-primary float-right editTruckBasic">Edit</button>
+    Name : {{truck.name}} <br>
+    Mobile : {{truck.mobile}} <br>
+    Address : {{truck.address}} <br>
 
+  {{/if}}
 </template>
