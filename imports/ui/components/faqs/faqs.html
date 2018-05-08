@@ -1,0 +1,49 @@
+<template name="faqs">
+  {{#if isInRole 'admin'}}
+    {{#if allowAddingFaq}}
+      <form class="add-faq">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Q.</span>
+          </div>
+          <input type="text" class="form-control" name="question" placeholder="FAQ question..." maxlength="300" minlength="5" required="required" aria-label="Question" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">A.</span>
+          </div>
+          <textarea class="form-control" name="answer" rows="3" placeholder="Answer..." maxlength="3000" minlength="10" required="required" aria-label="Answer"></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-plus" aria-hidden="true"></i> Add
+            </button>
+            <button class="btn btn-secondary cancelAddingFaq" type="button">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    {{else}}
+      <button type="button" class="btn btn-info allowAddingFaq">
+        <i class="fas fa-plus" aria-hidden="true"></i> New FAQ
+      </button>
+    {{/if}}
+    <hr>
+  {{/if}}
+  {{#each faqs}}
+    <div class="card my-1">
+      <div class="card-header">
+        {{question}}
+        {{#if isInRole 'admin'}}
+          <i class="fas fa-times removeFaq text-danger float-right" aria-hidden="true"></i>
+        {{/if}}
+      </div>
+      <div class="card-body">
+        <p class="small">A:
+          {{answer}}</p>
+      </div>
+    </div>
+  {{else}}
+    <p class="lead">No FAQs</p>
+  {{/each}}
+</template>

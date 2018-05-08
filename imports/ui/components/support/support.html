@@ -1,0 +1,55 @@
+<template name="support">
+  {{#if showChatForm}}
+    <div class="chatform">
+      {{#if isInRole 'admin'}}
+        <p class="lead">Reply to
+          {{customerEmail}}</p>
+      {{/if}}
+      <form class="support">
+        <div class="input-group">
+          <textarea type="text" class="form-control input-lg textInput lead" name="comments" rows="5" placeholder="{{chatPlaceholder}}" maxlength="3000" minlength="1" required="required"></textarea>
+        </div>
+        <div class="input-group-btn my-2">
+          <button class="btn btn-primary btn-block" type="submit">
+            <i class="fas fa-check"></i>
+            Send
+          </button>
+        </div>
+      </form>
+      <hr>
+    </div>
+  {{/if}}
+  {{#each chatsReverse}}
+    <div class="card my-3 shadow-lg">
+      <div class="card-header">
+        <span class="badge badge-secondary float-right">{{betterDateTime createdAt}}</span>
+        {{#if isAdmin}}
+          <span class="badge badge-info">Admin
+          </span>
+        {{else}}
+          {{#if isInRole 'admin'}}
+            <span class="badge badge-success">{{userEmail customerId}}
+            </span>
+          {{else}}
+            <span class="badge badge-success">You</span>
+          {{/if}}
+        {{/if}}
+        {{#unless showChatForm}}
+          {{#unless isAdmin}}
+            <a href="/support/{{customerId}}" class="btn btn-default btn-sm">
+              <i class="fas fa-reply"></i>
+            </a>
+          {{/unless}}
+        {{/unless}}
+      </div>
+      <div class="card-body">
+        {{@index}}#
+        {{comments}}
+        <br>
+
+      </div>
+    </div>
+  {{else}}
+    <p class="lead">No support request yet.</p>
+  {{/each}}
+</template>
