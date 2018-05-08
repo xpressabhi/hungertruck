@@ -17,3 +17,6 @@ import '../../api/trucks/server/publications.js';
 
 import '../../api/images/methods.js';
 import '../../api/images/server/publications.js';
+
+import '../../api/schedules/methods.js';
+import '../../api/schedules/server/publications.js';

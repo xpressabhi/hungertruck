@@ -1,0 +1,30 @@
+<template name="schedules">
+  {{#if addSchedule}}
+    <form class="addSchedule my-2">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Start/End time</span>
+        </div>
+        <input type="text" name="start" class="form-control">
+        <input type="text" name="end" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="days">Open days</label>
+        <textarea class="form-control" name="days" id="days" rows="2" required="required"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Schedule</button>
+      <button type="button" class="btn btn-secondary cancelAdd">Cancel</button>
+    </form>
+  {{else}}
+    <button type="button" class="btn btn-primary setAddTrue">Add Schedule</button>
+  {{/if}}
+{{#each schedules}}
+  <div class="card my-2 shadow-lg">
+    <div class="card-body">
+      <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule">Delete</button>
+      <h4 class="card-title">Opening Schedule</h4>
+      <p class="card-text">Start time: {{start}} <br> End time :{{end}} <br> Open Days {{days}}</p>
+    </div>
+  </div>
+{{/each}}
+</template>

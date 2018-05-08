@@ -2,7 +2,6 @@ import './truckdetails.html';
 import './images.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
 
-
 Template.truckdetails.onCreated(function() {
   this.editTruckBasic = new ReactiveVar(false);
   this.autorun(() => {
@@ -26,12 +25,14 @@ Template.truckdetails.events({
     const name = event.target.truckName.value;
     const mobile = event.target.mobileNumber.value;
     const address = event.target.address.value;
-    console.log(name, mobile, address);
     Meteor.call('trucks.insert', name, mobile, address, () => {
       templateInstance.editTruckBasic.set(false);
     });
   },
   'click .editTruckBasic' (event, templateInstance) {
     templateInstance.editTruckBasic.set(true);
+  },
+  'click .cancelEdit' (event, templateInstance) {
+    templateInstance.editTruckBasic.set(false);
   }
 });
