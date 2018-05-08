@@ -21,6 +21,12 @@
                 Dashboard</a>
             </li>
           {{/if}}
+          {{#if isInRole 'admin,truck'}}
+          <li class="nav-item">
+            <a class="nav-link" href="/mytruck"><i class="fas fa-truck"></i>
+              My Truck</a>
+          </li>
+          {{/if}}
         </ul>
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           {{#if currentUser}}

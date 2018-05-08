@@ -3,10 +3,12 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 // Import needed templates
 import '../../ui/layouts/body/body.js';
+import '../../ui/layouts/home/home.js';
 import '../../ui/pages/home/home.js';
 import '../../ui/pages/profile/profile.js';
 import '../../ui/pages/not-found/not-found.js';
 import '../../ui/pages/support/support.js';
+import '../../ui/pages/mytruck/mytruck.js';
 import '../../ui/pages/faqs/Faqs.js';
 import '../../ui/pages/users/Users.js';
 import '../../ui/pages/dashboard/dashboard.js';
@@ -16,9 +18,10 @@ import '../../ui/pages/dashboard/dashboard.js';
 FlowRouter.route('/', {
   name: 'App.home',
   action() {
-    BlazeLayout.render('App_body', {nav:'nav', main: 'App_home', footer:'footer'});
+    BlazeLayout.render('app_home', {nav:'nav', main: 'alltrucks', footer:'footer'});
   },
 });
+
 
 FlowRouter.route('/tr', {
   name: 'truckSignup',
@@ -27,6 +30,15 @@ FlowRouter.route('/tr', {
     FlowRouter.go(`/join?type=truck`);
   }
 });
+
+FlowRouter.route('/mytruck', {
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
+  name: 'mytruck',
+  action() {
+    BlazeLayout.render('App_body', {nav:'nav', main: 'mytruck', footer:'footer'});
+  },
+});
+
 
 FlowRouter.route('/users', {
   triggersEnter: [AccountsTemplates.ensureSignedIn],

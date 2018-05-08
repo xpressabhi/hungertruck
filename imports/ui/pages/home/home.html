@@ -1,11 +1,11 @@
-<template name="App_home">
+<template name="home">
+  {{> alltrucks}}
   <div class="container">
     {{#if currentUser}}
       {{#if isInRole 'admin'}}
         <p class="lead">You are an admin.</p>
       {{/if}}
-      {{> hello}}
-      {{> info}}
+
     {{else}}
     <div class="jumbotron">
       <h1>MeteorJS Start</h1>
