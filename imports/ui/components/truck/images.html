@@ -1,0 +1,50 @@
+<template name="images">
+  <div class="btn-group my-2" role="group" aria-label="Upload images buttons">
+    <button type="button" class="btn {{#if uploadType 'Truck'}}btn-primary{{else}}btn-secondary{{/if}} setTruck">Truck</button>
+    <button type="button" class="btn {{#if uploadType 'Menu'}}btn-primary{{else}}btn-secondary{{/if}} setMenu">Menu</button>
+    <button type="button" class="btn {{#if uploadType 'Item'}}btn-primary{{else}}btn-secondary{{/if}} setItem">Item</button>
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="uploadImages1">
+        <i class="fas fa-upload" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="uploadImages">
+      {{#if processing}}
+        <label class="custom-file-label" for="uploadImages">
+          Processing ...
+          <i class="fas fa-spinner fa-spin"></i>
+        </label>
+      {{else}}
+        <label class="custom-file-label" for="uploadImages">
+          {{setUploadType}} Images
+        </label>
+      {{/if}}
+    </div>
+  </div>
+  {{#if error}}
+    <div class="alert alert-danger" role="alert">
+      <strong>Oh snap!</strong>
+      {{error}}
+    </div>
+  {{/if}}
+
+  <div class="card-columns">
+    {{#each images}}
+      <div class="card">
+        <img class="card-img-top" src="{{this.url}}">
+        <div class="card-body">
+          <!-- {{#if canDelete}} -->
+            {{#FS.DeleteButton class="btn btn-danger btn-sm float-right py-0"}}<i class="fas fa-times" aria-hidden="true"></i> {{/FS.DeleteButton}}
+          <!-- {{/if}} -->
+          <span class="badge badge-primary">{{this.imageOf}}</span>
+          <p class="small">{{uploadedAt}} 
+          </p>
+
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</template>

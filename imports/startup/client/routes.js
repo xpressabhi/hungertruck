@@ -39,6 +39,14 @@ FlowRouter.route('/mytruck', {
   },
 });
 
+FlowRouter.route('/images', {
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
+  name: 'images',
+  action() {
+    BlazeLayout.render('App_body', {nav:'nav', main: 'images', footer:'footer'});
+  },
+});
+
 
 FlowRouter.route('/users', {
   triggersEnter: [AccountsTemplates.ensureSignedIn],
