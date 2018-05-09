@@ -20,3 +20,9 @@ import '../../api/images/server/publications.js';
 
 import '../../api/schedules/methods.js';
 import '../../api/schedules/server/publications.js';
+
+import '../../api/locations/methods.js';
+import '../../api/locations/server/publications.js';
+
+import '../../api/items/methods.js';
+import '../../api/items/server/publications.js';

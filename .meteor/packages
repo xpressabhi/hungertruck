@@ -45,6 +45,7 @@ arillo:flow-router-helpers
 jparker:gravatar
 seba:minifiers-autoprefixer
 dburles:google-maps
+mdg:geolocation
 cfs:standard-packages
 cfs:filesystem
 cfs:ui

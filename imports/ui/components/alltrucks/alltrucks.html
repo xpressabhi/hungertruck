@@ -1,5 +1,15 @@
 <template name="alltrucks">
-  <div class="map-container">
-    {{> googleMap name="map" options=mapOptions}}
-  </div>
+  {{#if showMap}}
+    <div class="map-container">
+      {{> googleMap name="map" options=mapOptions}}
+    </div>
+    {{#if isInRole 'truck'}}
+      <button type="button" class="btn btn-primary goOffline my-2">Go Offline</button>
+    {{/if}}
+  {{else}}
+    <div class="container mx-auto my-5 shadow-lg p-5">
+      <button type="button" class="btn btn-primary btn-lg goOnline">Go Online</button>
+    </div>
+
+  {{/if}}
 </template>
