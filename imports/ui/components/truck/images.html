@@ -1,5 +1,6 @@
 <template name="images">
-  <div class="btn-group my-2" role="group" aria-label="Upload images buttons">
+  <h3 class="border-bottom my-3">Upload Images</h3>
+  <div class="btn-group my-2 btn-group-sm" role="group" aria-label="Upload images buttons">
     <button type="button" class="btn {{#if uploadType 'Truck'}}btn-primary{{else}}btn-secondary{{/if}} setTruck">Truck</button>
     <button type="button" class="btn {{#if uploadType 'Menu'}}btn-primary{{else}}btn-secondary{{/if}} setMenu">Menu</button>
     <button type="button" class="btn {{#if uploadType 'Item'}}btn-primary{{else}}btn-secondary{{/if}} setItem">Item</button>
@@ -37,10 +38,10 @@
         <img class="card-img-top" src="{{this.url}}">
         <div class="card-body">
           <!-- {{#if canDelete}} -->
-            {{#FS.DeleteButton class="btn btn-danger btn-sm float-right py-0"}}<i class="fas fa-times" aria-hidden="true"></i> {{/FS.DeleteButton}}
+            {{#FS.DeleteButton class="btn btn-danger btn-sm float-right py-0"}}<i class="fas fa-trash" aria-hidden="true"></i> {{/FS.DeleteButton}}
           <!-- {{/if}} -->
           <span class="badge badge-primary">{{this.imageOf}}</span>
-          <p class="small">{{uploadedAt}} 
+          <p class="small">{{uploadedAt}}
           </p>
 
         </div>

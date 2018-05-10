@@ -1,29 +1,42 @@
 <template name="menu">
-  <h3>menu</h3>
-  {{#if addItem}}
-    <form class="addItem my-2">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="">Item Name</span>
+  <div class="card card-body my-2 shadow-lg">
+    {{#if addItem}}
+      <form class="addItem my-2">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="">Name</span>
+          </div>
+          <input type="text" name="name" class="form-control">
         </div>
-        <input type="text" name="name" class="form-control">
-      </div>
-      <div class="form-group">
-        <label for="days">Rate</label>
-        <input type="text" name="rate" class="form-control">
-      </div>
-      <button type="submit" class="btn btn-primary">Save Item</button>
-      <button type="button" class="btn btn-secondary cancelAdd">Cancel</button>
-    </form>
-  {{else}}
-    <button type="button" class="btn btn-primary setAddTrue">Add Item</button>
-  {{/if}}
-{{#each items}}
-  <div class="card my-2 shadow-lg">
-    <div class="card-body">
-      <button type="button" class="btn btn-danger btn-sm float-right deteleItem">Delete</button>
-      <p class="card-text">{{name}} :{{rate}}</p>
-    </div>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="">
+              <i class="fas fa-rupee-sign"></i>
+            </span>
+          </div>
+          <input type="text" name="rate" class="form-control">
+          <div class="input-group-append">
+            <span class="input-group-text" id="">.00</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Item</button>
+        <button type="button" class="btn btn-secondary cancelAdd btn-sm"><i class="fas fa-times"></i></button>
+      </form>
+    {{else}}
+      <button type="button" class="btn btn-primary btn-sm setAddTrue"><i class="fas fa-plus"></i> Item</button>
+    {{/if}}
   </div>
-{{/each}}
+  <div class="card my-3 shadow-lg">
+    <div class="card-header">
+      <h6 class="card-title">All Items for your truck</h6>
+    </div>
+    <ul class="list-group list-group-flush">
+      {{#each items}}
+        <li class="list-group-item">
+          <button type="button" class="btn btn-danger btn-sm float-right py-0 deteleItem"><i class="fas fa-trash"></i></button>
+          <i class="fas fa-rupee-sign"></i>{{rate}}.00 :
+          {{name}}</li>
+      {{/each}}
+    </ul>
+  </div>
 </template>

@@ -1,15 +1,22 @@
 <template name="alltrucks">
-  {{#if showMap}}
-    <div class="map-container">
-      {{> googleMap name="map" options=mapOptions}}
-    </div>
+  <div class="map-container">
+    {{> googleMap name="map" options=mapOptions}}
+  </div>
+  <div class="hoverDiv">
     {{#if isInRole 'truck'}}
-      <button type="button" class="btn btn-primary goOffline my-2">Go Offline</button>
+      {{#if isOnline}}
+        <button type="button" class="btn btn-danger goOffline">Go Offline</button>
+      {{else}}
+        <button type="button" class="btn btn-success goOnline">Go Online</button>
+      {{/if}}
+    {{else}}
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1"><i class="fas fa-map-marker-alt"></i></span>
+        </div>
+        <input type="text" class="form-control" placeholder="Destination" aria-label="Destination" aria-describedby="basic-addon1">
+      </div>
     {{/if}}
-  {{else}}
-    <div class="container mx-auto my-5 shadow-lg p-5">
-      <button type="button" class="btn btn-primary btn-lg goOnline">Go Online</button>
-    </div>
+  </div>
 
-  {{/if}}
 </template>

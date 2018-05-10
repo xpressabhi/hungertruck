@@ -1,30 +1,36 @@
 <template name="schedules">
+  {{#each schedules}}
+    <div class="card my-2 shadow-lg">
+      <div class="card-body small">
+        <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule"><i class="fas fa-trash"></i></button>
+        <h6 class="card-title">Opening Schedule</h6>
+        <p class="card-text">Start time: {{start}} <br> End time :{{end}} <br> Open Days {{days}}</p>
+      </div>
+    </div>
+  {{/each}}
+  <div class="card card-body my-2 shadow-lg">
   {{#if addSchedule}}
     <form class="addSchedule my-2">
-      <div class="input-group">
+      <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="">Start/End time</span>
+          <span class="input-group-text" id="">Timing</span>
         </div>
         <input type="text" name="start" class="form-control">
         <input type="text" name="end" class="form-control">
       </div>
-      <div class="form-group">
-        <label for="days">Open days</label>
-        <textarea class="form-control" name="days" id="days" rows="2" required="required"></textarea>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Days</span>
+        </div>
+        <input type="text" name="days" class="form-control">
       </div>
-      <button type="submit" class="btn btn-primary">Save Schedule</button>
-      <button type="button" class="btn btn-secondary cancelAdd">Cancel</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Schedule</button>
+      <button type="button" class="btn btn-secondary cancelAdd"><i class="fas fa-times"></i></button>
     </form>
   {{else}}
-    <button type="button" class="btn btn-primary setAddTrue">Add Schedule</button>
+    <button type="button" class="btn btn-primary btn-sm setAddTrue"><i class="fas fa-plus"></i> Schedule</button>
   {{/if}}
-{{#each schedules}}
-  <div class="card my-2 shadow-lg">
-    <div class="card-body">
-      <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule">Delete</button>
-      <h4 class="card-title">Opening Schedule</h4>
-      <p class="card-text">Start time: {{start}} <br> End time :{{end}} <br> Open Days {{days}}</p>
-    </div>
-  </div>
-{{/each}}
+
+</div>
+
 </template>
