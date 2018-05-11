@@ -43,7 +43,7 @@ Template.images.events({
     templateInstance.processing.set(true);
     const file = event.currentTarget.files[0];
     const filetypes = ['image/jpg', 'image/jpeg', 'image/png'];
-    if (file && file.size < 2 * 1024 * 1024 && filetypes.includes(file.type)) {
+    if (file && file.size < 10 * 1024 * 1024 && filetypes.includes(file.type)) {
       let fsFile = new FS.File(file);
       fsFile.owner = Meteor.userId();
       fsFile.imageOf = templateInstance.uploadType.get();
@@ -56,8 +56,8 @@ Template.images.events({
       templateInstance.error.set('No file selected, refresh page and try again.');
       templateInstance.processing.set(false);
     }
-    if (file.size > 2 * 1024 * 1024) {
-      templateInstance.error.set('Image size must be less then 1MB.');
+    if (file.size > 10 * 1024 * 1024) {
+      templateInstance.error.set('Image size must be less then 10MB.');
       templateInstance.processing.set(false);
     } else if (!filetypes.includes(file.type)) {
       templateInstance.error.set('Selected file is not supported image.');

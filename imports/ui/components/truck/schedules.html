@@ -3,6 +3,7 @@
     <div class="card my-2 shadow-lg">
       <div class="card-body small">
         <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule"><i class="fas fa-trash"></i></button>
+        <button type="button" class="btn btn-success btn-sm float-right mx-1 editSchedule"><i class="fas fa-pencil-alt"></i></button>
         <h6 class="card-title">Opening Schedule</h6>
         <p class="card-text">Start time: {{start}} <br> End time :{{end}} <br> Open Days {{days}}</p>
       </div>
@@ -30,7 +31,5 @@
   {{else}}
     <button type="button" class="btn btn-primary btn-sm setAddTrue"><i class="fas fa-plus"></i> Schedule</button>
   {{/if}}
-
 </div>
-
 </template>

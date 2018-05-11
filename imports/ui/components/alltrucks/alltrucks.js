@@ -4,6 +4,7 @@ import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Items} from '/imports/api/items/items.js';
 
 var markers = [];
+const ZOOM = 16;
 
 Template.alltrucks.onCreated(function() {
   this.autorun(() => {
@@ -21,7 +22,7 @@ Template.alltrucks.onCreated(function() {
     console.log(map);
     let usermarker;
     const image = {
-      url: 'blue-dot.png'
+      url: 'large.png',
     };
     var truckImage = {
       url: 'food-truck.png',
@@ -59,18 +60,18 @@ Template.alltrucks.onCreated(function() {
           map: map.instance
         });
 
-        marker.addListener('click', function() {
-          console.log('clicking icon');
-          console.log(Trucks.find().count());
-          var truck = Trucks.findOne({userId: p.userId});
-          console.log(truck);
-          console.log('clicking icon');
-          if (truck) {
-            var contentString = `<div>  <b> <i class="fas fa-truck fa-fw"></i>:${truck.name}</b> <br/> <i class="fas fa-mobile fa-fw"></i> : ${truck.mobile} <br/>`;
-            Items.find({userId:p.userId}).map((i) => {
-              contentString+=`<i class="fas fa-utensils"></i> : ${i.name},${i.rate} <br/>`;
-            });
-            contentString+=`</div>`;
+          marker.addListener('click', function() {
+            console.log('clicking icon');
+            console.log(Trucks.find().count());
+            var truck = Trucks.findOne({userId: p.userId});
+            console.log(truck);
+            console.log('clicking icon');
+            if (truck) {
+            var contentString = `<div>  <b> <i class="fas fa-truck fa-fw"></i>:${truck.name}</b> <br/> <i class="fas fa-mobile fa-fw"></i> : ${truck.mobile} <hr class="my-1"><dl class="row">`;
+              Items.find({userId:p.userId}).map((i) => {
+              contentString+=`<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4"><i class="fas fa-rupee-sign"></i>${i.rate}.00</dd>`;
+              });
+            contentString+=`</dl></div>`;
             if (infowindow) {
               infowindow.close();
             }
@@ -106,7 +107,7 @@ Template.alltrucks.onCreated(function() {
 
       // Center and zoom the map view onto the current position.
       map.instance.setCenter(usermarker.getPosition());
-      map.instance.setZoom(14);
+      map.instance.setZoom(ZOOM);
       map.instance.setOptions({mapTypeControl: false, streetViewControl: false, clickableIcons: false, fullscreenControl: false});
     });
   });
