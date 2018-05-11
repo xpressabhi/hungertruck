@@ -133,7 +133,7 @@ Template.alltrucks.helpers({
         center: latlng
           ? new google.maps.LatLng(latlng.lat, latlng.lng)
           : new google.maps.LatLng(17.4635, 78.3473),
-        zoom: 14
+        zoom: ZOOM
       };
     } else {
   //    console.log('not loaded');

@@ -27,5 +27,13 @@ Meteor.methods({
       return Items.update({_id: id},{$set:{availability:flag}});
     }
     return;
+  },
+  'items.toggleFav'(id,flag) {
+    check(id, String);
+    check(flag,Boolean);
+    if (this.userId) {
+      return Items.update({_id: id},{$set:{fav:flag}});
+    }
+    return;
   }
 });

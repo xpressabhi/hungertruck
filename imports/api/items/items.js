@@ -12,6 +12,10 @@ Items.schema = new SimpleSchema({
     type : String,
     max:30
   },
+  fav:{
+    type:Boolean,
+    defaultValue:false
+  },
   availability:{
     type : Boolean,
     defaultValue:true

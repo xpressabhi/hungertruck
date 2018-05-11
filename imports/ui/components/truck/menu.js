@@ -33,5 +33,9 @@ Template.menu.events({
     Meteor.call('items.insert', name, rate, () => {
       templateInstance.addItem.set(false);
     });
+  },
+  'click .toggleFav'(event, templateInstance) {
+    console.log('hhhh');
+    Meteor.call('items.toggleFav', this._id, !this.fav, () => {});
   }
 });
