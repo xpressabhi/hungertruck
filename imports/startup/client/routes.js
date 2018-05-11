@@ -94,6 +94,6 @@ FlowRouter.route('/faqs', {
 
 FlowRouter.notFound = {
   action() {
-    BlazeLayout.render('App_body', { main: 'App_notFound' , footer:'footer'});
+    BlazeLayout.render('App_body', { nav:'nav', main: 'App_notFound' , footer:'footer'});
   },
 };

@@ -2,8 +2,6 @@ import './alltrucks.html';
 import {Locations} from '/imports/api/locations/locations.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Items} from '/imports/api/items/items.js';
-
-var markers = [];
 const ZOOM = 16;
 
 Template.alltrucks.onCreated(function() {
@@ -18,11 +16,11 @@ Template.alltrucks.onCreated(function() {
   });
   this.latlng = new ReactiveVar();
   var self = this;
+  let markers = [];
   GoogleMaps.ready('map', function(map) {
-    console.log(map);
     let usermarker;
     const image = {
-      url: 'large.png',
+      url: 'large.png'
     };
     var truckImage = {
       url: 'food-truck.png',
@@ -45,10 +43,12 @@ Template.alltrucks.onCreated(function() {
     self.autorun(function() {
       if (markers) {
         for (i in markers) {
-          markers[i].setMap(null);
+          const locExist = Locations.findOne({_id:markers[i].id,state:true});
+          if (!locExist) markers[i].setMap(null);
         }
       }
-      Locations.find({state: true}).forEach((p) => {
+      let locIds = markers.map(p=>p.id);
+      Locations.find({_id:{$nin:locIds},state: true}).forEach((p) => {
         var marker = new google.maps.Marker({
           title: "my truck",
           //  animation: google.maps.Animation.DROP,
@@ -57,21 +57,17 @@ Template.alltrucks.onCreated(function() {
             ? myTruck
             : truckImage,
           position: new google.maps.LatLng(p.lat, p.lng),
-          map: map.instance
+          map: map.instance,
+          id:p._id
         });
-
-          marker.addListener('click', function() {
-            console.log('clicking icon');
-            console.log(Trucks.find().count());
-            var truck = Trucks.findOne({userId: p.userId});
-            console.log(truck);
-            console.log('clicking icon');
-            if (truck) {
-            var contentString = `<div>  <b> <i class="fas fa-truck fa-fw"></i>:${truck.name}</b> <br/> <i class="fas fa-mobile fa-fw"></i> : ${truck.mobile} <hr class="my-1"><dl class="row">`;
-              Items.find({userId:p.userId}).map((i) => {
-              contentString+=`<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4"><i class="fas fa-rupee-sign"></i>${i.rate}.00</dd>`;
-              });
-            contentString+=`</dl></div>`;
+        marker.addListener('click', function() {
+          var truck = Trucks.findOne({userId: p.userId});
+          if (truck) {
+            var contentString = `<div>  <h5> <i class="fas fa-truck fa-fw"></i>:${truck.name}</h5> <i class="fas fa-mobile fa-fw"></i> : <a href="tel:${truck.mobile}">${truck.mobile}</a>  <hr class="my-1"><dl class="row">`;
+            Items.find({userId: p.userId}).map((i) => {
+              contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4"><i class="fas fa-rupee-sign"></i>${i.rate}.00</dd>`;
+            });
+            contentString += `</dl></div>`;
             if (infowindow) {
               infowindow.close();
             }
@@ -83,37 +79,35 @@ Template.alltrucks.onCreated(function() {
         marker.addListener('dragend', function(event) {
           //  Meteor.call('deleteLocation', Meteor.userId());
           Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
-          console.log('dragging');
         });
         markers.push(marker);
       });
 
       const latLng = Geolocation.latLng();
-      console.log(latLng);
-      if (!latLng)
-        return;
-
-      // If the marker doesn't yet exist, create it.
-      if (!usermarker) {
-        usermarker = new google.maps.Marker({
-          position: new google.maps.LatLng(latLng.lat, latLng.lng),
-          map: map.instance,
-          icon: image
-        });
-        //  markersArray.push(marker);  The marker already exists, so we'll just change its position.);
-      } else {
-        usermarker.setPosition(latLng);
+      if (latLng) {
+        if (!usermarker) {
+          usermarker = new google.maps.Marker({
+            position: new google.maps.LatLng(latLng.lat, latLng.lng),
+            map: map.instance,
+            icon: image
+          });
+          //  markersArray.push(marker);  The marker already exists, so we'll just change its position.);
+        } else {
+          usermarker.setPosition(latLng);
+        }
       }
-
-      // Center and zoom the map view onto the current position.
-      map.instance.setCenter(usermarker.getPosition());
-      map.instance.setZoom(ZOOM);
-      map.instance.setOptions({mapTypeControl: false, streetViewControl: false, clickableIcons: false, fullscreenControl: false});
     });
+    // Center and zoom the map view onto the current position.
+    usermarker && map.instance.setCenter(usermarker.getPosition());
+    map.instance.setZoom(ZOOM);
+    map.instance.setOptions({mapTypeControl: false, streetViewControl: false, clickableIcons: false, fullscreenControl: false});
   });
+
 });
 
-Template.alltrucks.onRendered(function() {});
+Template.alltrucks.onRendered(function() {
+
+});
 
 Template.alltrucks.helpers({
   isOnline() {
@@ -142,7 +136,7 @@ Template.alltrucks.helpers({
         zoom: 14
       };
     } else {
-      console.log('not loaded');
+  //    console.log('not loaded');
     }
 
   }
@@ -153,7 +147,6 @@ Template.alltrucks.events({
     const latLng = templateInstance.latlng.get();
     if (latLng) {
       Meteor.call('locations.insert', latLng.lat, latLng.lng, true, () => {});
-      location.reload();
     } else {
       console.log('no location found');
     }
