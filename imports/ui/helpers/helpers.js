@@ -1,5 +1,27 @@
 import R from 'ramda';
 
+Template.registerHelper('higherBytes', (bytes) => {
+  const units = [
+    'Bytes',
+    'KB',
+    'MB',
+    'GB',
+    'TB',
+    'PB'
+  ];
+  let l = 0,
+    n = parseInt(bytes, 10) || 0;
+  while (n >= 1024) {
+    n = n / 1024;
+    l++;
+  }
+  return (parseFloat(n.toFixed(
+    n > 0
+    ? 1
+    : 0)) + ' ' + units[l]);
+});
+
+
 Template.registerHelper( 'firstCapital', (str) => {
   const fn= p=> R.toUpper(R.head(p))+R.tail(p);
   return fn(str);

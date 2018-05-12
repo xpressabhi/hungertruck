@@ -11,8 +11,8 @@ if (Meteor.isServer) {
       return true;
     },
     'remove': function(userId, fileObj) {
-      console.log(fileObj);
-      console.log(userId);
+  //    console.log(fileObj);
+  //    console.log(userId);
       if (userId === fileObj.owner) {
         return true;
       }

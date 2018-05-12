@@ -5,6 +5,12 @@
     <button type="button" class="btn {{#if uploadType 'Menu'}}btn-primary{{else}}btn-secondary{{/if}} setMenu">Menu</button>
     <button type="button" class="btn {{#if uploadType 'Item'}}btn-primary{{else}}btn-secondary{{/if}} setItem">Item</button>
   </div>
+  {{#if processing}}
+    {{#unless this.isUploaded}}
+      {{> FS.UploadProgressBar bootstrap=true}}
+    {{/unless}}
+  {{/if}}
+
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="uploadImages1">
@@ -20,30 +26,39 @@
         </label>
       {{else}}
         <label class="custom-file-label" for="uploadImages">
-          {{setUploadType}} Images
+          {{setUploadType}}
+          Images
         </label>
       {{/if}}
     </div>
   </div>
   {{#if error}}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger small" role="alert">
       <strong>Oh snap!</strong>
       {{error}}
+    </div>
+  {{/if}}
+  {{#if success}}
+    <div class="alert alert-success small" role="alert">
+      <strong>Great!</strong>
+      {{success}}
     </div>
   {{/if}}
 
   <div class="card-columns">
     {{#each images}}
       <div class="card">
-        <img class="card-img-top" src="{{this.url}}">
+        <img class="card-img-top" src="{{this.url}}"/>
         <div class="card-body">
           <!-- {{#if canDelete}} -->
-            {{#FS.DeleteButton class="btn btn-danger btn-sm float-right py-0"}}<i class="fas fa-trash" aria-hidden="true"></i> {{/FS.DeleteButton}}
+          {{#FS.DeleteButton class="btn btn-danger btn-sm float-right py-0"}}
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          {{/FS.DeleteButton}}
           <!-- {{/if}} -->
-          <span class="badge badge-primary">{{this.imageOf}}</span>
-          <p class="small">{{uploadedAt}}
+          <span class="badge {{imageBadge imageOf}}">{{imageOf}}</span>
+          <p class="small">{{uploadedAt}} :
+            {{higherBytes original.size}}
           </p>
-
         </div>
       </div>
     {{/each}}

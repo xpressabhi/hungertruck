@@ -1,9 +1,11 @@
 import './images.html';
 import {Images} from '/imports/api/images/images.js';
+const IMG_SIZE_MAX = 4 * 1024 * 1024; // 4 MB
 
-Template.images.onCreated(function(){
+Template.images.onCreated(function() {
   this.processing = new ReactiveVar(false);
   this.error = new ReactiveVar();
+  this.success = new ReactiveVar();
   this.uploadType = new ReactiveVar("Truck");
   this.autorun(() => {
     this.subscribe('allImages');
@@ -11,8 +13,12 @@ Template.images.onCreated(function(){
 });
 
 Template.images.helpers({
-  images(){
-    return Images.find({},{sort:{uploadedAt:-1}});
+  images() {
+    return Images.find({}, {
+      sort: {
+        uploadedAt: -1
+      }
+    });
   },
   processing() {
     return Template.instance().processing.get();
@@ -20,11 +26,26 @@ Template.images.helpers({
   error() {
     return Template.instance().error.get();
   },
+  success() {
+    return Template.instance().success.get();
+  },
   uploadType(uploadType) {
     return uploadType === Template.instance().uploadType.get();
   },
-  setUploadType(){
+  setUploadType() {
     return Template.instance().uploadType.get();
+  },
+  log(abc){
+    console.log(abc);
+  },
+  imageBadge(type){
+    if(type==='Truck'){
+      return 'badge-primary';
+    }else if(type==='Menu'){
+      return 'badge-info';
+    }else if(type==='Item'){
+      return 'badge-success';
+    }
   }
 });
 
@@ -41,27 +62,35 @@ Template.images.events({
   "change #uploadImages" (event, templateInstance) {
     templateInstance.error.set(null);
     templateInstance.processing.set(true);
-    const file = event.currentTarget.files[0];
+    templateInstance.success.set(null);
+    const files = event.currentTarget.files;
+    let file;
     const filetypes = ['image/jpg', 'image/jpeg', 'image/png'];
-    if (file && file.size < 10 * 1024 * 1024 && filetypes.includes(file.type)) {
-      let fsFile = new FS.File(file);
-      fsFile.owner = Meteor.userId();
-      fsFile.imageOf = templateInstance.uploadType.get();
-      Images.insert(fsFile, function(err, fileObj) {
+    for (var i = 0, ln = files.length; i < ln && templateInstance.processing.get(); i++) {
+      file = files[i];
+      if (file && file.size < IMG_SIZE_MAX && filetypes.includes(file.type)) {
+        let fsFile = new FS.File(file);
+        fsFile.owner = Meteor.userId();
+        console.log(templateInstance.uploadType.get());
+        fsFile.imageOf = templateInstance.uploadType.get();
+        Images.insert(fsFile, function(err, fileObj) {
+          templateInstance.processing.set(false);
+          templateInstance.success.set('1 image uploaded, you may upload more.');
+          // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+        });
+      }
+
+      if (!file) {
+        templateInstance.error.set('No file selected, try again.');
         templateInstance.processing.set(false);
-        // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
-      });
-    }
-    if (!file) {
-      templateInstance.error.set('No file selected, refresh page and try again.');
-      templateInstance.processing.set(false);
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      templateInstance.error.set('Image size must be less then 10MB.');
-      templateInstance.processing.set(false);
-    } else if (!filetypes.includes(file.type)) {
-      templateInstance.error.set('Selected file is not supported image.');
-      templateInstance.processing.set(false);
+      }
+      if (file.size > IMG_SIZE_MAX) {
+        templateInstance.error.set('Try upoading smaller image.');
+        templateInstance.processing.set(false);
+      } else if (!filetypes.includes(file.type)) {
+        templateInstance.error.set('Selected filetype is not supported image.');
+        templateInstance.processing.set(false);
+      }
     }
   }
 });
