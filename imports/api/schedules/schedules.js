@@ -14,7 +14,7 @@ Schedules.schema = new SimpleSchema({
   },
   days:{
     type : String,
-    max:100
+    max:50
   },
   createdAt: {
     type: Date,

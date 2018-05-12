@@ -2,34 +2,100 @@
   {{#each schedules}}
     <div class="card my-2 shadow-lg">
       <div class="card-body small">
-        <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule"><i class="fas fa-trash"></i></button>
-        <button type="button" class="btn btn-success btn-sm float-right mx-1 editSchedule"><i class="fas fa-pencil-alt"></i></button>
+        <button type="button" class="btn btn-danger btn-sm float-right deteleSchedule">
+          <i class="fas fa-trash"></i>
+        </button>
         <h6 class="card-title">Opening Schedule</h6>
-        <p class="card-text">Start time: {{start}} <br> End time :{{end}} <br> Open Days {{days}}</p>
-      </div>
+        <p class="card-text">From
+          {{displayTime start}}
+          to
+          {{displayTime end}}
+        <br>
+        Opens :
+        {{display days}}</p>
     </div>
-  {{/each}}
-  <div class="card card-body my-2 shadow-lg">
+  </div>
+{{/each}}
+<div class="card card-body my-2 shadow-lg">
   {{#if addSchedule}}
     <form class="addSchedule my-2">
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="">Timing</span>
+          <span class="input-group-text" id="">Open</span>
         </div>
-        <input type="text" name="start" class="form-control">
-        <input type="text" name="end" class="form-control">
+        <select class="custom-select" name="openhr" id="">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option selected="selected" value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+        </select>
+        <select class="custom-select" name="openmin" id="">
+          <option selected="selected" value="0">00</option>
+          <option value="30">30</option>
+        </select>
+        <select class="custom-select" name="openap" id="">
+          <option selected="selected" value="PM">PM</option>
+          <option value="AM">AM</option>
+        </select>
       </div>
       <div class="input-group mb-2">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="">Days</span>
+          <span class="input-group-text" id="">Close</span>
         </div>
-        <input type="text" name="days" class="form-control">
+        <select class="custom-select" name="closehr" id="">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option selected="selected" value="11">11</option>
+        </select>
+        <select class="custom-select" name="closemin" id="">
+          <option selected="selected" value="0">00</option>
+          <option value="30">30</option>
+        </select>
+        <select class="custom-select" name="closeap" id="">
+          <option selected="selected" value="PM">PM</option>
+          <option value="AM">AM</option>
+        </select>
       </div>
-      <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Schedule</button>
-      <button type="button" class="btn btn-secondary cancelAdd"><i class="fas fa-times"></i></button>
+      <div class="btn-group btn-group-sm my-1" role="group" aria-label="Toolbar with button groups">
+        <button type="button" class="btn {{activedays 'mon'}}  toggleDay">Mon</button>
+        <button type="button" class="btn {{activedays 'tue'}}  toggleDay">Tue</button>
+        <button type="button" class="btn {{activedays 'wed'}}  toggleDay">Wed</button>
+        <button type="button" class="btn {{activedays 'thu'}}  toggleDay">Thu</button>
+        <button type="button" class="btn {{activedays 'fri'}}  toggleDay">Fri</button>
+      </div>
+      <div class="btn-group btn-group-sm my-1" role="group" aria-label="Toolbar with button groups">
+        <button type="button" class="btn {{activedays 'sat'}}  toggleDay">Sat</button>
+        <button type="button" class="btn {{activedays 'sun'}}  toggleDay">Sun</button>
+      </div>
+
+      <button type="submit" class="btn btn-success btn-sm my-1">
+        <i class="fas fa-check"></i>
+        Schedule</button>
+      <button type="button" class="btn btn-secondary btn-sm my-1 cancelAdd">
+        <i class="fas fa-times"></i>
+      </button>
     </form>
   {{else}}
-    <button type="button" class="btn btn-primary btn-sm setAddTrue"><i class="fas fa-plus"></i> Schedule</button>
+    <button type="button" class="btn btn-primary btn-sm setAddTrue">
+      <i class="fas fa-plus"></i>
+      Schedule</button>
   {{/if}}
 </div>
 </template>
