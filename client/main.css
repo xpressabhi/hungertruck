@@ -16,3 +16,9 @@
   left:10px;
   top: 50px;
 }
+.setCenterMap{
+  position: absolute;
+  z-index: 100;
+  right:10px;
+  top: 50px;
+}

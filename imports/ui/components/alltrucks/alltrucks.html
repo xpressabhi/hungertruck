@@ -2,6 +2,9 @@
   <div class="map-container">
     {{> googleMap name="map" options=mapOptions}}
   </div>
+  <div class="setCenterMap">
+    <button type="button" class="btn btn-outline-primary btn-sm setCenteredMap"><i class="fas fa-crosshairs"></i></button>
+  </div>
   <div class="hoverDiv">
     {{#if isInRole 'truck'}}
       {{#if isInRole 'verified-truck'}}
@@ -12,6 +15,7 @@
         {{/if}}
         {{else}}
         <a class="btn btn-primary" href="tel:7842740174" role="button">Contact admin for verification</a>
+        <a class="btn btn-success my-2" href="/mytruck" role="button">Update truck details</a>
       {{/if}}
     {{else}}
       <div class="input-group mb-3">

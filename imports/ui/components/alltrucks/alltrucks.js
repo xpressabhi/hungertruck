@@ -15,6 +15,7 @@ Template.alltrucks.onCreated(function() {
     this.subscribe('items.all', userIds);
   });
   this.latlng = new ReactiveVar();
+  this.resetMap = new ReactiveVar(false);
   var self = this;
   let markers = [];
   GoogleMaps.ready('map', function(map) {
@@ -95,6 +96,10 @@ Template.alltrucks.onCreated(function() {
         } else {
           usermarker.setPosition(latLng);
         }
+        if(self.resetMap.get()){
+          map.instance.setCenter(usermarker.getPosition());
+          self.resetMap.set(false);
+        }
       }
     });
     // Center and zoom the map view onto the current position.
@@ -143,6 +148,9 @@ Template.alltrucks.helpers({
 });
 
 Template.alltrucks.events({
+  'click .setCenteredMap'(event, templateInstance) {
+    templateInstance.resetMap.set(true);
+  },
   "click .goOnline" (event, templateInstance) {
     const latLng = templateInstance.latlng.get();
     if (latLng) {
