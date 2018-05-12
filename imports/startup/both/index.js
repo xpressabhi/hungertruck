@@ -14,7 +14,7 @@ AccountsTemplates.configure({
 //  showResendVerificationEmailLink: true,
   showLabels: true,
   showPlaceholders: true,
-  sendVerificationEmail: true
+//  sendVerificationEmail: true
 });
 
 AccountsTemplates.configure({

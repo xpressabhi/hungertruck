@@ -26,7 +26,6 @@ FlowRouter.route('/', {
 FlowRouter.route('/tr', {
   name: 'truckSignup',
   action(params, queryParams) {
-    console.log('reffer page');
     FlowRouter.go(`/join?type=truck`);
   }
 });
