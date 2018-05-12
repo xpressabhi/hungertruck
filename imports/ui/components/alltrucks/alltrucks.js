@@ -3,6 +3,57 @@ import {Locations} from '/imports/api/locations/locations.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Items} from '/imports/api/items/items.js';
 const ZOOM = 16;
+let directionsService;
+let directionsDisplay;
+
+const setCountry = function (loc) {
+  let country = ['in'];
+  loc.setComponentRestrictions({
+    'country': country
+  });
+}
+
+const expandViewportToFitPlace = function (map, place) {
+  if (place.geometry.viewport) {
+    map.fitBounds(place.geometry.viewport);
+  } else {
+    map.setCenter(place.geometry.location);
+    map.setZoom(20);
+  }
+}
+
+const route = function (t) {
+
+//  if (!t.latlng.get() || !t.destination_latLng.get()) {
+//    clearOverlays();
+//    return;
+//  }
+  const map = GoogleMaps.maps.map.instance;
+//  clearOverlays();
+  if (!directionsService)
+    directionsService = new google.maps.DirectionsService;
+  if (!directionsDisplay)
+    directionsDisplay = new google.maps.DirectionsRenderer;
+
+  //  directionsDisplay.setMap(null);
+  directionsDisplay.setMap(map);
+  //  directionsDisplay.set('directions', null);
+  const start = t.latlng.get();
+  const end = t.destination_latLng.get();
+  const orign = start.lat + ',' + start.lng;
+  const destination = end.lat + ',' + end.lng;
+  directionsService.route({
+    origin: orign,
+    destination: destination,
+    travelMode: 'DRIVING'
+  }, function (response, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
 
 Template.alltrucks.onCreated(function() {
   this.autorun(() => {
@@ -13,7 +64,9 @@ Template.alltrucks.onCreated(function() {
     });
     this.subscribe('trucks.all', userIds);
     this.subscribe('items.all', userIds);
+
   });
+  this.destination_latLng= new ReactiveVar();
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
   var self = this;
@@ -138,7 +191,13 @@ Template.alltrucks.helpers({
         center: latlng
           ? new google.maps.LatLng(latlng.lat, latlng.lng)
           : new google.maps.LatLng(17.4635, 78.3473),
-        zoom: ZOOM
+        zoom: ZOOM,
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false
       };
     } else {
   //    console.log('not loaded');
@@ -161,5 +220,25 @@ Template.alltrucks.events({
   },
   'click .goOffline' (event, templateInstance) {
     Meteor.call('locations.allOffline', () => {})
-  }
+  },
+  "keyup [name='destination-input']" (event, templateInstance) {
+    let value = event.target.value.trim();
+    if (GoogleMaps.loaded()) {
+      let destination_autocomplete = new google.maps.places.Autocomplete(event.target);
+      setCountry(destination_autocomplete);
+      destination_autocomplete.addListener('place_changed', function () {
+        const place = destination_autocomplete.getPlace();
+        console.log(place);
+        expandViewportToFitPlace(GoogleMaps.maps.map.instance, place);
+        templateInstance.destination_latLng.set({
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+          name: place.name,
+          address: place.formatted_address
+        });
+        route(templateInstance);
+      });
+    }
+  },
+
 });

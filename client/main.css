@@ -12,13 +12,13 @@
 
 .hoverDiv{
   position: absolute;
+  width:calc(100vw - 20px);
+  max-width:calc(100vw - 20px);
   z-index: 100;
   left:10px;
   top: 50px;
 }
-.setCenterMap{
-  position: absolute;
-  z-index: 100;
-  right:10px;
-  top: 50px;
+.pac-container {
+  box-sizing: content-box;
+  padding-right: 4px;
 }

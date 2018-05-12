@@ -6,6 +6,6 @@ Meteor.startup(function() {
   GoogleMaps.load({
     v: '3',
     key: Meteor.settings.public.googlemap_api,
-    libraries: 'geometry'
+    libraries: 'geometry,places'
   });
 });

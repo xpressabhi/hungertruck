@@ -2,9 +2,6 @@
   <div class="map-container">
     {{> googleMap name="map" options=mapOptions}}
   </div>
-  <div class="setCenterMap">
-    <button type="button" class="btn btn-outline-primary btn-sm setCenteredMap"><i class="fas fa-crosshairs"></i></button>
-  </div>
   <div class="hoverDiv">
     {{#if isInRole 'truck'}}
       {{#if isInRole 'verified-truck'}}
@@ -18,13 +15,11 @@
         <a class="btn btn-success my-2" href="/mytruck" role="button">Update truck details</a>
       {{/if}}
     {{else}}
-      <div class="input-group mb-3">
+      <div class="input-group font-weight-light">
         <div class="input-group-prepend">
-          <span class="input-group-text" id="basic-addon1">
-            <i class="fas fa-map-marker-alt"></i>
-          </span>
+          <button type="button" class="btn btn-outline-primary setCenteredMap"><i class="fas fa-crosshairs"></i></button>
         </div>
-        <input type="text" class="form-control" placeholder="Destination" aria-label="Destination" aria-describedby="basic-addon1">
+        <input type="text" class="form-control font-weight-light small" name="destination-input" placeholder="Destination">
       </div>
     {{/if}}
   </div>
