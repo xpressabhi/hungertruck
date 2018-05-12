@@ -22,10 +22,10 @@ Meteor.methods({
     }
     return;
   },
-  "locations.allOffline"(){
-    if (this.userId) {
-      return Locations.update({userId:this.userId,state:true},{$set:{state:false}},{multi:true});
-    }
+  "locations.allOffline"(userId){
+    check(userId, Match.OneOf(String,null,undefined));
+    userId = userId || this.userId;
+    return Locations.update({userId:userId,state:true},{$set:{state:false}},{multi:true});
   },
   "locations.update"(lat, lng){
     check(lat, Number);

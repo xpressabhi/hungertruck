@@ -20,6 +20,7 @@
             </button>
             <button type="button" class="btn {{#if userIsInRole _id 'truck'}} btn-primary {{else}} btn-secondary{{/if}} toggleTruck">Truck</button>
             <button type="button" class="btn {{#if userIsInRole _id 'user'}} btn-primary {{else}} btn-secondary{{/if}} toggleUser">User</button>
+            <button type="button" class="btn {{#if userIsInRole _id 'verified-truck'}} btn-primary {{else}} btn-secondary{{/if}} toggleVerifiedTruck">Verified-Truck</button>
             <a class="btn btn-primary" href="/support/{{_id}}" role="button">Support</a>
           </div>
         </div>

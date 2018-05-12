@@ -60,6 +60,12 @@ Template.users.events({
   },
   'click .toggleUser'(event, templateInstance){
     Meteor.call('user.toggleRole', this._id, 'user');
-  }
+  },
+  'click .toggleVerifiedTruck'(event, templateInstance){
+    Meteor.call('user.toggleRole', this._id, 'verified-truck',() => {
+    });
+    Meteor.call('locations.allOffline', this._id, () => {})
+  },
+
 
 });
