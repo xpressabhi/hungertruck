@@ -1,12 +1,13 @@
 <template name="menu">
   <div class="card card-body my-2 shadow-lg">
+    {{item.name}}{{itemId}}
     {{#if addItem}}
       <form class="addItem my-2">
         <div class="input-group mb-2">
           <div class="input-group-prepend">
             <span class="input-group-text" id="">Name</span>
           </div>
-          <input type="text" name="name" class="form-control">
+          <input type="text" name="name" value="{{item.name}}" minlength="3" maxlength="100" class="form-control" required>
         </div>
         <div class="input-group mb-2">
           <div class="input-group-prepend">
@@ -14,7 +15,7 @@
               <i class="fas fa-rupee-sign"></i>
             </span>
           </div>
-          <input type="text" name="rate" class="form-control">
+          <input type="number" name="rate" value="{{item.rate}}" min="0" max="1000" class="form-control" required>
           <div class="input-group-append">
             <span class="input-group-text" id="">.00</span>
           </div>
@@ -33,7 +34,7 @@
     <ul class="list-group list-group-flush">
       {{#each items}}
         <li class="list-group-item">
-          <span class="{{#if fav}}text-primary{{else}}text-secondary{{/if}} toggleFav"><i class="fas fa-star"></i></span> 
+          <span class="{{#if fav}}text-primary{{else}}text-secondary{{/if}} toggleFav"><i class="fas fa-star"></i></span>
           <button type="button" class="btn btn-danger btn-sm float-right py-0 deteleItem"><i class="fas fa-trash"></i></button>
           <button type="button" class="btn btn-success btn-sm float-right py-0 mx-1 editItem"><i class="fas fa-pencil-alt"></i></button>
           <i class="fas fa-rupee-sign"></i>{{rate}}.00 :

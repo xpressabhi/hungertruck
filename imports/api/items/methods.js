@@ -13,6 +13,16 @@ Meteor.methods({
     }
     return;
   },
+  "items.update" (id,name, rate) {
+    check(id,String);
+    check(name, String);
+    check(rate, String);
+    if (this.userId) {
+        return Items.update({_id:id},{$set:{name,rate}});
+    }
+    return;
+  },
+
   "items.remove" (id) {
     check(id, String);
     if (this.userId) {

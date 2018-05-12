@@ -3,6 +3,7 @@ import {Items} from '/imports/api/items/items.js';
 
 Template.menu.onCreated(function() {
   this.addItem = new ReactiveVar(false);
+  this.itemId = new ReactiveVar();
   this.autorun(() => {
     this.subscribe('items.user');
   })
@@ -13,6 +14,13 @@ Template.menu.helpers({
   },
   items() {
     return Items.find();
+  },
+  itemId() {
+    return Template.instance().itemId.get();
+  },
+  item() {
+    const itemId = Template.instance().itemId.get();
+    return Items.findOne(itemId);
   }
 });
 
@@ -22,19 +30,32 @@ Template.menu.events({
   },
   'click .cancelAdd' (event, templateInstance) {
     templateInstance.addItem.set(false);
+    templateInstance.itemId.set(null);
   },
   'click .deteleItem' (event, templateInstance) {
     Meteor.call('items.remove', this._id, () => {});
+  },
+  'click .editItem' (event, templateInstance) {
+    templateInstance.addItem.set(true);
+    templateInstance.itemId.set(this._id);
   },
   "submit .addItem" (event, templateInstance) {
     event.preventDefault();
     const name = event.target.name.value;
     const rate = event.target.rate.value;
-    Meteor.call('items.insert', name, rate, () => {
-      templateInstance.addItem.set(false);
-    });
+    const itemId = templateInstance.itemId.get();
+    if (itemId) {
+      Meteor.call('items.update',itemId, name, rate, () => {
+        templateInstance.addItem.set(false);
+      });
+      templateInstance.itemId.set(null);
+    }else {
+      Meteor.call('items.insert', name, rate, () => {
+        templateInstance.addItem.set(false);
+      });
+    }
   },
-  'click .toggleFav'(event, templateInstance) {
+  'click .toggleFav' (event, templateInstance) {
     console.log('hhhh');
     Meteor.call('items.toggleFav', this._id, !this.fav, () => {});
   }
