@@ -18,7 +18,9 @@
   left:10px;
   top: 50px;
 }
-.pac-container {
-  box-sizing: content-box;
-  padding-right: 4px;
+.setCenterMap{
+  position: absolute;
+  z-index: 100;
+  left:10px;
+  top: 100px;
 }

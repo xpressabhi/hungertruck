@@ -228,7 +228,6 @@ Template.alltrucks.events({
       setCountry(destination_autocomplete);
       destination_autocomplete.addListener('place_changed', function () {
         const place = destination_autocomplete.getPlace();
-        console.log(place);
         expandViewportToFitPlace(GoogleMaps.maps.map.instance, place);
         templateInstance.destination_latLng.set({
           lat: place.geometry.location.lat(),

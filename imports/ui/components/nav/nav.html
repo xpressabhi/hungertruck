@@ -1,37 +1,44 @@
 <template name="nav">
   <nav class="navbar navbar-expand navbar-dark bg-dark shadow-lg py-md-0 py-0">
     <div class="container">
-      <a class="navbar-brand small" href="/"><i class="fas fa-utensils"></i> hungertruck</a>
+      <a class="navbar-brand small" href="/">
+        <i class="fas fa-utensils"></i>
+        hungertruck</a>
       <div class="collapse navbar-collapse small" id="navbarNav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           {{#if isInRole 'admin'}}
             <li class="nav-item">
-              <a class="nav-link" href="/users"><i class="fas fa-users"></i>
-                Users</a>
+              <a class="nav-link" href="/users">
+                <i class="fas fa-users"></i>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i>
-                Dashboard</a>
+              <a class="nav-link" href="/dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+              </a>
             </li>
           {{/if}}
           {{#if isInRole 'truck'}}
-          <li class="nav-item">
-            <a class="nav-link" href="/mytruck"><i class="fas fa-truck"></i>
-              My Truck</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mytruck">
+                <i class="fas fa-truck"></i>
+                My Truck</a>
+            </li>
           {{/if}}
         </ul>
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           {{#if currentUser}}
             <li class="nav-item">
-              <a class="nav-link" href="/profile"><i class="fas fa-user" aria-hidden="true"></i></a>
+              <a class="nav-link" href="/profile">
+                <i class="fas fa-user" aria-hidden="true"></i>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link logout" href="#">
                 <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
               </a>
             </li>
-            {{else}}
+          {{else}}
             <li class="nav-item py-0">
               <a href="/login" class="nav-link">
                 <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
@@ -40,13 +47,13 @@
             <li class="nav-item py-0">
               <a href="/join" class="nav-link">
                 <i class="fas fa-user-plus" aria-hidden="true"></i>
-                </a>
+              </a>
             </li>
             <li class="nav-item py-0">
               <a href="/tr" class="nav-link">
                 <i class="fas fa-plus" aria-hidden="true"></i>
                 <i class="fas fa-truck" aria-hidden="true"></i>
-                </a>
+              </a>
             </li>
           {{/if}}
         </ul>
