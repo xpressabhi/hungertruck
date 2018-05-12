@@ -192,7 +192,6 @@ Template.alltrucks.helpers({
           ? new google.maps.LatLng(latlng.lat, latlng.lng)
           : new google.maps.LatLng(17.4635, 78.3473),
         zoom: ZOOM,
-        zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,
