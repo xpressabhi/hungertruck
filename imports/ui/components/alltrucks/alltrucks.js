@@ -29,11 +29,11 @@ const route = function(t) {
   //  }
   const map = GoogleMaps.maps.map.instance;
   //  clearOverlays();
-  if (!directionsService) 
+  if (!directionsService)
     directionsService = new google.maps.DirectionsService;
-  if (!directionsDisplay) 
+  if (!directionsDisplay)
     directionsDisplay = new google.maps.DirectionsRenderer;
-  
+
   //  directionsDisplay.setMap(null);
   directionsDisplay.setMap(map);
   //  directionsDisplay.set('directions', null);
@@ -53,7 +53,7 @@ const route = function(t) {
     }
   });
 }
-
+var markers = [];
 Template.alltrucks.onCreated(function() {
   this.autorun(() => {
     this.subscribe('locations.online');
@@ -73,7 +73,7 @@ Template.alltrucks.onCreated(function() {
   this.resetMap = new ReactiveVar(false);
   this.showSlider = new ReactiveVar(true);
   var self = this;
-  let markers = [];
+
   GoogleMaps.ready('map', function(map) {
     const SnazzyInfoWindow = require('snazzy-info-window');
     var styledMapType = new google.maps.StyledMapType([
@@ -178,103 +178,102 @@ Template.alltrucks.onCreated(function() {
     let infowindow;
     // Create and move the marker when latLng changes.
     self.autorun(function() {
-      if (markers) {
-        for (i in markers) {
-          const locExist = Locations.findOne({_id: markers[i].id, state: true});
-          if (!locExist) 
-            markers[i].setMap(null);
+      if (self.subscriptionsReady()) {
+        if (markers) {
+          for (i in markers) {
+            const locExist = Locations.findOne({_id: markers[i].id, state: true});
+            if (!locExist)
+              markers[i].setMap(null);
+            }
           }
-        }
-      let locIds = markers.map(p => p.id);
-      Locations.find({
-        _id: {
-          $nin: locIds
-        },
-        state: true
-      }).forEach((p) => {
-        var marker = new google.maps.Marker({
-          title: "Food Truck",
-          //  animation: google.maps.Animation.DROP,
-          draggable: p.userId === Meteor.userId(),
-          icon: p.userId === Meteor.userId()
-            ? myTruck
-            : truckImage,
-          position: new google.maps.LatLng(p.lat, p.lng),
-          map: map.instance,
-          id: p._id
-        });
-        var truck = Trucks.findOne({userId: p.userId});
-        if (truck) {
-          const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
-          let content = `<div class="card border-0">`;
-          if (img) {
-            content += `<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
-          }
-          content += `<div class="card-body">
+        let locIds = markers.map(p => p.id);
+        Locations.find({
+          _id: {
+            $nin: locIds
+          },
+          state: true
+        }).forEach((p) => {
+          var truck = Trucks.findOne({userId: p.userId});
+          if (truck) {
+            var marker = new google.maps.Marker({
+              title: "Food Truck",
+              //  animation: google.maps.Animation.DROP,
+              draggable: p.userId === Meteor.userId(),
+              icon: p.userId === Meteor.userId()
+                ? myTruck
+                : truckImage,
+              position: new google.maps.LatLng(p.lat, p.lng),
+              map: map.instance,
+              id: p._id,
+              userId: p.userId
+            });
+
+            const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
+            let content = `<div class="card border-0">`;
+            if (img) {
+              content += `<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
+            }
+            content += `<div class="card-body">
               <h4 class="card-title">${truck.name}</h4>
               <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
               <dl class="row font-weight-light small" style="width:100%">`;
-          Items.find({userId: p.userId}).map((i) => {
-            content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
+            Items.find({userId: p.userId}).map((i) => {
+              content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
                 <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
-          });
-          content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
+            });
+            content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
               <hr><em>hungertruck.in</em>
             </div>
           </div>`;
-          infowindow = new SnazzyInfoWindow({
-            marker: marker,
-            content: content,
-            closeWhenOthersOpen: true,
-            edgeOffset: {
-              top: 60,
-              right: 20,
-              bottom: 80,
-              left: 20
-            },
-            border: false,
-            callbacks: {
-              beforeOpen: function() {
-                console.log('beforeopen', self.showSlider.get());
-                self.showSlider.set(false);
-                return true;
+            infowindow = new SnazzyInfoWindow({
+              marker: marker,
+              content: content,
+              closeWhenOthersOpen: true,
+              edgeOffset: {
+                top: 60,
+                right: 20,
+                bottom: 80,
+                left: 20
               },
-              open: function() {},
-              afterOpen: function() {},
-              beforeClose: function() {},
-              close: function() {},
-              afterClose: function() {
-                console.log('afterclose', self.showSlider.get());
-                self.showSlider.set(true);
+              border: false,
+              callbacks: {
+                beforeOpen: function() {
+                  self.showSlider.set(false);
+                  return true;
+                },
+                open: function() {},
+                afterOpen: function() {},
+                beforeClose: function() {},
+                close: function() {},
+                afterClose: function() {
+                  self.showSlider.set(true);
+                }
               }
-            }
-          });
-          //  console.log(infowindow);
-          //  infowindow = new google.maps.InfoWindow({content: contentString});
-          //  infowindow.open();
-        }
-        marker.addListener('dragend', function(event) {
-          //  Meteor.call('deleteLocation', Meteor.userId());
-          Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
-        });
-        markers.push(marker);
-      });
+            });
+            marker.addListener('dragend', function(event) {
+              Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
+            });
+            markers.push(marker);
+          }
 
-      const latLng = Geolocation.latLng();
-      if (latLng) {
-        if (!usermarker) {
-          usermarker = new google.maps.Marker({
-            position: new google.maps.LatLng(latLng.lat, latLng.lng),
-            map: map.instance,
-            icon: image
-          });
-          //  markersArray.push(marker);  The marker already exists, so we'll just change its position.);
-        } else {
-          usermarker.setPosition(latLng);
-        }
-        if (self.resetMap.get()) {
-          map.instance.setCenter(usermarker.getPosition());
-          self.resetMap.set(false);
+        });
+
+        const latLng = Geolocation.latLng();
+        if (latLng) {
+          if (!usermarker) {
+            usermarker = new google.maps.Marker({
+              position: new google.maps.LatLng(latLng.lat, latLng.lng),
+              map: map.instance,
+              icon: image
+            });
+            //  markersArray.push(marker);  The marker already exists, so we'll just change its position.);
+          } else {
+            usermarker.setPosition(latLng);
+          }
+          if (self.resetMap.get()) {
+            map.instance.setCenter(usermarker.getPosition());
+            self.resetMap.set(false);
+          }
         }
       }
     });
@@ -294,7 +293,6 @@ Template.alltrucks.onRendered(function() {});
 Template.alltrucks.helpers({
   showSlider() {
     let flag = Template.instance().showSlider.get();
-    console.log(flag);
     return Template.instance().showSlider.get();
   },
   images() {
@@ -328,7 +326,11 @@ Template.alltrucks.helpers({
         scaleControl: false,
         streetViewControl: false,
         rotateControl: false,
-        fullscreenControl: false
+        fullscreenControl: false,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: google.maps.ControlPosition.RIGHT_CENTER
+        }
       };
     } else {
       //    console.log('not loaded');
@@ -364,5 +366,16 @@ Template.alltrucks.events({
         route(templateInstance);
       });
     }
+  },
+  'click .cover-item' (event, templateInstance) {
+    event.preventDefault();
+    console.log(this.owner);
+    const loc = Locations.findOne({userId: this.owner});
+    markers.find((e) => {
+      if (e.id === loc._id) {
+        google.maps.event.trigger(e, 'click');
+        return;
+      }
+    });
   }
 });
