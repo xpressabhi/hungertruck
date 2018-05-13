@@ -2,6 +2,7 @@ import './alltrucks.html';
 import {Locations} from '/imports/api/locations/locations.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Items} from '/imports/api/items/items.js';
+import {Images} from '/imports/api/images/images.js';
 const ZOOM = 16;
 let directionsService;
 let directionsDisplay;
@@ -62,6 +63,7 @@ Template.alltrucks.onCreated(function() {
     });
     this.subscribe('trucks.all', userIds);
     this.subscribe('items.all', userIds);
+    this.subscribe('allImagesByTypeForAll', 'Truck',userIds);
 
   });
   this.destination_latLng = new ReactiveVar();
@@ -200,25 +202,32 @@ Template.alltrucks.onCreated(function() {
         });
         var truck = Trucks.findOne({userId: p.userId});
         if (truck) {
-          var contentString = `<h6> <i class="fas fa-truck fa-fw"></i> ${truck.name}</h6>
-          <p>
-            <i class="fas fa-mobile fa-fw"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a>
-            <dl class="row font-weight-light small" style="width:100%">`;
-          Items.find({userId: p.userId}).map((i) => {
-            contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
-            <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
-          });
-          contentString += `</dl></p><hr><em>hungertruck.in</em>`;
-          //  console.log(SnazzyInfoWindow);
+          const img = Images.findOne({owner:p.userId,imageOf:'Truck'});
+          let content = `<div class="card border-0">`;
+          if(img){
+            content+=`<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
+          }
+          content  +=`<div class="card-body">
+              <h4 class="card-title">${truck.name}</h4>
+              <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
+              <dl class="row font-weight-light small" style="width:100%">`;
+              Items.find({userId: p.userId}).map((i) => {
+                content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
+                <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
+              });
+              content+=`</dl><p class="card-text">Enjoy delicious food on the way.</p>
+              <hr><em>hungertruck.in</em>
+            </div>
+          </div>`;
           infowindow = new SnazzyInfoWindow({
             marker: marker,
-            content: contentString,
+            content: content,
             closeWhenOthersOpen: true,
             edgeOffset: {
               top: 60,
-              right: 10,
-              bottom: 40,
-              left: 10
+              right: 20,
+              bottom: 80,
+              left: 20
             },
             border: false
           });
@@ -226,7 +235,6 @@ Template.alltrucks.onCreated(function() {
           //  infowindow = new google.maps.InfoWindow({content: contentString});
           //  infowindow.open();
         }
-
         marker.addListener('dragend', function(event) {
           //  Meteor.call('deleteLocation', Meteor.userId());
           Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());

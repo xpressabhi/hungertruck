@@ -10,3 +10,10 @@ Meteor.publish("allImages", function(){
   const options={sort:{uploadedAt:-1},limit:60};
   return Images.find({owner:this.userId},options);
 });
+
+Meteor.publish("allImagesByTypeForAll", function(type, userIds){
+  check(type, String);
+  check(userIds, [String]);
+  const options={sort:{uploadedAt:-1},limit:100};
+  return Images.find({owner:{$in:userIds},imageOf:type},options);
+});

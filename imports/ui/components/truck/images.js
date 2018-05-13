@@ -71,7 +71,6 @@ Template.images.events({
       if (file && file.size < IMG_SIZE_MAX && filetypes.includes(file.type)) {
         let fsFile = new FS.File(file);
         fsFile.owner = Meteor.userId();
-        console.log(templateInstance.uploadType.get());
         fsFile.imageOf = templateInstance.uploadType.get();
         Images.insert(fsFile, function(err, fileObj) {
           templateInstance.processing.set(false);
