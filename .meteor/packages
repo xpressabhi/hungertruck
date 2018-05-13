@@ -50,3 +50,4 @@ cfs:standard-packages
 cfs:filesystem
 cfs:ui
 cfs:graphicsmagick
+okgrow:analytics
