@@ -13,7 +13,7 @@ Template.menu.helpers({
     return Template.instance().addItem.get();
   },
   items() {
-    return Items.find();
+    return Items.find({},{sort:{createdAt:-1}});
   },
   itemId() {
     return Template.instance().itemId.get();
@@ -46,14 +46,22 @@ Template.menu.events({
     const itemId = templateInstance.itemId.get();
     if (itemId) {
       Meteor.call('items.update',itemId, name, rate, () => {
-        templateInstance.addItem.set(false);
+        $(event.target.name).focus();
+        event.target.name.value='';
+        event.target.rate.value='';
       });
       templateInstance.itemId.set(null);
     }else {
       Meteor.call('items.insert', name, rate, () => {
-        templateInstance.addItem.set(false);
+        $(event.target.name).focus();
+        event.target.name.value='';
+        event.target.rate.value='';
       });
     }
+  },
+  'click .saveClose'(event, templateInstance) {
+     $('form.addItem').submit();
+     templateInstance.addItem.set(false);
   },
   'click .toggleFav' (event, templateInstance) {
     console.log('hhhh');

@@ -16,13 +16,13 @@
   left:10px;
   top: 50px;
 }
-input{
+.destination-input{
   width:100px !important;
   -webkit-transition: width .5s ease;
    -moz-transition: width .5s ease;
    transition: width .5s ease;
 }
-input:focus{
+.destination-input:focus{
   width:calc(100vw - 90px) !important;
   -webkit-transition: width .5s ease;
    -moz-transition: width .5s ease;
