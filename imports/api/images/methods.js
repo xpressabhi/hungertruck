@@ -23,3 +23,10 @@ if (Meteor.isServer) {
     }
   });
 }
+Meteor.methods({
+  "images.verifyFlag"(id, flag) {
+    check(id, String);
+    check(flag, Boolean);
+    Images.update({_id:id},{$set:{'metadata.verified':flag}});
+  }
+});

@@ -57,6 +57,12 @@
           <!-- {{/if}} -->
           <span class="badge {{imageBadge imageOf}}">{{imageOf}}</span>
           {{#if isInRole 'admin'}}
+          {{log this}}
+          {{#if metadata.verified}}
+          <button type="button" class="btn btn-danger btn-sm unverifyImage">unVerify</button>
+            {{else}}
+            <button type="button" class="btn btn-primary btn-sm verifyImage">Verify</button>
+          {{/if}}
           <p class="small">{{uploadedAt}} :
             {{higherBytes original.size}} : {{owner}}
           </p>

@@ -16,6 +16,33 @@
   left:10px;
   top: 50px;
 }
+.imageSlider{
+  position: absolute;
+  z-index: 200;
+  left:0px;
+  bottom: 0px;
+}
+.cover-container {
+    height: 168px;
+    width: 100vw;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.cover-item {
+    position: relative;
+    opacity: 0.9;
+    display: inline-block;
+    margin: 4px 4px;
+    box-shadow: 2px 2px 4px #bbb;
+    border-top-right-radius: 4px;
+    width: 116px;
+    height: 158px;
+    vertical-align: bottom;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .destination-input{
   width:100px !important;
   -webkit-transition: width .5s ease;

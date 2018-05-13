@@ -63,7 +63,9 @@ Template.alltrucks.onCreated(function() {
     });
     this.subscribe('trucks.all', userIds);
     this.subscribe('items.all', userIds);
-    this.subscribe('allImagesByTypeForAll', 'Truck',userIds);
+    this.subscribe('allImagesByTypeForAll', 'Truck', userIds);
+    this.subscribe('allImagesByTypeForAll', 'Menu', userIds);
+    this.subscribe('allImagesByTypeForAll', 'Item', userIds);
 
   });
   this.destination_latLng = new ReactiveVar();
@@ -202,20 +204,20 @@ Template.alltrucks.onCreated(function() {
         });
         var truck = Trucks.findOne({userId: p.userId});
         if (truck) {
-          const img = Images.findOne({owner:p.userId,imageOf:'Truck'});
+          const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
           let content = `<div class="card border-0">`;
-          if(img){
-            content+=`<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
+          if (img) {
+            content += `<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
           }
-          content  +=`<div class="card-body">
+          content += `<div class="card-body">
               <h4 class="card-title">${truck.name}</h4>
               <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
               <dl class="row font-weight-light small" style="width:100%">`;
-              Items.find({userId: p.userId}).map((i) => {
-                content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
+          Items.find({userId: p.userId}).map((i) => {
+            content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
                 <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
-              });
-              content+=`</dl><p class="card-text">Enjoy delicious food on the way.</p>
+          });
+          content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
               <hr><em>hungertruck.in</em>
             </div>
           </div>`;
@@ -274,6 +276,9 @@ Template.alltrucks.onCreated(function() {
 Template.alltrucks.onRendered(function() {});
 
 Template.alltrucks.helpers({
+  images(){
+    return Images.find({'metadata.verified':true});
+  },
   isOnline() {
     const userId = Meteor.userId();
     if (userId) {

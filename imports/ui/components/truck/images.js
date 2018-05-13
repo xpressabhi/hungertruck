@@ -50,6 +50,16 @@ Template.images.helpers({
 });
 
 Template.images.events({
+  'click .verifyImage'(event, templateInstance) {
+    Meteor.call('images.verifyFlag',this._id, true, () => {
+
+    });
+  },
+  'click .unverifyImage'(event, templateInstance) {
+    console.log('unv');
+    Meteor.call('images.verifyFlag',this._id, false, () => {
+    });
+  },
   'click .setTruck' (event, templateInstance) {
     templateInstance.uploadType.set("Truck");
   },
