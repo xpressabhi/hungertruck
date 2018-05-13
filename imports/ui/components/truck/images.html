@@ -56,9 +56,12 @@
           {{/FS.DeleteButton}}
           <!-- {{/if}} -->
           <span class="badge {{imageBadge imageOf}}">{{imageOf}}</span>
+          {{#if isInRole 'admin'}}
           <p class="small">{{uploadedAt}} :
-            {{higherBytes original.size}}
+            {{higherBytes original.size}} : {{owner}}
           </p>
+          {{/if}}
+
         </div>
       </div>
     {{/each}}

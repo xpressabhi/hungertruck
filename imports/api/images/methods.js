@@ -1,4 +1,4 @@
-import {Images}  from './images.js';
+import {Images} from './images.js';
 
 if (Meteor.isServer) {
   Images.allow({
@@ -11,9 +11,9 @@ if (Meteor.isServer) {
       return true;
     },
     'remove': function(userId, fileObj) {
-  //    console.log(fileObj);
-  //    console.log(userId);
-      if (userId === fileObj.owner) {
+      //    console.log(fileObj);
+      //    console.log(userId);
+      if (userId === fileObj.owner || Roles.userIsInRole(userId, 'admin')) {
         return true;
       }
       return false;

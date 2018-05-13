@@ -8,7 +8,12 @@ Meteor.publish("allImagesByType", function(type){
 
 Meteor.publish("allImages", function(){
   const options={sort:{uploadedAt:-1},limit:60};
-  return Images.find({owner:this.userId},options);
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return Images.find({},options);
+  }else {
+    return Images.find({owner:this.userId},options);
+  }
+
 });
 
 Meteor.publish("allImagesByTypeForAll", function(type, userIds){
