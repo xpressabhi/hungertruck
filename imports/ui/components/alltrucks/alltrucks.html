@@ -3,7 +3,9 @@
     {{> googleMap name="map" options=mapOptions}}
   </div>
   <div class="setCenterMap">
-    <button type="button" class="btn btn-outline-primary btn-sm setCenteredMap"><i class="fas fa-crosshairs"></i></button>
+    <button type="button" class="btn btn-outline-primary btn-sm setCenteredMap">
+      <i class="fas fa-crosshairs"></i>
+    </button>
   </div>
   <div class="hoverDiv">
     {{#if isInRole 'truck'}}
@@ -13,7 +15,7 @@
         {{else}}
           <button type="button" class="btn btn-success btn-sm goOnline">Go Online</button>
         {{/if}}
-        {{else}}
+      {{else}}
         <a class="btn btn-primary" href="tel:7842740174" role="button">Contact admin for verification</a>
         <a class="btn btn-success my-2" href="/mytruck" role="button">Update truck details</a>
       {{/if}}
@@ -28,14 +30,15 @@
       </div>
     {{/if}}
   </div>
-  <div class="row-fluid imageSlider">
-    <div class="col px-0">
+  {{#if showSlider}}
+    <div class="row-fluid imageSlider">
+      <div class="col px-0">
         <div class="cover-container">
           {{#each images}}
             <div class="cover-item" style="background-image: url('{{url}}')"></div>
           {{/each}}
         </div>
+      </div>
     </div>
-</div>
-
+  {{/if}}
 </template>

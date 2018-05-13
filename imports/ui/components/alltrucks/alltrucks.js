@@ -29,11 +29,11 @@ const route = function(t) {
   //  }
   const map = GoogleMaps.maps.map.instance;
   //  clearOverlays();
-  if (!directionsService)
+  if (!directionsService) 
     directionsService = new google.maps.DirectionsService;
-  if (!directionsDisplay)
+  if (!directionsDisplay) 
     directionsDisplay = new google.maps.DirectionsRenderer;
-
+  
   //  directionsDisplay.setMap(null);
   directionsDisplay.setMap(map);
   //  directionsDisplay.set('directions', null);
@@ -71,6 +71,7 @@ Template.alltrucks.onCreated(function() {
   this.destination_latLng = new ReactiveVar();
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
+  this.showSlider = new ReactiveVar(true);
   var self = this;
   let markers = [];
   GoogleMaps.ready('map', function(map) {
@@ -180,7 +181,7 @@ Template.alltrucks.onCreated(function() {
       if (markers) {
         for (i in markers) {
           const locExist = Locations.findOne({_id: markers[i].id, state: true});
-          if (!locExist)
+          if (!locExist) 
             markers[i].setMap(null);
           }
         }
@@ -231,7 +232,22 @@ Template.alltrucks.onCreated(function() {
               bottom: 80,
               left: 20
             },
-            border: false
+            border: false,
+            callbacks: {
+              beforeOpen: function() {
+                console.log('beforeopen', self.showSlider.get());
+                self.showSlider.set(false);
+                return true;
+              },
+              open: function() {},
+              afterOpen: function() {},
+              beforeClose: function() {},
+              close: function() {},
+              afterClose: function() {
+                console.log('afterclose', self.showSlider.get());
+                self.showSlider.set(true);
+              }
+            }
           });
           //  console.log(infowindow);
           //  infowindow = new google.maps.InfoWindow({content: contentString});
@@ -276,8 +292,13 @@ Template.alltrucks.onCreated(function() {
 Template.alltrucks.onRendered(function() {});
 
 Template.alltrucks.helpers({
-  images(){
-    return Images.find({'metadata.verified':true});
+  showSlider() {
+    let flag = Template.instance().showSlider.get();
+    console.log(flag);
+    return Template.instance().showSlider.get();
+  },
+  images() {
+    return Images.find({'metadata.verified': true});
   },
   isOnline() {
     const userId = Meteor.userId();

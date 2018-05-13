@@ -24,9 +24,17 @@ if (Meteor.isServer) {
   });
 }
 Meteor.methods({
-  "images.verifyFlag"(id, flag) {
+  "images.verifyFlag" (id, flag) {
     check(id, String);
     check(flag, Boolean);
-    Images.update({_id:id},{$set:{'metadata.verified':flag}});
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      Images.update({
+        _id: id
+      }, {
+        $set: {
+          'metadata.verified': flag
+        }
+      });
+    }
   }
 });
