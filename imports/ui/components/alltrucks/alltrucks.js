@@ -70,7 +70,86 @@ Template.alltrucks.onCreated(function() {
   var self = this;
   let markers = [];
   GoogleMaps.ready('map', function(map) {
-    const SnazzyInfoWindow = require('snazzy-info-window')
+    const SnazzyInfoWindow = require('snazzy-info-window');
+    var styledMapType = new google.maps.StyledMapType([
+      {
+        "featureType": "administrative",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#444444"
+          }
+        ]
+      }, {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+          {
+            "color": "#f2f2f2"
+          }
+        ]
+      }, {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      }, {
+        "featureType": "poi.business",
+        "elementType": "geometry.fill",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      }, {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+          {
+            "saturation": -100
+          }, {
+            "lightness": 45
+          }
+        ]
+      }, {
+        "featureType": "road.highway",
+        "elementType": "all",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      }, {
+        "featureType": "road.arterial",
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "simplified"
+          }
+        ]
+      }, {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      }, {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+          {
+            "color": "#b4d4e1"
+          }, {
+            "visibility": "on"
+          }
+        ]
+      }
+    ], {name: 'Styled Map'});
     let usermarker;
     const image = {
       url: 'large.png'
@@ -141,11 +220,11 @@ Template.alltrucks.onCreated(function() {
               bottom: 40,
               left: 10
             },
-            border:false
+            border: false
           });
           //  console.log(infowindow);
           //  infowindow = new google.maps.InfoWindow({content: contentString});
-        //  infowindow.open();
+          //  infowindow.open();
         }
 
         marker.addListener('dragend', function(event) {
@@ -177,6 +256,9 @@ Template.alltrucks.onCreated(function() {
     usermarker && map.instance.setCenter(usermarker.getPosition());
     map.instance.setZoom(ZOOM);
     map.instance.setOptions({mapTypeControl: false, streetViewControl: false, clickableIcons: false, fullscreenControl: false});
+    //Associate the styled map with the MapTypeId and set it to display.
+    map.instance.mapTypes.set('styled_map', styledMapType);
+    map.instance.setMapTypeId('styled_map');
   });
 
 });
