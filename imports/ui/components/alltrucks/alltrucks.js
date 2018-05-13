@@ -6,14 +6,12 @@ const ZOOM = 16;
 let directionsService;
 let directionsDisplay;
 
-const setCountry = function (loc) {
+const setCountry = function(loc) {
   let country = ['in'];
-  loc.setComponentRestrictions({
-    'country': country
-  });
+  loc.setComponentRestrictions({'country': country});
 }
 
-const expandViewportToFitPlace = function (map, place) {
+const expandViewportToFitPlace = function(map, place) {
   if (place.geometry.viewport) {
     map.fitBounds(place.geometry.viewport);
   } else {
@@ -22,14 +20,14 @@ const expandViewportToFitPlace = function (map, place) {
   }
 }
 
-const route = function (t) {
+const route = function(t) {
 
-//  if (!t.latlng.get() || !t.destination_latLng.get()) {
-//    clearOverlays();
-//    return;
-//  }
+  //  if (!t.latlng.get() || !t.destination_latLng.get()) {
+  //    clearOverlays();
+  //    return;
+  //  }
   const map = GoogleMaps.maps.map.instance;
-//  clearOverlays();
+  //  clearOverlays();
   if (!directionsService)
     directionsService = new google.maps.DirectionsService;
   if (!directionsDisplay)
@@ -46,7 +44,7 @@ const route = function (t) {
     origin: orign,
     destination: destination,
     travelMode: 'DRIVING'
-  }, function (response, status) {
+  }, function(response, status) {
     if (status === 'OK') {
       directionsDisplay.setDirections(response);
     } else {
@@ -66,12 +64,13 @@ Template.alltrucks.onCreated(function() {
     this.subscribe('items.all', userIds);
 
   });
-  this.destination_latLng= new ReactiveVar();
+  this.destination_latLng = new ReactiveVar();
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
   var self = this;
   let markers = [];
   GoogleMaps.ready('map', function(map) {
+    const SnazzyInfoWindow = require('snazzy-info-window')
     let usermarker;
     const image = {
       url: 'large.png'
@@ -97,12 +96,18 @@ Template.alltrucks.onCreated(function() {
     self.autorun(function() {
       if (markers) {
         for (i in markers) {
-          const locExist = Locations.findOne({_id:markers[i].id,state:true});
-          if (!locExist) markers[i].setMap(null);
+          const locExist = Locations.findOne({_id: markers[i].id, state: true});
+          if (!locExist)
+            markers[i].setMap(null);
+          }
         }
-      }
-      let locIds = markers.map(p=>p.id);
-      Locations.find({_id:{$nin:locIds},state: true}).forEach((p) => {
+      let locIds = markers.map(p => p.id);
+      Locations.find({
+        _id: {
+          $nin: locIds
+        },
+        state: true
+      }).forEach((p) => {
         var marker = new google.maps.Marker({
           title: "my truck",
           //  animation: google.maps.Animation.DROP,
@@ -112,23 +117,26 @@ Template.alltrucks.onCreated(function() {
             : truckImage,
           position: new google.maps.LatLng(p.lat, p.lng),
           map: map.instance,
-          id:p._id
+          id: p._id
         });
-        marker.addListener('click', function() {
-          var truck = Trucks.findOne({userId: p.userId});
-          if (truck) {
-            var contentString = `<div>  <h5> <i class="fas fa-truck fa-fw"></i>:${truck.name}</h5> <i class="fas fa-mobile fa-fw"></i> : <a href="tel:${truck.mobile}">${truck.mobile}</a>  <hr class="my-1"><dl class="row">`;
-            Items.find({userId: p.userId}).map((i) => {
-              contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4"><i class="fas fa-rupee-sign"></i>${i.rate}.00</dd>`;
-            });
-            contentString += `</dl></div>`;
-            if (infowindow) {
-              infowindow.close();
-            }
-            infowindow = new google.maps.InfoWindow({content: contentString});
-            infowindow.open(map, marker);
-          }
-        });
+        var truck = Trucks.findOne({userId: p.userId});
+        if (truck) {
+          var contentString = `<h6> <i class="fas fa-truck fa-fw"></i> ${truck.name}</h6> <p><i class="fas fa-mobile fa-fw"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a> <dl class="row font-weight-light small" style="width:100%">`;
+          Items.find({userId: p.userId}).map((i) => {
+            contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
+          });
+          contentString += `</dl></p><hr><em>hungertruck.in</em>`;
+          let content= '<h1>Styling with SCSS</h1>' +
+                 '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id urna eu sem fringilla ultrices.</p>' +
+                 '<hr>' +
+                 '<em>hungertruck.in</em>',
+
+          //  console.log(SnazzyInfoWindow);
+          infowindow = new SnazzyInfoWindow({marker: marker, content: contentString,closeWhenOthersOpen:true});
+          //  console.log(infowindow);
+          //  infowindow = new google.maps.InfoWindow({content: contentString});
+          infowindow.open();
+        }
 
         marker.addListener('dragend', function(event) {
           //  Meteor.call('deleteLocation', Meteor.userId());
@@ -149,7 +157,7 @@ Template.alltrucks.onCreated(function() {
         } else {
           usermarker.setPosition(latLng);
         }
-        if(self.resetMap.get()){
+        if (self.resetMap.get()) {
           map.instance.setCenter(usermarker.getPosition());
           self.resetMap.set(false);
         }
@@ -163,9 +171,7 @@ Template.alltrucks.onCreated(function() {
 
 });
 
-Template.alltrucks.onRendered(function() {
-
-});
+Template.alltrucks.onRendered(function() {});
 
 Template.alltrucks.helpers({
   isOnline() {
@@ -199,14 +205,14 @@ Template.alltrucks.helpers({
         fullscreenControl: false
       };
     } else {
-  //    console.log('not loaded');
+      //    console.log('not loaded');
     }
 
   }
 });
 
 Template.alltrucks.events({
-  'click .setCenteredMap'(event, templateInstance) {
+  'click .setCenteredMap' (event, templateInstance) {
     templateInstance.resetMap.set(true);
   },
   "click .goOnline" (event, templateInstance) {
@@ -225,18 +231,12 @@ Template.alltrucks.events({
     if (GoogleMaps.loaded()) {
       let destination_autocomplete = new google.maps.places.Autocomplete(event.target);
       setCountry(destination_autocomplete);
-      destination_autocomplete.addListener('place_changed', function () {
+      destination_autocomplete.addListener('place_changed', function() {
         const place = destination_autocomplete.getPlace();
         expandViewportToFitPlace(GoogleMaps.maps.map.instance, place);
-        templateInstance.destination_latLng.set({
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-          name: place.name,
-          address: place.formatted_address
-        });
+        templateInstance.destination_latLng.set({lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.name, address: place.formatted_address});
         route(templateInstance);
       });
     }
-  },
-
+  }
 });
