@@ -1,17 +1,37 @@
 <template name="userprofile">
   {{#with currentUser}}
-    <p class="lead">ID: {{_id}}</p>
+  {{#if isInRole 'admin'}}
+  <p class="lead">ID:
+    {{_id}}</p>
+  {{/if}}
+  <dl class="row">
     {{#each emails}}
-      <p class="lead">Email: {{address}} #  {{#if verified}}
-        Verified
-      {{else}}
-        Not Verified
-      {{/if}} </p>
+      <dt class="col-4">Email</dt>
+      <dd class="col-8">{{address}}
+        {{#if emailVerified}}
+          <i class="fa fa-check text-success" aria-hidden="true"></i>
+        {{/if}}
+      </dd>
+
     {{/each}}
+    <dt class="col-4">Password</dt>
+    <dd class="col-8">{{> changePwd}}</dd>
+  </dl>
+    {{#if isInRole 'admin'}}
     <p class="lead">Roles:
-    {{#each roles}}
-    <span class="badge badge-info">{{firstCapital this}}</span>
-    {{/each}}
+      {{#each roles}}
+        <span class="badge badge-info">{{firstCapital this}}</span>
+      {{/each}}
     </p>
+    {{/if}}
+    {{#if isInRole 'truck'}}
+    {{#if isInRole 'verified-truck'}}
+      <p class="lead">
+        Your truck details are verified.
+      </p>
+    {{/if}}
+
+    {{/if}}
+
   {{/with}}
 </template>

@@ -1,4 +1,5 @@
 import './userprofile.html';
+import './changePwd.js';
 import './../../helpers/helpers.js';
 
 import R from 'ramda';

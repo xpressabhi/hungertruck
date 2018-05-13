@@ -26,5 +26,12 @@ Meteor.methods({
         Roles.addUsersToRoles(id, role);
       }
     }
-  }
+  },
+  'user.setDefaultPass' (id) {
+    check(id, String);
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      Accounts.setPassword(id, 'truck123');
+    }
+  },
+
 });

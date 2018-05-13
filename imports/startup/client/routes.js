@@ -9,6 +9,7 @@ import '../../ui/pages/profile/profile.js';
 import '../../ui/pages/not-found/not-found.js';
 import '../../ui/pages/support/support.js';
 import '../../ui/pages/mytruck/mytruck.js';
+import '../../ui/components/menu/menu.js';
 import '../../ui/pages/faqs/Faqs.js';
 import '../../ui/pages/users/Users.js';
 import '../../ui/pages/dashboard/dashboard.js';
@@ -37,6 +38,15 @@ FlowRouter.route('/mytruck', {
     BlazeLayout.render('App_body', {nav:'nav', main: 'mytruck', footer:'footer'});
   },
 });
+
+FlowRouter.route('/menu', {
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
+  name: 'menu',
+  action() {
+    BlazeLayout.render('App_body', {nav:'nav', main: 'menu', footer:'footer'});
+  },
+});
+
 
 FlowRouter.route('/images', {
   triggersEnter: [AccountsTemplates.ensureSignedIn],

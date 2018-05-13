@@ -35,7 +35,7 @@ Template.users.helpers({
   isAdmin() {
     return Roles.userIsInRole(this._id, 'admin');
   },
-  searching(){
+  searching() {
     return Template.instance().searching.get();
   }
 });
@@ -43,9 +43,9 @@ Template.users.helpers({
 Template.users.events({
   'click .deleteUser' (event, templateInstance) {
     Meteor.call('users.remove', this._id, (e, r) => {
-      if (e)
+      if (e) 
         console.log(e);
-      if (r)
+      if (r) 
         console.log(r);
       }
     );
@@ -55,17 +55,18 @@ Template.users.events({
     t.searchQuery.set(txt);
     t.searching.set(true);
   },
-  'click .toggleTruck'(event, templateInstance){
+  'click .toggleTruck' (event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'truck');
   },
-  'click .toggleUser'(event, templateInstance){
+  'click .toggleUser' (event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'user');
   },
-  'click .toggleVerifiedTruck'(event, templateInstance){
-    Meteor.call('user.toggleRole', this._id, 'verified-truck',() => {
-    });
+  'click .toggleVerifiedTruck' (event, templateInstance) {
+    Meteor.call('user.toggleRole', this._id, 'verified-truck', () => {});
     Meteor.call('locations.allOffline', this._id, () => {})
   },
-
+  'click .setDefaultPass' (event, templateInstance) {
+    Meteor.call('user.setDefaultPass', this._id, () => {});
+  }
 
 });
