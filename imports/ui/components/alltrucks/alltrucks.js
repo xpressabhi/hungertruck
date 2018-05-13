@@ -109,7 +109,7 @@ Template.alltrucks.onCreated(function() {
         state: true
       }).forEach((p) => {
         var marker = new google.maps.Marker({
-          title: "my truck",
+          title: "Food Truck",
           //  animation: google.maps.Animation.DROP,
           draggable: p.userId === Meteor.userId(),
           icon: p.userId === Meteor.userId()
@@ -121,21 +121,31 @@ Template.alltrucks.onCreated(function() {
         });
         var truck = Trucks.findOne({userId: p.userId});
         if (truck) {
-          var contentString = `<h6> <i class="fas fa-truck fa-fw"></i> ${truck.name}</h6> <p><i class="fas fa-mobile fa-fw"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a> <dl class="row font-weight-light small" style="width:100%">`;
+          var contentString = `<h6> <i class="fas fa-truck fa-fw"></i> ${truck.name}</h6>
+          <p>
+            <i class="fas fa-mobile fa-fw"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a>
+            <dl class="row font-weight-light small" style="width:100%">`;
           Items.find({userId: p.userId}).map((i) => {
-            contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt> <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
+            contentString += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
+            <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
           });
           contentString += `</dl></p><hr><em>hungertruck.in</em>`;
-          let content= '<h1>Styling with SCSS</h1>' +
-                 '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id urna eu sem fringilla ultrices.</p>' +
-                 '<hr>' +
-                 '<em>hungertruck.in</em>',
-
           //  console.log(SnazzyInfoWindow);
-          infowindow = new SnazzyInfoWindow({marker: marker, content: contentString,closeWhenOthersOpen:true});
+          infowindow = new SnazzyInfoWindow({
+            marker: marker,
+            content: contentString,
+            closeWhenOthersOpen: true,
+            edgeOffset: {
+              top: 60,
+              right: 10,
+              bottom: 40,
+              left: 10
+            },
+            border:false
+          });
           //  console.log(infowindow);
           //  infowindow = new google.maps.InfoWindow({content: contentString});
-          infowindow.open();
+        //  infowindow.open();
         }
 
         marker.addListener('dragend', function(event) {
