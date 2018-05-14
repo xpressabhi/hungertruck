@@ -6,24 +6,6 @@ AccountsTemplates.addField({
   type: 'hidden'
 });
 
-AccountsTemplates.configure({
-//  onLogoutHook: myLogoutFunc,
-  confirmPassword: true,
-  continuousValidation: true,
-//  showForgotPasswordLink: true,
-//  showResendVerificationEmailLink: true,
-  showLabels: true,
-  showPlaceholders: true,
-//  sendVerificationEmail: true
-});
-
-AccountsTemplates.configure({
-  //defaultTemplate: 'Auth_page',
-  //defaultLayout: 'App_body',
-  //defaultContentRegion: 'main',
-  //defaultLayoutRegions: {nav: 'nav',footer:'footer'}
-});
-
 AccountsTemplates.configureRoute('signIn', {
   layoutType: 'blaze',
   name: 'signin',
