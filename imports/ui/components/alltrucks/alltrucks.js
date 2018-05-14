@@ -72,6 +72,7 @@ Template.alltrucks.onCreated(function() {
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
   this.hasClass = new ReactiveVar(false);
+  this.selectedUserId = new ReactiveVar();
   var self = this;
 
   GoogleMaps.ready('map', function(map) {
@@ -239,6 +240,7 @@ Template.alltrucks.onCreated(function() {
               callbacks: {
                 beforeOpen: function() {
                   $('.imageSlider').addClass('imageSliderDisplay');
+                  self.selectedUserId.set(this._marker.userId);
                   return true;
                 },
                 open: function() {},
@@ -248,6 +250,7 @@ Template.alltrucks.onCreated(function() {
                 afterClose: function() {
                   $('.imageSlider').removeClass('imageSliderDisplay');
                   map.instance.setCenter(this._marker.getPosition());
+                  self.selectedUserId.set(null);
                 }
               }
             });
@@ -301,7 +304,12 @@ Template.alltrucks.helpers({
     return Template.instance().hasClass.get();
   },
   images() {
-    return Images.find({'metadata.verified': true});
+    const selectedUserId = Template.instance().selectedUserId.get();
+    if (selectedUserId) {
+      return Images.find({owner: selectedUserId});
+    }else {
+      return Images.find({'metadata.verified': true});
+    }
   },
   isOnline() {
     const userId = Meteor.userId();
