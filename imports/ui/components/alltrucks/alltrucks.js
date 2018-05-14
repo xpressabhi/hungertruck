@@ -247,6 +247,7 @@ Template.alltrucks.onCreated(function() {
                 close: function() {},
                 afterClose: function() {
                   self.showSlider.set(true);
+                  map.instance.setCenter(this._marker.getPosition());
                 }
               }
             });
