@@ -329,7 +329,7 @@ Template.alltrucks.onCreated(function() {
                 <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
             });
             content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
-              <hr><em>hungertruck.in</em>
+              <hr><em>https://hungertruck.in</em>
             </div>
           </div>`;
             infowindow = new SnazzyInfoWindow({
@@ -406,6 +406,9 @@ Template.alltrucks.onRendered(function() {
 Template.alltrucks.helpers({
   hasClass() {
     return Template.instance().hasClass.get();
+  },
+  selectedUserId(){
+    return Template.instance().selectedUserId.get();
   },
   images() {
     const selectedUserId = Template.instance().selectedUserId.get();

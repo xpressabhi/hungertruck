@@ -42,6 +42,13 @@
             <i class="fas fa-angle-double-down"></i>
           </button>
         {{/if}}
+        <span class="lead">
+          {{#if selectedUserId}}
+            Images for selected truck.
+          {{else}}
+            Best images from all the food trucks.
+          {{/if}}
+        </span>
       </div>
     </div>
     <div class="row-fluid ">
@@ -54,14 +61,7 @@
       </div>
     </div>
   </div>
-  <!-- {{#unless Template.subscriptionsReady}}
-    <div class="loadingDiv"></div>
-    <div class="loadingIcon">
-      <div class="fa-6x">
-        <i class="fas fa-spinner fa-pulse"></i>
-      </div>
-    </div>
-  {{/unless}} -->
+  <!-- {{#unless Template.subscriptionsReady}} <div class="loadingDiv"></div> <div class="loadingIcon"> <div class="fa-6x"> <i class="fas fa-spinner fa-pulse"></i> </div> </div> {{/unless}} -->
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-outline-primary introButton" data-toggle="modal" data-target="#exampleModalCenter">
     <i class="fas fa-question"></i>

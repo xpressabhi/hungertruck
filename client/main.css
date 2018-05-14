@@ -52,6 +52,7 @@
   z-index: 200;
   left:0px;
   bottom: 0px;
+  /* background-color: #fff; */
 
 }
 .imageSliderDisplay{
@@ -63,7 +64,7 @@
 }
 .cover-container {
     height: 160px;
-    width: 100vw;
+    max-width: 100vw;
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
