@@ -31,15 +31,15 @@
     <hr>
   {{/if}}
   {{#each faqs}}
-    <div class="card my-1">
-      <div class="card-header">
-        {{question}}
+    <div class="card my-2 shadow-lg border-0">
+      <div class="card-header"  data-toggle="collapse" href="#faq-{{_id}}">
+        <i class="fas fa-chevron-down"></i> {{question}}
+      </div>
+      <div class="card-body collapse" id="faq-{{_id}}">
         {{#if isInRole 'admin'}}
           <i class="fas fa-times removeFaq text-danger float-right" aria-hidden="true"></i>
         {{/if}}
-      </div>
-      <div class="card-body">
-        <p class="small">A:
+        <p class="small font-weight-light">
           {{answer}}</p>
       </div>
     </div>

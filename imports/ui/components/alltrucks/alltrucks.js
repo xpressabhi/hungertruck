@@ -289,7 +289,12 @@ Template.alltrucks.onCreated(function() {
 
 });
 
-Template.alltrucks.onRendered(function() {});
+Template.alltrucks.onRendered(function() {
+  if(!Session.get('introShow')){
+    $('#exampleModalCenter').modal('show');
+    Session.set('introShow', true);
+  }
+});
 
 Template.alltrucks.helpers({
   showSlider() {

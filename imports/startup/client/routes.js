@@ -4,6 +4,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 // Import needed templates
 import '../../ui/layouts/body/body.js';
 import '../../ui/layouts/home/home.js';
+import '../../ui/layouts/public/public.js';
 import '../../ui/pages/home/home.js';
 import '../../ui/pages/profile/profile.js';
 import '../../ui/pages/not-found/not-found.js';
@@ -96,7 +97,7 @@ FlowRouter.route('/support/:id', {
 FlowRouter.route('/faqs', {
   name: 'FAQs',
   action() {
-    BlazeLayout.render('App_body', {nav:'nav', main: 'Faqs', footer:'footer'});
+    BlazeLayout.render('public_page', {nav:'nav', main: 'Faqs', footer:'footer'});
   },
 });
 

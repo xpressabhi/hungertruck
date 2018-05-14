@@ -1,11 +1,15 @@
 <template name="nav">
-  <nav class="navbar navbar-expand navbar-dark bg-dark shadow-lg py-md-0 py-0">
+  <nav class="navbar navbar-expand navbar-dark bg-dark shadow-lg">
     <div class="container">
       <a class="navbar-brand small" href="/">
-        <i class="fas fa-utensils"></i>
         hungertruck.in</a>
       <div class="collapse navbar-collapse small" id="navbarNav">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/faqs">
+              FAQs
+            </a>
+          </li>
           {{#if isInRole 'admin'}}
             <li class="nav-item">
               <a class="nav-link" href="/users">
@@ -21,8 +25,9 @@
           {{#if isInRole 'truck'}}
             <li class="nav-item">
               <a class="nav-link" href="/mytruck">
+                My
                 <i class="fas fa-truck"></i>
-                My Truck</a>
+              </a>
             </li>
           {{/if}}
         </ul>
