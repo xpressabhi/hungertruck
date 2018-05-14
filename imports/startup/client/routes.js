@@ -24,14 +24,6 @@ FlowRouter.route('/', {
   },
 });
 
-
-FlowRouter.route('/tr', {
-  name: 'truckSignup',
-  action(params, queryParams) {
-    FlowRouter.go(`/join?type=truck`);
-  }
-});
-
 FlowRouter.route('/mytruck', {
   triggersEnter: [AccountsTemplates.ensureSignedIn],
   name: 'mytruck',

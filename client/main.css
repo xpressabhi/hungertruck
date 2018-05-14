@@ -55,14 +55,14 @@
 
 }
 .imageSliderDisplay{
-  -webkit-transform: translate(0, 70%);
-  transform: translate(0, 70%);
+  -webkit-transform: translate(0, 75%);
+  transform: translate(0, 75%);
   -webkit-transition: all .5s ease;
    -moz-transition: all .5s ease;
    transition: all .5s ease;
 }
 .cover-container {
-    height: 168px;
+    height: 160px;
     width: 100vw;
     white-space: nowrap;
     overflow-x: scroll;

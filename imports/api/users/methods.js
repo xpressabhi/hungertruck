@@ -1,18 +1,15 @@
-import {
-  Meteor
-} from 'meteor/meteor';
+import {Meteor} from 'meteor/meteor';
+import {Trucks} from '../trucks/trucks.js';
 Meteor.methods({
-  "users.remove": function (id) {
+  "users.remove": function(id) {
     check(id, String);
 
     if (Roles.userIsInRole(this.userId, ['admin'])) {
       if (Roles.userIsInRole(id, ['admin'])) {
         return 'Admin user cannot be deleted.';
       } else {
-        console.log('deleting user.');
-        Meteor.users.remove({
-          _id: id
-        });
+        const truckExist = Trucks.find({userId:id}).count() === 0;
+        truckExist && Meteor.users.remove({_id: id});
       }
     }
   },
@@ -32,6 +29,5 @@ Meteor.methods({
     if (Roles.userIsInRole(this.userId, 'admin')) {
       Accounts.setPassword(id, 'truck123');
     }
-  },
-
+  }
 });
