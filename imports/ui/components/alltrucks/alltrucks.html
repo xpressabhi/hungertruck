@@ -31,12 +31,27 @@
     {{/if}}
   </div>
   {{#if showSlider}}
-    <div class="row-fluid imageSlider">
-      <div class="col px-0">
-        <div class="cover-container">
-          {{#each images}}
-            <div class="cover-item" style="background-image: url('{{url}}')"></div>
-          {{/each}}
+    <div class="imageSlider">
+      <div class="row">
+        <div class="col mx-2">
+          {{#if hasClass}}
+          <button type="button" class="btn btn-outline-secondary btn-sm showHideSlider">
+              <i class="fas fa-angle-double-up"></i>
+          </button>
+          {{else}}
+          <button type="button" class="btn btn-outline-secondary btn-sm showHideSlider">
+              <i class="fas fa-angle-double-down"></i>
+          </button>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row-fluid ">
+        <div class="col px-0">
+          <div class="cover-container">
+            {{#each images}}
+              <div class="cover-item" style="background-image: url('{{url}}')"></div>
+            {{/each}}
+          </div>
         </div>
       </div>
     </div>

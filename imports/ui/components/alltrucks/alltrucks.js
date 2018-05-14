@@ -72,6 +72,7 @@ Template.alltrucks.onCreated(function() {
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
   this.showSlider = new ReactiveVar(true);
+  this.hasClass = new ReactiveVar(false);
   var self = this;
 
   GoogleMaps.ready('map', function(map) {
@@ -290,13 +291,16 @@ Template.alltrucks.onCreated(function() {
 });
 
 Template.alltrucks.onRendered(function() {
-  if(!Session.get('introShow')){
+  if (!Session.get('introShow')) {
     $('#exampleModalCenter').modal('show');
     Session.set('introShow', true);
   }
 });
 
 Template.alltrucks.helpers({
+  hasClass() {
+    return Template.instance().hasClass.get();
+  },
   showSlider() {
     let flag = Template.instance().showSlider.get();
     return Template.instance().showSlider.get();
@@ -383,5 +387,9 @@ Template.alltrucks.events({
         return;
       }
     });
+  },
+  'click .showHideSlider' (event, templateInstance) {
+    $('.imageSlider').toggleClass('imageSliderDisplay');
+    templateInstance.hasClass.set($('.imageSlider').hasClass('imageSliderDisplay'));
   }
 });

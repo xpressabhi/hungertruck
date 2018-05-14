@@ -52,6 +52,14 @@
   z-index: 200;
   left:0px;
   bottom: 0px;
+
+}
+.imageSliderDisplay{
+  -webkit-transform: translate(0, 70%);
+  transform: translate(0, 70%);
+  -webkit-transition: all .5s ease;
+   -moz-transition: all .5s ease;
+   transition: all .5s ease;
 }
 .cover-container {
     height: 168px;
