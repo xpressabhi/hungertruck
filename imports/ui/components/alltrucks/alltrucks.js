@@ -71,7 +71,6 @@ Template.alltrucks.onCreated(function() {
   this.destination_latLng = new ReactiveVar();
   this.latlng = new ReactiveVar();
   this.resetMap = new ReactiveVar(false);
-  this.showSlider = new ReactiveVar(true);
   this.hasClass = new ReactiveVar(false);
   var self = this;
 
@@ -239,7 +238,7 @@ Template.alltrucks.onCreated(function() {
               border: false,
               callbacks: {
                 beforeOpen: function() {
-                  self.showSlider.set(false);
+                  $('.imageSlider').addClass('imageSliderDisplay');
                   return true;
                 },
                 open: function() {},
@@ -247,7 +246,7 @@ Template.alltrucks.onCreated(function() {
                 beforeClose: function() {},
                 close: function() {},
                 afterClose: function() {
-                  self.showSlider.set(true);
+                  $('.imageSlider').removeClass('imageSliderDisplay');
                   map.instance.setCenter(this._marker.getPosition());
                 }
               }
@@ -300,10 +299,6 @@ Template.alltrucks.onRendered(function() {
 Template.alltrucks.helpers({
   hasClass() {
     return Template.instance().hasClass.get();
-  },
-  showSlider() {
-    let flag = Template.instance().showSlider.get();
-    return Template.instance().showSlider.get();
   },
   images() {
     return Images.find({'metadata.verified': true});
@@ -379,7 +374,6 @@ Template.alltrucks.events({
   },
   'click .cover-item' (event, templateInstance) {
     event.preventDefault();
-    console.log(this.owner);
     const loc = Locations.findOne({userId: this.owner});
     markers.find((e) => {
       if (e.id === loc._id) {
