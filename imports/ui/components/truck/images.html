@@ -5,12 +5,9 @@
     <button type="button" class="btn {{#if uploadType 'Menu'}}btn-primary{{else}}btn-secondary{{/if}} setMenu">Menu</button>
     <button type="button" class="btn {{#if uploadType 'Item'}}btn-primary{{else}}btn-secondary{{/if}} setItem">Item</button>
   </div>
-  {{#if processing}}
     {{#unless this.isUploaded}}
-      {{> FS.UploadProgressBar bootstrap=true}}
+      {{> FS.UploadProgressBar bootstrap=true class='progress-bar bg-success progress-bar-animated progress-bar-striped active' showPercent=true}}
     {{/unless}}
-  {{/if}}
-
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text" id="uploadImages1">
@@ -18,7 +15,7 @@
       </span>
     </div>
     <div class="custom-file">
-      <input type="file" class="custom-file-input" id="uploadImages">
+      <input type="file" class="custom-file-input" id="uploadImages" multiple>
       {{#if processing}}
         <label class="custom-file-label" for="uploadImages">
           Processing ...

@@ -1,6 +1,6 @@
 import './images.html';
 import {Images} from '/imports/api/images/images.js';
-const IMG_SIZE_MAX = 4 * 1024 * 1024; // 4 MB
+const IMG_SIZE_MAX = 8 * 1024 * 1024; // 4 MB
 
 Template.images.onCreated(function() {
   this.processing = new ReactiveVar(false);
@@ -70,35 +70,19 @@ Template.images.events({
     templateInstance.uploadType.set("Item");
   },
   "change #uploadImages" (event, templateInstance) {
-    templateInstance.error.set(null);
-    templateInstance.processing.set(true);
-    templateInstance.success.set(null);
     const files = event.currentTarget.files;
     let file;
+    let count = 0;
     const filetypes = ['image/jpg', 'image/jpeg', 'image/png'];
-    for (var i = 0, ln = files.length; i < ln && templateInstance.processing.get(); i++) {
+    for (var i = 0, ln = files.length; i < ln; i++) {
       file = files[i];
       if (file && file.size < IMG_SIZE_MAX && filetypes.includes(file.type)) {
         let fsFile = new FS.File(file);
         fsFile.owner = Meteor.userId();
         fsFile.imageOf = templateInstance.uploadType.get();
         Images.insert(fsFile, function(err, fileObj) {
-          templateInstance.processing.set(false);
-          templateInstance.success.set('1 image uploaded, you may upload more.');
-          // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+          count++;
         });
-      }
-
-      if (!file) {
-        templateInstance.error.set('No file selected, try again.');
-        templateInstance.processing.set(false);
-      }
-      if (file.size > IMG_SIZE_MAX) {
-        templateInstance.error.set('Try upoading smaller image.');
-        templateInstance.processing.set(false);
-      } else if (!filetypes.includes(file.type)) {
-        templateInstance.error.set('Selected filetype is not supported image.');
-        templateInstance.processing.set(false);
       }
     }
   }
