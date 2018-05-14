@@ -293,9 +293,9 @@ Template.alltrucks.onCreated(function() {
 });
 
 Template.alltrucks.onRendered(function() {
-  if (!Session.get('introShow')) {
+  if (!localStorage.getItem('introShow')) {
     $('#exampleModalCenter').modal('show');
-    Session.set('introShow', true);
+    localStorage.setItem('introShow', true);
   }
 });
 
