@@ -78,84 +78,211 @@ Template.alltrucks.onCreated(function() {
   GoogleMaps.ready('map', function(map) {
     const SnazzyInfoWindow = require('snazzy-info-window');
     var styledMapType = new google.maps.StyledMapType([
-      {
+    {
+        "featureType": "administrative",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
         "featureType": "administrative",
         "elementType": "labels.text.fill",
         "stylers": [
-          {
-            "color": "#444444"
-          }
+            {
+                "color": "#444444"
+            }
         ]
-      }, {
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "weight": "0.01"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "visibility": "off"
+            },
+            {
+                "hue": "#ff0000"
+            },
+            {
+                "invert_lightness": true
+            }
+        ]
+    },
+    {
         "featureType": "landscape",
         "elementType": "all",
         "stylers": [
-          {
-            "color": "#f2f2f2"
-          }
+            {
+                "color": "#f2f2f2"
+            }
         ]
-      }, {
+    },
+    {
         "featureType": "poi",
         "elementType": "all",
         "stylers": [
-          {
-            "visibility": "simplified"
-          }
+            {
+                "visibility": "on"
+            }
         ]
-      }, {
-        "featureType": "poi.business",
-        "elementType": "geometry.fill",
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "all",
         "stylers": [
-          {
-            "visibility": "on"
-          }
+            {
+                "visibility": "on"
+            }
         ]
-      }, {
+    },
+    {
+        "featureType": "poi.business",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.government",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.medical",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.place_of_worship",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.school",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.sports_complex",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
         "featureType": "road",
         "elementType": "all",
         "stylers": [
-          {
-            "saturation": -100
-          }, {
-            "lightness": 45
-          }
+            {
+                "saturation": -100
+            },
+            {
+                "lightness": 45
+            }
         ]
-      }, {
+    },
+    {
         "featureType": "road.highway",
         "elementType": "all",
         "stylers": [
-          {
-            "visibility": "simplified"
-          }
+            {
+                "visibility": "simplified"
+            }
         ]
-      }, {
+    },
+    {
         "featureType": "road.arterial",
         "elementType": "labels.icon",
         "stylers": [
-          {
-            "visibility": "simplified"
-          }
+            {
+                "visibility": "off"
+            }
         ]
-      }, {
+    },
+    {
         "featureType": "transit",
         "elementType": "all",
         "stylers": [
-          {
-            "visibility": "off"
-          }
+            {
+                "visibility": "off"
+            }
         ]
-      }, {
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
         "featureType": "water",
         "elementType": "all",
         "stylers": [
-          {
-            "color": "#b4d4e1"
-          }, {
-            "visibility": "on"
-          }
+            {
+                "color": "#46bcec"
+            },
+            {
+                "visibility": "on"
+            }
         ]
-      }
-    ], {name: 'Styled Map'});
+    }
+], {name: 'Styled Map'});
     let usermarker;
     const image = {
       url: 'large.png'
@@ -197,7 +324,7 @@ Template.alltrucks.onCreated(function() {
           var truck = Trucks.findOne({userId: p.userId});
           if (truck) {
             var marker = new google.maps.Marker({
-              title: "Food Truck",
+              title: truck.name,
               //  animation: google.maps.Animation.DROP,
               draggable: p.userId === Meteor.userId(),
               icon: p.userId === Meteor.userId()
