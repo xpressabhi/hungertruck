@@ -55,8 +55,8 @@
 
 }
 .imageSliderDisplay{
-  -webkit-transform: translate(0, 75%);
-  transform: translate(0, 75%);
+  -webkit-transform: translate(0, 80%);
+  transform: translate(0, 80%);
   -webkit-transition: all .5s ease;
    -moz-transition: all .5s ease;
    transition: all .5s ease;

@@ -6,7 +6,7 @@ import {Images} from '/imports/api/images/images.js';
 const ZOOM = 16;
 let directionsService;
 let directionsDisplay;
-
+let markersArray;
 const setCountry = function(loc) {
   let country = ['in'];
   loc.setComponentRestrictions({'country': country});
@@ -53,7 +53,6 @@ const route = function(t) {
     }
   });
 }
-var markers = [];
 Template.alltrucks.onCreated(function() {
   this.autorun(() => {
     this.subscribe('locations.online');
@@ -74,215 +73,192 @@ Template.alltrucks.onCreated(function() {
   this.hasClass = new ReactiveVar(false);
   this.selectedUserId = new ReactiveVar();
   var self = this;
+  var markers = [];
+  var infowindows = [];
 
   GoogleMaps.ready('map', function(map) {
     const SnazzyInfoWindow = require('snazzy-info-window');
     var styledMapType = new google.maps.StyledMapType([
-    {
+      {
         "featureType": "administrative",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "administrative",
         "elementType": "labels.text.fill",
         "stylers": [
-            {
-                "color": "#444444"
-            }
+          {
+            "color": "#444444"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "administrative.locality",
         "elementType": "labels.text",
         "stylers": [
-            {
-                "visibility": "on"
-            },
-            {
-                "weight": "0.01"
-            }
+          {
+            "visibility": "on"
+          }, {
+            "weight": "0.01"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "administrative.locality",
         "elementType": "labels.text.fill",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "administrative.locality",
         "elementType": "labels.text.stroke",
         "stylers": [
-            {
-                "visibility": "off"
-            },
-            {
-                "hue": "#ff0000"
-            },
-            {
-                "invert_lightness": true
-            }
+          {
+            "visibility": "off"
+          }, {
+            "hue": "#ff0000"
+          }, {
+            "invert_lightness": true
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "landscape",
         "elementType": "all",
         "stylers": [
-            {
-                "color": "#f2f2f2"
-            }
+          {
+            "color": "#f2f2f2"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.attraction",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.business",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "off"
-            }
+          {
+            "visibility": "off"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.government",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.medical",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.park",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.place_of_worship",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.school",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "poi.sports_complex",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "on"
-            }
+          {
+            "visibility": "on"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "road",
         "elementType": "all",
         "stylers": [
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 45
-            }
+          {
+            "saturation": -100
+          }, {
+            "lightness": 45
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "road.highway",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "simplified"
-            }
+          {
+            "visibility": "simplified"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "road.arterial",
         "elementType": "labels.icon",
         "stylers": [
-            {
-                "visibility": "off"
-            }
+          {
+            "visibility": "off"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "transit",
         "elementType": "all",
         "stylers": [
-            {
-                "visibility": "off"
-            }
+          {
+            "visibility": "off"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "transit.line",
         "elementType": "labels.text",
         "stylers": [
-            {
-                "visibility": "off"
-            }
+          {
+            "visibility": "off"
+          }
         ]
-    },
-    {
+      }, {
         "featureType": "water",
         "elementType": "all",
         "stylers": [
-            {
-                "color": "#46bcec"
-            },
-            {
-                "visibility": "on"
-            }
+          {
+            "color": "#46bcec"
+          }, {
+            "visibility": "on"
+          }
         ]
-    }
-], {name: 'Styled Map'});
+      }
+    ], {name: 'Styled Map'});
     let usermarker;
     const image = {
       url: 'large.png'
@@ -307,6 +283,8 @@ Template.alltrucks.onCreated(function() {
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
+        console.log('markers count ', markers.length);
+        console.log('infowindows count ', infowindows.length);
         if (markers) {
           for (i in markers) {
             const locExist = Locations.findOne({_id: markers[i].id, state: true});
@@ -315,6 +293,7 @@ Template.alltrucks.onCreated(function() {
             }
           }
         let locIds = markers.map(p => p.id);
+        console.log(locIds);
         Locations.find({
           _id: {
             $nin: locIds
@@ -370,10 +349,6 @@ Template.alltrucks.onCreated(function() {
                   self.selectedUserId.set(this._marker.userId);
                   return true;
                 },
-                open: function() {},
-                afterOpen: function() {},
-                beforeClose: function() {},
-                close: function() {},
                 afterClose: function() {
                   $('.imageSlider').removeClass('imageSliderDisplay');
                   map.instance.setCenter(this._marker.getPosition());
@@ -381,6 +356,7 @@ Template.alltrucks.onCreated(function() {
                 }
               }
             });
+            infowindows.push(infowindow);
             marker.addListener('dragend', function(event) {
               Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
             });
@@ -407,6 +383,7 @@ Template.alltrucks.onCreated(function() {
           }
         }
       }
+      markersArray= markers;
     });
     // Center and zoom the map view onto the current position.
     usermarker && map.instance.setCenter(usermarker.getPosition());
@@ -434,7 +411,7 @@ Template.alltrucks.helpers({
     const selectedUserId = Template.instance().selectedUserId.get();
     if (selectedUserId) {
       return Images.find({owner: selectedUserId});
-    }else {
+    } else {
       return Images.find({'metadata.verified': true});
     }
   },
@@ -509,9 +486,8 @@ Template.alltrucks.events({
   },
   'click .cover-item' (event, templateInstance) {
     event.preventDefault();
-    const loc = Locations.findOne({userId: this.owner});
-    markers.find((e) => {
-      if (e.id === loc._id) {
+    markersArray.find((e) => {
+      if (e.userId === this.owner) {
         google.maps.event.trigger(e, 'click');
         return;
       }
