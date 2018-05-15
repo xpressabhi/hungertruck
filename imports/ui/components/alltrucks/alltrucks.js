@@ -284,8 +284,8 @@ Template.alltrucks.onCreated(function() {
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-        console.log('markers count ', markers.length);
-        console.log('infowindows count ', infowindows.length);
+      //  console.log('markers count ', markers.length);
+      //  console.log('infowindows count ', infowindows.length);
         if (markers) {
           for (i in markers) {
             const locExist = Locations.findOne({_id: markers[i].id, state: true});
@@ -294,7 +294,7 @@ Template.alltrucks.onCreated(function() {
             }
           }
         let locIds = markers.map(p => p.id);
-        console.log(locIds);
+    //    console.log(locIds);
         Locations.find({
           _id: {
             $nin: locIds
@@ -313,7 +313,7 @@ Template.alltrucks.onCreated(function() {
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
               id: p._id,
-              userId: p.userId,
+              userId: p.userId
             });
 
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
@@ -324,10 +324,10 @@ Template.alltrucks.onCreated(function() {
             content += `<div class="card-body">
               <h4 class="card-title">${truck.name}</h4>
               <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
-              <dl class="row font-weight-light small" style="width:100%">`;
+              <dl class="row font-weight-light small mx-0" style="width:100%">`;
             Items.find({userId: p.userId}).map((i) => {
-              content += `<dt class="col-8"><i class="fas fa-utensils"></i> : ${i.name}</dt>
-                <dd class="col-4 text-right"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
+              content += `<dt class="col-8 pl-0"><i class="fas fa-utensils"></i> : ${i.name}</dt>
+                <dd class="col-4 text-right pr-0"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
             });
             content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
               <hr><em>https://hungertruck.in</em>
@@ -337,10 +337,12 @@ Template.alltrucks.onCreated(function() {
               marker: marker,
               content: content,
               closeWhenOthersOpen: true,
+              maxWidth:300,
+              maxHeight:400,
               edgeOffset: {
-                top: 30,
+                top: 20,
                 right: 20,
-                bottom: 80,
+                bottom: 100,
                 left: 20
               },
               border: false,
@@ -411,8 +413,16 @@ Template.alltrucks.helpers({
   hasClass() {
     return Template.instance().hasClass.get();
   },
-  showControl(){
-    return Template.instance().showControl.get();
+  showControl() {
+    var MobileDetect = require('mobile-detect'),
+    md = new MobileDetect(window.navigator.userAgent);
+    //console.log(md.mobile());
+    if (md.mobile()) {
+      return Template.instance().showControl.get();
+    }else {
+     return true;
+    }
+
   },
   selectedUserId() {
     return Template.instance().selectedUserId.get();
