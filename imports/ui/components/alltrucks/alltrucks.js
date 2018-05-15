@@ -72,6 +72,7 @@ Template.alltrucks.onCreated(function() {
   this.resetMap = new ReactiveVar(false);
   this.hasClass = new ReactiveVar(false);
   this.selectedUserId = new ReactiveVar();
+  this.showControl = new ReactiveVar(true);
   var self = this;
   var markers = [];
   var infowindows = [];
@@ -312,7 +313,7 @@ Template.alltrucks.onCreated(function() {
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
               id: p._id,
-              userId: p.userId
+              userId: p.userId,
             });
 
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
@@ -337,7 +338,7 @@ Template.alltrucks.onCreated(function() {
               content: content,
               closeWhenOthersOpen: true,
               edgeOffset: {
-                top: 60,
+                top: 30,
                 right: 20,
                 bottom: 80,
                 left: 20
@@ -347,12 +348,14 @@ Template.alltrucks.onCreated(function() {
                 beforeOpen: function() {
                   $('.imageSlider').addClass('imageSliderDisplay');
                   self.selectedUserId.set(this._marker.userId);
+                  self.showControl.set(false);
                   return true;
                 },
                 afterClose: function() {
                   $('.imageSlider').removeClass('imageSliderDisplay');
                   map.instance.setCenter(this._marker.getPosition());
                   self.selectedUserId.set(null);
+                  self.showControl.set(true);
                 }
               }
             });
@@ -383,7 +386,7 @@ Template.alltrucks.onCreated(function() {
           }
         }
       }
-      markersArray= markers;
+      markersArray = markers;
     });
     // Center and zoom the map view onto the current position.
     usermarker && map.instance.setCenter(usermarker.getPosition());
@@ -407,7 +410,10 @@ Template.alltrucks.helpers({
   hasClass() {
     return Template.instance().hasClass.get();
   },
-  selectedUserId(){
+  showControl(){
+    return Template.instance().showControl.get();
+  },
+  selectedUserId() {
     return Template.instance().selectedUserId.get();
   },
   images() {
