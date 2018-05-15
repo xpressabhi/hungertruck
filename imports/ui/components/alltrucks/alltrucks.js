@@ -3,7 +3,7 @@ import {Locations} from '/imports/api/locations/locations.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Items} from '/imports/api/items/items.js';
 import {Images} from '/imports/api/images/images.js';
-const ZOOM = 16;
+const ZOOM = 14;
 let directionsService;
 let directionsDisplay;
 let markersArray;
@@ -85,7 +85,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -93,7 +94,7 @@ Template.alltrucks.onCreated(function() {
         "elementType": "labels.text.fill",
         "stylers": [
           {
-            "color": "#444444"
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -147,7 +148,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -163,7 +165,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -171,7 +174,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -179,7 +183,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -187,7 +192,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -195,7 +201,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -203,7 +210,8 @@ Template.alltrucks.onCreated(function() {
         "elementType": "all",
         "stylers": [
           {
-            "visibility": "on"
+            "visibility": "on",
+            "color": "#aaaaaa"
           }
         ]
       }, {
