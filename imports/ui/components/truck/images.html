@@ -1,34 +1,42 @@
 <template name="images">
   <h3 class="border-bottom my-3">Upload Images</h3>
+  <p class="lead">
+    Select image type to start uploading them.
+  </p>
   <div class="btn-group my-2 btn-group-sm" role="group" aria-label="Upload images buttons">
     <button type="button" class="btn {{#if uploadType 'Truck'}}btn-primary{{else}}btn-secondary{{/if}} setTruck">Truck</button>
     <button type="button" class="btn {{#if uploadType 'Menu'}}btn-primary{{else}}btn-secondary{{/if}} setMenu">Menu</button>
     <button type="button" class="btn {{#if uploadType 'Item'}}btn-primary{{else}}btn-secondary{{/if}} setItem">Item</button>
+    {{#if setUploadType}}
+      <button type="button" class="btn btn-success setNone">Show All</button>
+    {{/if}}
   </div>
+  {{#if setUploadType}}
     {{#unless this.isUploaded}}
       {{> FS.UploadProgressBar bootstrap=true class='progress-bar bg-success progress-bar-animated progress-bar-striped active' showPercent=true}}
     {{/unless}}
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text" id="uploadImages1">
-        <i class="fas fa-upload" aria-hidden="true"></i>
-      </span>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="uploadImages1">
+          <i class="fas fa-upload" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="uploadImages" multiple="multiple">
+        {{#if processing}}
+          <label class="custom-file-label" for="uploadImages">
+            Processing ...
+            <i class="fas fa-spinner fa-spin"></i>
+          </label>
+        {{else}}
+          <label class="custom-file-label" for="uploadImages">
+            {{setUploadType}}
+            Images
+          </label>
+        {{/if}}
+      </div>
     </div>
-    <div class="custom-file">
-      <input type="file" class="custom-file-input" id="uploadImages" multiple>
-      {{#if processing}}
-        <label class="custom-file-label" for="uploadImages">
-          Processing ...
-          <i class="fas fa-spinner fa-spin"></i>
-        </label>
-      {{else}}
-        <label class="custom-file-label" for="uploadImages">
-          {{setUploadType}}
-          Images
-        </label>
-      {{/if}}
-    </div>
-  </div>
+  {{/if}}
   {{#if error}}
     <div class="alert alert-danger small" role="alert">
       <strong>Oh snap!</strong>
@@ -41,7 +49,13 @@
       {{success}}
     </div>
   {{/if}}
-
+  <p class="lead">
+    {{imagesCount}} images
+    {{#if setUploadType}}
+      for
+      {{setUploadType}}
+    {{/if}}
+  </p>
   <div class="card-columns">
     {{#each images}}
       <div class="card">
@@ -69,6 +83,20 @@
 
         </div>
       </div>
+    {{else}}
+    <div class="card border-0">
+      <div class="card-body">
+        <div class="alert alert-info" role="alert">
+          <strong>Heads up!</strong>
+          No images uploaded
+          {{#if setUploadType}}
+            for
+            {{setUploadType}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
     {{/each}}
   </div>
 </template>

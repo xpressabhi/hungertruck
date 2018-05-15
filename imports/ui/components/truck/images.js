@@ -6,7 +6,7 @@ Template.images.onCreated(function() {
   this.processing = new ReactiveVar(false);
   this.error = new ReactiveVar();
   this.success = new ReactiveVar();
-  this.uploadType = new ReactiveVar("Truck");
+  this.uploadType = new ReactiveVar();
   this.autorun(() => {
     this.subscribe('allImages');
   });
@@ -14,11 +14,28 @@ Template.images.onCreated(function() {
 
 Template.images.helpers({
   images() {
-    return Images.find({}, {
-      sort: {
-        uploadedAt: -1
-      }
-    });
+    const uploadType = Template.instance().uploadType.get();
+    if (uploadType) {
+      return Images.find({imageOf:uploadType}, {
+        sort: {
+          uploadedAt: -1
+        }
+      });
+    }else {
+      return Images.find({}, {
+        sort: {
+          uploadedAt: -1
+        }
+      });
+    }
+  },
+  imagesCount(){
+    const uploadType = Template.instance().uploadType.get();
+    if (uploadType) {
+      return Images.find({imageOf:uploadType}).count();
+    }else {
+      return Images.find({}).count();
+    }
   },
   processing() {
     return Template.instance().processing.get();
@@ -68,6 +85,9 @@ Template.images.events({
   },
   'click .setItem' (event, templateInstance) {
     templateInstance.uploadType.set("Item");
+  },
+  'click .setNone' (event, templateInstance) {
+    templateInstance.uploadType.set();
   },
   "change #uploadImages" (event, templateInstance) {
     const files = event.currentTarget.files;
