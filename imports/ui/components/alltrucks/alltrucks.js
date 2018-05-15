@@ -382,6 +382,7 @@ Template.alltrucks.onCreated(function() {
           }
           if (self.resetMap.get()) {
             map.instance.setCenter(usermarker.getPosition());
+            map.instance.setZoom(ZOOM);
             self.resetMap.set(false);
           }
         }
