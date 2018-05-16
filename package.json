@@ -16,10 +16,12 @@
     "libphonenumber-js": "^1.2.6",
     "meteor-node-stubs": "^0.3.3",
     "mobile-detect": "^1.4.1",
+    "msg91": "0.0.6",
     "popper.js": "^1.14.3",
     "ramda": "^0.25.0",
     "simpl-schema": "^0.4.2",
-    "snazzy-info-window": "^1.1.1"
+    "snazzy-info-window": "^1.1.1",
+    "textbelt": "0.0.3"
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",

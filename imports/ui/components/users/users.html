@@ -8,7 +8,7 @@
       <div class="card-header" data-toggle="collapse" data-target="#collapse-{{_id}}">
         <i class="fas fa-chevron-down float-right" aria-hidden="true"></i>
         <i class="fas fa-user"></i>
-        {{useremail}}
+        {{useremail}}{{this.username}}
         {{#if isAdmin}}
           : Admin
         {{/if}}
@@ -25,6 +25,17 @@
             <a class="btn btn-primary" href="/support/{{_id}}" role="button">Support</a>
             <button type="button" class="btn btn-primary setDefaultPass">SetPass</button>
           </div>
+          <hr>
+          {{#each phones}}
+            {{number}} <button type="button" class="btn btn-danger deletePhone">Delete</button><br>
+          {{/each}}
+          <form class="addPhone">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Mobile Number</label>
+              <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Phone</button>
+          </form>
         </div>
       </div>
     </div>

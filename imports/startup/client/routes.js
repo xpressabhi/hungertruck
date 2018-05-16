@@ -2,6 +2,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 // Import needed templates
+import '../../ui/components/accountsPhone/accountsPhone.js';
 import '../../ui/layouts/body/body.js';
 import '../../ui/layouts/home/home.js';
 import '../../ui/layouts/public/public.js';

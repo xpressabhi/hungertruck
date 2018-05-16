@@ -30,7 +30,7 @@ Template.users.helpers({
     });
   },
   useremail() {
-    return this.emails[0].address;
+    return this.emails && this.emails[0].address;
   },
   isAdmin() {
     return Roles.userIsInRole(this._id, 'admin');
@@ -43,9 +43,9 @@ Template.users.helpers({
 Template.users.events({
   'click .deleteUser' (event, templateInstance) {
     Meteor.call('users.remove', this._id, (e, r) => {
-      if (e) 
+      if (e)
         console.log(e);
-      if (r) 
+      if (r)
         console.log(r);
       }
     );
@@ -67,6 +67,15 @@ Template.users.events({
   },
   'click .setDefaultPass' (event, templateInstance) {
     Meteor.call('user.setDefaultPass', this._id, () => {});
+  },
+  'submit .addPhone'(event, templateInstance) {
+    event.preventDefault();
+    let phone = event.target.phone.value;
+    Meteor.call('user.addPhone', this._id, phone, () => {});
+  },
+  'click .deletePhone'(event, templateInstance) {
+    console.log(this);
+    console.log(templateInstance);
   }
 
 });

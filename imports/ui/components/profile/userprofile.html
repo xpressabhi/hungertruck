@@ -1,37 +1,67 @@
 <template name="userprofile">
   {{#with currentUser}}
-  {{#if isInRole 'admin'}}
-  <p class="lead">ID:
-    {{_id}}</p>
-  {{/if}}
-  <dl class="row">
-    {{#each emails}}
-      <dt class="col-4">Email</dt>
-      <dd class="col-8">{{address}}
-        {{#if emailVerified}}
-          <i class="fa fa-check text-success" aria-hidden="true"></i>
-        {{/if}}
-      </dd>
-
-    {{/each}}
-    <dt class="col-4">Password</dt>
-    <dd class="col-8">{{> changePwd}}</dd>
-  </dl>
     {{#if isInRole 'admin'}}
-    <p class="lead">Roles:
-      {{#each roles}}
-        <span class="badge badge-info">{{firstCapital this}}</span>
-      {{/each}}
-    </p>
+      <p class="lead">ID:
+        {{_id}}</p>
     {{/if}}
-    {{#if isInRole 'truck'}}
-    {{#if isInRole 'verified-truck'}}
-      <p class="lead">
-        Your truck details are verified.
+    <dl class="row">
+      {{#if emails}}
+        {{#each emails}}
+          <dt class="col-4">Email</dt>
+          <dd class="col-8">{{address}}
+            {{#if emailVerified}}
+              <i class="fa fa-check text-success" aria-hidden="true"></i>
+            {{/if}}
+          </dd>
+        {{/each}}
+        <dt class="col-4">Password</dt>
+        <dd class="col-8">{{> changePwd}}</dd>
+        {{#each phones}}
+          <dt class="col-4">{{phoneNum number}}</dt>
+          <dd class="col-8">
+            <button type="button" class="btn btn-danger deletePhone btn-sm">Delete</button>
+          </dd>
+        {{/each}}
+      {{else}}
+        <dt class="col-4">Phone</dt>
+        <dd class="col-8">{{phoneNum username}}</dd>
+      {{/if}}
+    </dl>
+    {{#if isInRole 'admin'}}
+      <p class="lead">Roles:
+        {{#each roles}}
+          <span class="badge badge-info">{{firstCapital this}}</span>
+        {{/each}}
       </p>
     {{/if}}
-
+    {{#if addError}}
+      <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong>
+        {{addError}}.
+      </div>
     {{/if}}
 
+    <form class="addPhone">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Add Mobile Number</label>
+        <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
+      </div>
+      {{#if otpSent}}
+      <div class="form-group">
+        <label for="exampleInputPassword1">One Time Password (OTP)</label>
+        <input type="number" name="otp" class="form-control" id="exampleInputPassword1" placeholder="OTP" min="1000" max="9999" required="required">
+      </div>
+      <button type="submit" class="btn btn-success btn-sm">Add Phone</button>
+        {{else}}
+        <button type="submit" class="btn btn-info btn-sm">Send OTP</button>
+      {{/if}}
+    </form>
+    {{#if isInRole 'truck'}}
+      {{#if isInRole 'verified-truck'}}
+        <p class="lead">
+          Your truck details are verified.
+        </p>
+      {{/if}}
+    {{/if}}
   {{/with}}
 </template>

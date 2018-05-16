@@ -9,7 +9,9 @@ const options = {
   fields: {
     emails: 1,
     roles: 1,
-    createdAt: 1
+    createdAt: 1,
+    username:1,
+    phones:1
   },
   limit: 50
 };
@@ -17,6 +19,10 @@ Meteor.publish("user.byids", function(ids){
   check(ids, [String]);
   return Meteor.users.find({_id:{$in:ids}},options);
 });
+Meteor.publish("user.self", function(){
+  return Meteor.users.find({_id:this.userId},options);
+});
+
 
 Meteor.publish("user.one", function(id){
   check(id, String);

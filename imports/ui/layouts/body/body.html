@@ -1,9 +1,9 @@
 <template name="App_body">
   {{> Template.dynamic template=nav}}
   <div class="container">
+   {{> Template.dynamic template=main}}
+    <!-- {{#if currentUser}}
 
-    {{#if currentUser}}
-    {{> Template.dynamic template=main}}
 
     {{else}}
     <div class="row">
@@ -11,7 +11,7 @@
       <div class="col-sm-6">{{> atForm}}</div>
       <div class="col-sm-3"></div>
     </div>
-    {{/if}}
+    {{/if}} -->
   </div>
   {{> Template.dynamic template=footer}}
 </template>
