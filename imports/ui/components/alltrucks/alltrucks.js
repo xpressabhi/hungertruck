@@ -331,28 +331,26 @@ Template.alltrucks.onCreated(function() {
             }
             content += `<div class="card-body">
               <h4 class="card-title">${truck.name}</h4>
-              <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i> <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
-              <dl class="row font-weight-light small mx-0" style="width:100%">`;
+              <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i>
+              <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
+              <dl class="row font-weight-light small mx-0 w-100">`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class="col-8 pl-0"><i class="fas fa-utensils"></i> : ${i.name}</dt>
                 <dd class="col-4 text-right pr-0"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
             });
             content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
-              <hr><em>https://hungertruck.in</em>
-            </div>
-          </div>`;
+              <hr><em>https://hungertruck.in</em></div></div>`;
             infowindow = new SnazzyInfoWindow({
               marker: marker,
               content: content,
               closeWhenOthersOpen: true,
-              maxWidth:300,
-              maxHeight:400,
               edgeOffset: {
                 top: 20,
                 right: 20,
-                bottom: 100,
+                bottom: 20,
                 left: 20
               },
+              panOnOpen:true,
               border: false,
               callbacks: {
                 beforeOpen: function() {
