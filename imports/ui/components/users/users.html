@@ -5,7 +5,7 @@
   <hr>
   {{#each users}}
     <div class="card my-1 shadow-lg">
-      <div class="card-header" data-toggle="collapse" data-target="#collapse-{{_id}}">
+      <div class="card-header setSelectedId" data-toggle="collapse" data-target="#collapse-{{_id}}">
         <i class="fas fa-chevron-down float-right" aria-hidden="true"></i>
         <i class="fas fa-user"></i>
         {{useremail}}{{this.username}}
@@ -27,15 +27,34 @@
           </div>
           <hr>
           {{#each phones}}
-            {{number}} <button type="button" class="btn btn-danger deletePhone">Delete</button><br>
+            {{number}}
+            <button type="button" class="btn btn-danger btn-sm py-0 deletePhone">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button><br>
           {{/each}}
-          <form class="addPhone">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Mobile Number</label>
-              <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Phone</button>
-          </form>
+          {{#if addPhone}}
+            {{#if userSelected}}
+              {{#if addPhoneError}}
+                <div class="alert alert-danger small my-2" role="alert">
+                  <strong>Oh snap!</strong>
+                  {{addPhoneError}}
+                </div>
+              {{/if}}
+
+              <form class="addPhone">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Mobile Number</label>
+                  <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Phone</button>
+                <button type="button" class="btn btn-secondary cancelAddPhone">Cancel</button>
+              </form>
+            {{/if}}
+
+          {{else}}
+            <button type="button" class="btn btn-primary btn-sm my-2 addPhoneNumber">Add Mobile Number</button>
+          {{/if}}
+
         </div>
       </div>
     </div>

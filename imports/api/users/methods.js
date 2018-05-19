@@ -48,19 +48,28 @@ Meteor.methods({
     sendOtpViaSms(to, otp);
     Accounts.setPhoneOtp(to, otp);
   },
-  'user.addPhone'(id, phone){
+  'user.addPhone' (id, phone) {
     check(id, String);
     check(phone, String);
-    Accounts.addPhone(id,phone,true);
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      Accounts.addPhone(id, phone, true);
+    }
   },
-  'user.deletePhoneByUser'(phone){
+  'user.deletePhone' (id,phone) {
     check(phone, String);
-    Accounts.removePhone(this.userId,phone);
+    check(id, String);
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      Accounts.removePhone(id, phone);
+    }
   },
-  'user.addPhoneByUser'(phone,otp){
+  'user.deletePhoneByUser' (phone) {
+    check(phone, String);
+    Accounts.removePhone(this.userId, phone);
+  },
+  'user.addPhoneByUser' (phone, otp) {
     check(phone, String);
     check(otp, String);
-    phone = Accounts.verifyPhoneOtp(phone,otp);
-    Accounts.addPhone(this.userId,phone,true);
+    phone = Accounts.verifyPhoneOtp(phone, otp);
+    Accounts.addPhone(this.userId, phone, true);
   }
 });

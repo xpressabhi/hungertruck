@@ -5,11 +5,13 @@ import R from 'ramda';
 
 Template.users.onCreated(function() {
   // counter starts at 0
-  const self = this;
-  self.searchQuery = new ReactiveVar('');
-  self.searching = new ReactiveVar(false);
-  self.autorun(() => {
-    self.subscribe("users.search", self.searchQuery.get(), () => {
+  this.searchQuery = new ReactiveVar('');
+  this.searching = new ReactiveVar(false);
+  this.selectedId = new ReactiveVar();
+  this.addPhoneError = new ReactiveVar();
+  this.addPhone = new ReactiveVar(false);
+  this.autorun(() => {
+    this.subscribe("users.search", this.searchQuery.get(), () => {
       setTimeout(() => {
         this.searching.set(false);
       }, 300);
@@ -19,8 +21,17 @@ Template.users.onCreated(function() {
 });
 
 Template.users.helpers({
-  panelClass() {
-    return 'panel-primary';
+  selectedId(){
+    return Template.instance().selectedId.get();
+  },
+  userSelected(){
+    return Template.instance().selectedId.get() === this._id;
+  },
+  addPhone() {
+    return Template.instance().addPhone.get();
+  },
+  addPhoneError() {
+    return Template.instance().addPhoneError.get();
   },
   users() {
     return Meteor.users.find({}, {
@@ -41,6 +52,10 @@ Template.users.helpers({
 });
 
 Template.users.events({
+  'click .addPhoneNumber' (event, templateInstance) {
+    templateInstance.selectedId.set(this._id);
+    templateInstance.addPhone.set(true);
+  },
   'click .deleteUser' (event, templateInstance) {
     Meteor.call('users.remove', this._id, (e, r) => {
       if (e)
@@ -68,14 +83,32 @@ Template.users.events({
   'click .setDefaultPass' (event, templateInstance) {
     Meteor.call('user.setDefaultPass', this._id, () => {});
   },
-  'submit .addPhone'(event, templateInstance) {
+  'submit .addPhone' (event, templateInstance) {
     event.preventDefault();
     let phone = event.target.phone.value;
-    Meteor.call('user.addPhone', this._id, phone, () => {});
+    Meteor.call('user.addPhone', this._id, phone, (err, res) => {
+      console.log(err);
+      err && templateInstance.addPhoneError.set(err);
+      if(!err){
+        templateInstance.addPhoneError.set();
+        templateInstance.selectedId.set();
+        templateInstance.addPhone.set(false);
+      }
+    });
   },
-  'click .deletePhone'(event, templateInstance) {
-    console.log(this);
-    console.log(templateInstance);
+  'click .deletePhone' (event, templateInstance) {
+    let userId = Template.instance().selectedId.get();
+    if (userId) {
+      Meteor.call('user.deletePhone', userId, this.number, (err, res) => {
+        err && console.log(err);
+        }
+      );
+    }
+  },
+  'click .cancelAddPhone'(event, templateInstance) {
+    templateInstance.addPhoneError.set();
+    templateInstance.selectedId.set();
+    templateInstance.addPhone.set(false);
   }
 
 });

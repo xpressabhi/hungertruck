@@ -357,6 +357,7 @@ Template.alltrucks.onCreated(function() {
                   $('.imageSlider').addClass('imageSliderDisplay');
                   self.selectedUserId.set(this._marker.userId);
                   self.showControl.set(false);
+                  self.hasClass.set(true);
                   return true;
                 },
                 afterClose: function() {
@@ -364,6 +365,7 @@ Template.alltrucks.onCreated(function() {
                   map.instance.setCenter(this._marker.getPosition());
                   self.selectedUserId.set(null);
                   self.showControl.set(true);
+                  self.hasClass.set(false);
                 }
               }
             });
