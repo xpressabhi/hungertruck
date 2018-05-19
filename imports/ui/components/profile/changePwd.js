@@ -1,6 +1,6 @@
 import './changePwd.html';
 
-Template.changePwd.onCreated(function () {
+Template.changePwd.onCreated(function() {
   this.changePwdMsg = new ReactiveVar('');
   this.successPwdMsg = new ReactiveVar('');
 });
@@ -25,13 +25,15 @@ Template.changePwd.events({
       templateInstance.changePwdMsg.set('New passwords are not same.');
       return;
     }
-    Accounts.changePassword(oldPwd, newPwd, function (error) {
+    Accounts.changePassword(oldPwd, newPwd, function(error) {
       if (error) {
         console.log(error);
-        if (error.error === 403)
+        if (error.error === 403) 
           templateInstance.changePwdMsg.set(error.reason);
-        else templateInstance.changePwdMsg.set('Error while changing password.');
-      } else {
+        else 
+          templateInstance.changePwdMsg.set('Error while changing password.');
+        }
+      else {
         templateInstance.successPwdMsg.set('Password changed.');
       }
     });

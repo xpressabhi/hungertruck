@@ -292,8 +292,8 @@ Template.alltrucks.onCreated(function() {
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-      //  console.log('markers count ', markers.length);
-      //  console.log('infowindows count ', infowindows.length);
+        //  console.log('markers count ', markers.length);
+        //  console.log('infowindows count ', infowindows.length);
         if (markers) {
           for (i in markers) {
             const locExist = Locations.findOne({_id: markers[i].id, state: true});
@@ -302,7 +302,7 @@ Template.alltrucks.onCreated(function() {
             }
           }
         let locIds = markers.map(p => p.id);
-    //    console.log(locIds);
+        //    console.log(locIds);
         Locations.find({
           _id: {
             $nin: locIds
@@ -327,12 +327,12 @@ Template.alltrucks.onCreated(function() {
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
             let content = `<div class="card border-0">`;
             if (img) {
-              content += `<img class="card-img-top" src="${img.url()}" alt="Card image cap">`;
+              content += `<img class="card-img-top" src="${img.url()}" alt="Truck Pic">`;
             }
             content += `<div class="card-body">
-              <h4 class="card-title">${truck.name}</h4>
-              <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-phone-square"></i>
-              <a href="tel:${truck.mobile}">${truck.mobile}</a></h6>
+              <h4 class="card-title text-info">${truck.name}</h4>
+              <h6 class="card-subtitle mb-1 text-muted"><i class="fas fa-phone-square"></i>
+              <a href="tel:${truck.mobile}" class="text-secondary">${truck.mobile}</a></h6>
               <dl class="row font-weight-light small mx-0 w-100">`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class="col-8 pl-0"><i class="fas fa-utensils"></i> : ${i.name}</dt>
@@ -345,12 +345,12 @@ Template.alltrucks.onCreated(function() {
               content: content,
               closeWhenOthersOpen: true,
               edgeOffset: {
-                top: 20,
+                top: 60,
                 right: 20,
-                bottom: 20,
+                bottom: 100,
                 left: 20
               },
-              panOnOpen:true,
+              maxHeight:500,
               border: false,
               callbacks: {
                 beforeOpen: function() {
@@ -421,12 +421,12 @@ Template.alltrucks.helpers({
   },
   showControl() {
     var MobileDetect = require('mobile-detect'),
-    md = new MobileDetect(window.navigator.userAgent);
-    //console.log(md.mobile());
+      md = new MobileDetect(window.navigator.userAgent);
+  //  console.log(md.mobile());
     if (md.mobile()) {
       return Template.instance().showControl.get();
-    }else {
-     return true;
+    } else {
+      return true;
     }
 
   },
@@ -439,6 +439,14 @@ Template.alltrucks.helpers({
       return Images.find({owner: selectedUserId});
     } else {
       return Images.find({'metadata.verified': true});
+    }
+  },
+  imagesExist() {
+    const selectedUserId = Template.instance().selectedUserId.get();
+    if (selectedUserId) {
+      return Images.find({owner: selectedUserId}).count() > 0;
+    } else {
+      return Images.find({'metadata.verified': true}).count() > 0;
     }
   },
   isOnline() {

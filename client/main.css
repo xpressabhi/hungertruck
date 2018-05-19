@@ -52,15 +52,16 @@
   z-index: 200;
   left:0px;
   bottom: 0px;
-  /* background-color: #fff; */
-
+  background-color: #fff;
+  box-shadow: 2px 2px 4px #bbb;
+  border-top-right-radius: 4px;
 }
 .imageSliderDisplay{
-  -webkit-transform: translate(0, 70%);
-  transform: translate(0, 70%);
-  -webkit-transition: all .5s ease;
-   -moz-transition: all .5s ease;
-   transition: all .5s ease;
+  -webkit-transform: translate(0, 80%);
+  transform: translate(0, 80%);
+  -webkit-transition: all .1s ease;
+   -moz-transition: all .1s ease;
+   transition: all .1s ease;
 }
 .cover-container {
     height: 160px;
@@ -72,7 +73,6 @@
 }
 .cover-item {
     position: relative;
-    opacity: 0.9;
     display: inline-block;
     margin: 0;
     box-shadow: 2px 2px 4px #bbb;
