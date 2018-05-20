@@ -20,13 +20,20 @@ const canDisplay = (sch) => {
   let dtEnd = new Date();
   let startSplit = sch.start.split(' ');
   let endSplit = sch.end.split(' ');
-  dtStart.setHours(startSplit[2]==='PM'? Number(startSplit[0])+12:startSplit[0]);
+  dtStart.setHours(
+    startSplit[2] === 'PM'
+    ? Number(startSplit[0]) + 12
+    : startSplit[0]);
   dtStart.setMinutes(startSplit[1]);
   dtStart.setSeconds(0);
-  dtEnd.setHours(endSplit[2]==='PM'? Number(endSplit[0])+12:endSplit[0]);
+  dtEnd.setHours(
+    endSplit[2] === 'PM'
+    ? Number(endSplit[0]) + 12
+    : endSplit[0]);
   dtEnd.setMinutes(sch.end.split(' ')[1]);
   dtEnd.setSeconds(0);
-  if(endSplit[2]==='AM' && Number(endSplit[0])<6) dtEnd.setDate(dtEnd.getDate() + 1);
+  if (endSplit[2] === 'AM' && Number(endSplit[0]) < 6)
+    dtEnd.setDate(dtEnd.getDate() + 1);
   return dt > dtStart && dt < dtEnd;
 }
 const expandViewportToFitPlace = function(map, place) {
@@ -348,14 +355,17 @@ Template.alltrucks.onCreated(function() {
           },
           lastLocation: true
         }).forEach((p) => {
-          var truck = Trucks.findOne({userId: p.userId});
+
           let canShowTruck = false;
+          let schText='';
           Schedules.find({userId: p.userId}).map((sch) => {
-            if(!canShowTruck){
-              canShowTruck= canDisplay(sch);
+            if (!canShowTruck) {
+              canShowTruck = canDisplay(sch);
             }
-          })
-          if (truck && canShowTruck) {
+          });
+          var truck = Trucks.findOne({userId: p.userId});
+          if (truck) {
+            console.log(schText);
             var marker = new google.maps.Marker({
               title: truck.name,
               //  animation: google.maps.Animation.DROP,
@@ -373,7 +383,12 @@ Template.alltrucks.onCreated(function() {
               userId: p.userId,
               state: p.state
             });
-
+            let truckStatus;
+            if (canShowTruck) {
+              truckStatus = 'Open, you can visit.';
+            } else {
+              truckStatus = 'Closed, opening soon.';
+            }
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
             let content = `<div class="card border-0">`;
             if (img) {
@@ -383,7 +398,8 @@ Template.alltrucks.onCreated(function() {
               <h4 class="card-title text-info">${truck.name}</h4>
               <h6 class="card-subtitle mb-1 text-muted"><i class="fas fa-phone-square"></i>
               <a href="tel:${truck.mobile}" class="text-secondary">${truck.mobile}</a></h6>
-              <dl class="row font-weight-light small mx-0 w-100">`;
+              <h6 class="card-subtitle mb-1 text-muted"><i class="fas fa-clock"></i>
+              ${truckStatus} ${schText} </h6><dl class="row font-weight-light small mx-0 w-100">`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class="col-8 pl-0"><i class="fas fa-utensils"></i> : ${i.name}</dt>
                 <dd class="col-4 text-right pr-0"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
