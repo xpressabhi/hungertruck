@@ -59,9 +59,9 @@
 .imageSliderDisplay{
   -webkit-transform: translate(0, 80%);
   transform: translate(0, 80%);
-  -webkit-transition: all .1s ease;
-   -moz-transition: all .1s ease;
-   transition: all .1s ease;
+  -webkit-transition: all .5s ease;
+   -moz-transition: all .5s ease;
+   transition: all .5s ease;
 }
 .cover-container {
     height: 160px;
