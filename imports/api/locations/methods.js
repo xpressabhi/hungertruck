@@ -10,7 +10,8 @@ Meteor.methods({
     check(lng, Number);
     check(state, Boolean);
     if (this.userId) {
-         Locations.update({userId:this.userId,state:true},{$set:{state:false}},{multi:true});
+        Locations.update({userId:this.userId,state:true},{$set:{state:false}},{multi:true});
+        Locations.update({userId:this.userId,lastLocation:true},{$set:{lastLocation:false}},{multi:true});
         return Locations.insert({lat,lng,state});
     }
     return;

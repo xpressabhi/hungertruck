@@ -1,17 +1,34 @@
 import './alltrucks.html';
 import {Locations} from '/imports/api/locations/locations.js';
 import {Trucks} from '/imports/api/trucks/trucks.js';
+import {Schedules} from '/imports/api/schedules/schedules.js';
 import {Items} from '/imports/api/items/items.js';
 import {Images} from '/imports/api/images/images.js';
 const ZOOM = 14;
 let directionsService;
 let directionsDisplay;
 let markersArray;
+
 const setCountry = function(loc) {
   let country = ['in'];
   loc.setComponentRestrictions({'country': country});
 }
 
+const canDisplay = (sch) => {
+  let dt = new Date();
+  let dtStart = new Date();
+  let dtEnd = new Date();
+  let startSplit = sch.start.split(' ');
+  let endSplit = sch.end.split(' ');
+  dtStart.setHours(startSplit[2]==='PM'? Number(startSplit[0])+12:startSplit[0]);
+  dtStart.setMinutes(startSplit[1]);
+  dtStart.setSeconds(0);
+  dtEnd.setHours(endSplit[2]==='PM'? Number(endSplit[0])+12:endSplit[0]);
+  dtEnd.setMinutes(sch.end.split(' ')[1]);
+  dtEnd.setSeconds(0);
+  if(endSplit[2]==='AM' && Number(endSplit[0])<6) dtEnd.setDate(dtEnd.getDate() + 1);
+  return dt > dtStart && dt < dtEnd;
+}
 const expandViewportToFitPlace = function(map, place) {
   if (place.geometry.viewport) {
     map.fitBounds(place.geometry.viewport);
@@ -61,6 +78,7 @@ Template.alltrucks.onCreated(function() {
       userIds.push(l.userId);
     });
     this.subscribe('trucks.all', userIds);
+    this.subscribe('schedules.all', userIds);
     this.subscribe('items.all', userIds);
     this.subscribe('allImagesByTypeForAll', 'Truck', userIds);
     this.subscribe('allImagesByTypeForAll', 'Menu', userIds);
@@ -75,7 +93,7 @@ Template.alltrucks.onCreated(function() {
   this.showControl = new ReactiveVar(true);
   var self = this;
   var markers = [];
-  var infowindows = [];
+  //  var infowindows = [];
 
   GoogleMaps.ready('map', function(map) {
     const SnazzyInfoWindow = require('snazzy-info-window');
@@ -280,6 +298,15 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
+    var truckImageOn = {
+      url: 'food-truck-on.png',
+      size: new google.maps.Size(30, 30),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(30, 30),
+      setMyLocationEnabled: true
+    };
+
     var myTruck = {
       url: 'my_truck.png',
       size: new google.maps.Size(35, 35),
@@ -288,40 +315,63 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
+    var myTruckOn = {
+      url: 'my_truck_on.png',
+      size: new google.maps.Size(35, 35),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(35, 35),
+      setMyLocationEnabled: true
+    };
+
     let infowindow;
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-        //  console.log('markers count ', markers.length);
-        //  console.log('infowindows count ', infowindows.length);
+        //console.log('markers count ', markers.length);
+        let tempMarkers = [];
         if (markers) {
           for (i in markers) {
-            const locExist = Locations.findOne({_id: markers[i].id, state: true});
-            if (!locExist)
+            const locExist = Locations.findOne({_id: markers[i].id, lastLocation: true});
+            if (!locExist || locExist.state != markers[i].state)
               markers[i].setMap(null);
+            else
+              tempMarkers.push(markers[i]);
             }
           }
+        markers = tempMarkers;
         let locIds = markers.map(p => p.id);
-        //    console.log(locIds);
+        //console.log(locIds);
         Locations.find({
           _id: {
             $nin: locIds
           },
-          state: true
+          lastLocation: true
         }).forEach((p) => {
           var truck = Trucks.findOne({userId: p.userId});
-          if (truck) {
+          let canShowTruck = false;
+          Schedules.find({userId: p.userId}).map((sch) => {
+            if(!canShowTruck){
+              canShowTruck= canDisplay(sch);
+            }
+          })
+          if (truck && canShowTruck) {
             var marker = new google.maps.Marker({
               title: truck.name,
               //  animation: google.maps.Animation.DROP,
               draggable: p.userId === Meteor.userId(),
               icon: p.userId === Meteor.userId()
-                ? myTruck
-                : truckImage,
+                ? p.state
+                  ? myTruckOn
+                  : myTruck
+                : p.state
+                  ? truckImageOn
+                  : truckImage,
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
               id: p._id,
-              userId: p.userId
+              userId: p.userId,
+              state: p.state
             });
 
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
@@ -350,7 +400,7 @@ Template.alltrucks.onCreated(function() {
                 bottom: 100,
                 left: 20
               },
-              maxHeight:500,
+              maxHeight: 500,
               border: false,
               callbacks: {
                 beforeOpen: function() {
@@ -369,7 +419,7 @@ Template.alltrucks.onCreated(function() {
                 }
               }
             });
-            infowindows.push(infowindow);
+            //    infowindows.push(infowindow);
             marker.addListener('dragend', function(event) {
               Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
             });
@@ -424,7 +474,7 @@ Template.alltrucks.helpers({
   showControl() {
     var MobileDetect = require('mobile-detect'),
       md = new MobileDetect(window.navigator.userAgent);
-  //  console.log(md.mobile());
+    //  console.log(md.mobile());
     if (md.mobile()) {
       return Template.instance().showControl.get();
     } else {

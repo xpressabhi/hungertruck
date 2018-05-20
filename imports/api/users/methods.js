@@ -6,10 +6,10 @@ var msg91 = require("msg91")(Meteor.settings.msg91, "HNGRTK", "4");
 function sendOtpViaSms(phone, otp) {
   const msg = `Your verification code is ${otp} ,  https://hungertruck.in`;
   console.log(msg);
-  msg91.send(phone, msg, function(err, response) {
-    console.log(err);
-    console.log(response);
-  });
+  // msg91.send(phone, msg, function(err, response) {
+  //   console.log(err);
+  //   console.log(response);
+  // });
 }
 Meteor.methods({
   "users.remove": function(id) {

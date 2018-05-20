@@ -14,6 +14,10 @@ Locations.schema = new SimpleSchema({
     type : Boolean,
     defaultValue:false
   },
+  lastLocation:{
+    type : Boolean,
+    defaultValue:true
+  },
   createdAt: {
     type: Date,
     autoValue: function() {

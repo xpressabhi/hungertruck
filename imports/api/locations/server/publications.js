@@ -8,5 +8,5 @@ Meteor.publish("locations.user", function(){
 });
 
 Meteor.publish("locations.online", function(){
-  return Locations.find({state:true});
+  return Locations.find({lastLocation:true});
 });
