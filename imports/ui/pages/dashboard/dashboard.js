@@ -10,7 +10,7 @@ Template.dashboard.helpers({
 });
 
 Template.dashboard.events({
-  "event": function(event, templateInstance){
-
+  "click .setLastLocation"(event, templateInstance){
+Meteor.call('locations.updatelastLocation');
   }
 });

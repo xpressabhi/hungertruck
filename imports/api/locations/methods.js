@@ -34,5 +34,14 @@ Meteor.methods({
     if (this.userId) {
       return Locations.update({userId:this.userId,state:true},{$set:{lat,lng}});
     }
+  },
+  "locations.updatelastLocation"(){
+    Meteor.users.find().map((u) => {
+      console.log('processing for ',u._id);
+      Locations.update({userId:u._id},{$set:{lastLocation:false}},{multi:true});
+      Locations.find({userId:u._id},{sort:{createdAt:-1},limit:1}).map((l) => {
+        Locations.update({_id:l._id},{$set:{lastLocation:true}});
+      });
+    });
   }
 });
