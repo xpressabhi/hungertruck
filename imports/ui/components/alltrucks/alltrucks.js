@@ -4,6 +4,7 @@ import {Trucks} from '/imports/api/trucks/trucks.js';
 import {Schedules} from '/imports/api/schedules/schedules.js';
 import {Items} from '/imports/api/items/items.js';
 import {Images} from '/imports/api/images/images.js';
+import {getDay, getStyledMapType} from '/imports/ui/helpers/methods.js';
 const ZOOM = 14;
 let directionsService;
 let directionsDisplay;
@@ -14,29 +15,27 @@ const setCountry = function(loc) {
   loc.setComponentRestrictions({'country': country});
 }
 
-const canDisplay = (sch) => {
-  let dt = new Date();
-  let dtStart = new Date();
-  let dtEnd = new Date();
-  const [startHours, startMins, startApm] = sch.start.split(' ');
-  const [endHours, endMins, endApm] = sch.end.split(' ');
-  dtStart.setHours(
-    startApm === 'PM'
-    ? Number(startHours) + 12
-    : startHours);
-  dtStart.setMinutes(startMins);
-  dtStart.setSeconds(0);
-  dtEnd.setHours(
-    endApm === 'PM'
-    ? Number(endHours) + 12
-    : endHours);
-  dtEnd.setMinutes(endMins);
-  dtEnd.setSeconds(0);
-  if (endApm === 'AM' && Number(endHours) < 6)
-    dtEnd.setDate(dtEnd.getDate() + 1);
-
-  console.log(sch, dt, dtStart, dtEnd);
-  return dt > dtStart && dt < dtEnd;
+const canDisplay = ({start, end, days}) => {
+  const dt = new Date();
+  if (days.indexOf(getDay(dt.getDay())) > 0) {
+    let dtStart = new Date();
+    let dtEnd = new Date();
+    let [startHours, startMins, startApm] = start.split(' ');
+    startHours = startApm === 'PM'
+      ? Number(startHours) + 12
+      : startHours;
+    dtStart.setHours(startHours, startMins, 0);
+    let [endHours, endMins, endApm] = end.split(' ');
+    endHours = endApm === 'PM'
+      ? Number(endHours) + 12
+      : endHours
+    dtEnd.setHours(endHours, endMins, 0);
+    if (endApm === 'AM' && Number(endHours) < 6)
+      dtEnd.setDate(dtEnd.getDate() + 1);
+    console.log(days, dt, dtStart, dtEnd);
+    return dt > dtStart && dt < dtEnd;
+  }
+  return false;
 }
 const expandViewportToFitPlace = function(map, place) {
   if (place.geometry.viewport) {
@@ -100,111 +99,18 @@ Template.alltrucks.onCreated(function() {
   this.hasClass = new ReactiveVar(false);
   this.selectedUserId = new ReactiveVar();
   this.showControl = new ReactiveVar(true);
-  var self = this;
-  var markers = [];
-  //  var infowindows = [];
+
+  const self = this;
+  let markers = [];
 
   GoogleMaps.ready('map', function(map) {
     const SnazzyInfoWindow = require('snazzy-info-window');
-    var styledMapType = new google.maps.StyledMapType([
-      {
-        "featureType": "administrative",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "administrative.locality",
-        "elementType": "labels.text",
-        "stylers": [
-          {
-            "visibility": "on"
-          }, {
-            "weight": "0.01"
-          }
-        ]
-      }, {
-        "featureType": "administrative.locality",
-        "elementType": "labels.text.stroke",
-        "stylers": [
-          {
-            "visibility": "off"
-          }, {
-            "hue": "#ff0000"
-          }, {
-            "invert_lightness": true
-          }
-        ]
-      }, {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [
-          {
-            "color": "#f2f2f2"
-          }
-        ]
-      }, {
-        "featureType": "poi.business",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      }, {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-          {
-            "saturation": -100
-          }, {
-            "lightness": 45
-          }
-        ]
-      }, {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "simplified"
-          }
-        ]
-      }, {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      }, {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-          {
-            "color": "#46bcec"
-          }, {
-            "visibility": "on"
-          }
-        ]
-      }
-    ], {name: 'Styled Map'});
+    const styledMapType = getStyledMapType();
     let usermarker;
     const image = {
       url: 'large.png'
     };
-    var truckImage = {
+    const truckImage = {
       url: 'food-truck.png',
       size: new google.maps.Size(35, 35),
       origin: new google.maps.Point(0, 0),
@@ -212,7 +118,7 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
-    var truckImageOn = {
+    const truckImageOn = {
       url: 'food-truck-on.png',
       size: new google.maps.Size(30, 30),
       origin: new google.maps.Point(0, 0),
@@ -221,7 +127,7 @@ Template.alltrucks.onCreated(function() {
       setMyLocationEnabled: true
     };
 
-    var myTruck = {
+    const myTruck = {
       url: 'my_truck.png',
       size: new google.maps.Size(35, 35),
       origin: new google.maps.Point(0, 0),
@@ -229,7 +135,7 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
-    var myTruckOn = {
+    const myTruckOn = {
       url: 'my_truck_on.png',
       size: new google.maps.Size(35, 35),
       origin: new google.maps.Point(0, 0),
@@ -237,24 +143,21 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
-
-
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
         console.log('markers count ', markers.length);
         let tempMarkers = [];
-        if (markers) {
-          for (i in markers) {
-            const locExist = Locations.findOne({_id: markers[i].id, lastLocation: true});
-            if (!locExist || locExist.state != markers[i].state)
-              markers[i].setMap(null);
-            else
-              tempMarkers.push(markers[i]);
-            }
+        markers.forEach((marker) => {
+          const locExist = Locations.findOne({_id: marker.id, lastLocation: true});
+          if (!locExist || locExist.state !== marker.state)
+            marker.setMap(null);
+          else
+            tempMarkers.push(marker);
           }
+        );
         markers = [...tempMarkers];
-        let locIds = markers.map(p => p.id);
+        const locIds = markers.map(p => p.id);
         //console.log(locIds);
         Locations.find({
           _id: {
@@ -270,10 +173,10 @@ Template.alltrucks.onCreated(function() {
               canShowTruck = canDisplay(sch);
             }
           });
-          var truck = Trucks.findOne({userId: p.userId});
+          const truck = Trucks.findOne({userId: p.userId});
           if (truck) {
             console.log(schText);
-            var marker = new google.maps.Marker({
+            const marker = new google.maps.Marker({
               title: truck.name,
               //  animation: google.maps.Animation.DROP,
               draggable: p.userId === Meteor.userId(),
@@ -297,21 +200,21 @@ Template.alltrucks.onCreated(function() {
               truckStatus = 'Closed, opening soon.';
             }
             const img = Images.findOne({owner: p.userId, imageOf: 'Truck'});
-            let content = `<div class="card border-0">`;
+            let content = `<div class='card border-0'>`;
             if (img) {
-              content += `<img class="card-img-top" src="${img.url()}" alt="Truck Pic">`;
+              content += `<img class='card-img-top' src='${img.url()}' alt='Truck Pic'>`;
             }
-            content += `<div class="card-body">
-              <h4 class="card-title text-info">${truck.name}</h4>
-              <h6 class="card-subtitle mb-1 text-muted"><i class="fas fa-phone-square"></i>
-              <a href="tel:${truck.mobile}" class="text-secondary">${truck.mobile}</a></h6>
-              <h6 class="card-subtitle mb-1 text-muted"><i class="fas fa-clock"></i>
-              ${truckStatus} ${schText} </h6><dl class="row font-weight-light small mx-0 w-100">`;
+            content += `<div class='card-body'>
+              <h4 class='card-title text-info'>${truck.name}</h4>
+              <h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-phone-square'></i>
+              <a href='tel:${truck.mobile}' class='text-secondary'>${truck.mobile}</a></h6>
+              <h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
+              ${truckStatus} ${schText} </h6><dl class='row font-weight-light small mx-0 w-100'>`;
             Items.find({userId: p.userId}).map((i) => {
-              content += `<dt class="col-8 pl-0"><i class="fas fa-utensils"></i> : ${i.name}</dt>
-                <dd class="col-4 text-right pr-0"><i class="fas fa-rupee-sign"></i> ${i.rate}.00</dd>`;
+              content += `<dt class='col-8 pl-0'><i class='fas fa-utensils'></i> : ${i.name}</dt>
+                <dd class='col-4 text-right pr-0'><i class='fas fa-rupee-sign'></i> ${i.rate}.00</dd>`;
             });
-            content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
+            content += `</dl><p class='card-text'>Enjoy delicious food on the way.</p>
               <hr><em>https://hungertruck.in</em></div></div>`;
             let infowindow = new SnazzyInfoWindow({
               marker: marker,
@@ -395,7 +298,7 @@ Template.alltrucks.helpers({
     return Template.instance().hasClass.get();
   },
   showControl() {
-    var MobileDetect = require('mobile-detect'),
+    const MobileDetect = require('mobile-detect'),
       md = new MobileDetect(window.navigator.userAgent);
     //  console.log(md.mobile());
     if (md.mobile()) {
@@ -469,7 +372,7 @@ Template.alltrucks.events({
   'click .setCenteredMap' (event, templateInstance) {
     templateInstance.resetMap.set(true);
   },
-  "click .goOnline" (event, templateInstance) {
+  'click .goOnline' (event, templateInstance) {
     const latLng = templateInstance.latlng.get();
     if (latLng) {
       Meteor.call('locations.insert', latLng.lat, latLng.lng, true, () => {});
@@ -480,7 +383,7 @@ Template.alltrucks.events({
   'click .goOffline' (event, templateInstance) {
     Meteor.call('locations.allOffline', () => {})
   },
-  "keyup [name='destination-input']" (event, templateInstance) {
+  'keyup [name="destination-input"]' (event, templateInstance) {
     let value = event.target.value.trim();
     if (GoogleMaps.loaded()) {
       let destination_autocomplete = new google.maps.places.Autocomplete(event.target);
