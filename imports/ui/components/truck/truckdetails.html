@@ -1,32 +1,59 @@
 <template name="truckdetails">
   {{#if editTruckBasic}}
-  <div class="card my-2 shadow-lg">
-    <div class="card-body">
-      <form class="saveTruckBasic">
-        <div class="form-group">
-          <label for="truckName">Truck Name</label>
-          <input type="text" class="form-control" name="truckName" value="{{truck.name}}" id="truckName" aria-describedby="name" minlength="5" maxlenght="100" placeholder="Truck Name" required>
-        </div>
-        <div class="form-group">
-          <label for="mobileNumber">Mobile Number</label>
-          <input type="number" class="form-control" name="mobileNumber" value="{{truck.mobile}}" id="mobileNumber" min="6000000000" max="9999999999" placeholder="Mobile Number" required>
-        </div>
-        <div class="form-group">
-          <label for="address">Address</label>
-          <textarea class="form-control" name="address" id="address" value="{{truck.address}}" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="submit" class="btn btn-secondary cancelEdit">Cancel</button>
-      </form>
-    </div>
-  </div>
-    {{else}}
     <div class="card my-2 shadow-lg">
       <div class="card-body">
-        <button type="button" class="btn btn-success float-right editTruckBasic py-0"><i class="fas fa-pencil-alt"></i></button>
-        <p class="card-text">  <i class="fas fa-truck fa-fw"></i> : {{truck.name}} <br>
-          <i class="fas fa-mobile fa-fw"></i> : {{truck.mobile}} <br>
-          <i class="fas fa-address-card fa-fw"></i> : {{truck.address}} <br>
+        <form class="saveTruckBasic">
+          <div class="form-group">
+            <label for="truckName">Truck Name</label>
+            <input type="text" class="form-control" name="truckName" value="{{truck.name}}" id="truckName" aria-describedby="name" minlength="5" maxlenght="100" placeholder="Truck Name" required="required">
+          </div>
+          <div class="form-group">
+            <label for="mobileNumber">Mobile Number</label>
+            <input type="number" class="form-control" name="mobileNumber" value="{{truck.mobile}}" id="mobileNumber" min="6000000000" max="9999999999" placeholder="Mobile Number" required="required">
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <textarea class="form-control" name="address" id="address" value="{{truck.address}}" rows="3" required="required"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="address">Category</label>
+            <select class="form-control" name="category">
+              <option value="Haleem" selected>Haleem</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-secondary cancelEdit">Cancel</button>
+        </form>
+      </div>
+    </div>
+  {{else}}
+    <div class="card my-2 shadow-lg">
+      <div class="card-body">
+        <button type="button" class="btn btn-success float-right editTruckBasic py-0">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <p class="card-text">
+          <i class="fas fa-truck fa-fw"></i>
+          :
+          {{truck.name}}
+          <br>
+          <i class="fas fa-mobile fa-fw"></i>
+          :
+          {{truck.mobile}}
+          <br>
+          <i class="fas fa-address-card fa-fw"></i>
+          :
+          {{truck.address}}
+          <br>
+          Category :
+          {{#if truck.category}}
+            {{truck.category}}
+          {{else}}
+            Edit to add category
+          {{/if}}
+          <br>
         </p>
       </div>
     </div>

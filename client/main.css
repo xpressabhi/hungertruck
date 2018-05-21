@@ -57,33 +57,35 @@
   border-top-right-radius: 4px;
 }
 .imageSliderDisplay{
-  -webkit-transform: translate(0, 80%);
-  transform: translate(0, 80%);
+  /* -webkit-transform: translate(0, 75%); */
+  /* transform: translate(0, 75%); */
   -webkit-transition: all .5s ease;
    -moz-transition: all .5s ease;
    transition: all .5s ease;
 }
 .cover-container {
-    height: 160px;
+    height: 100px;
     max-width: 100vw;
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
 }
+
 .cover-item {
     position: relative;
     display: inline-block;
     margin: 0;
     box-shadow: 2px 2px 4px #bbb;
     border-top-right-radius: 4px;
-    width: 116px;
+    width: 76px;
     height: 158px;
     vertical-align: bottom;
     background-position:center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .destination-input{
   width:100px !important;
   -webkit-transition: width .5s ease;

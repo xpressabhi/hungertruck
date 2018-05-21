@@ -34,25 +34,26 @@
   {{/if}}
 {{#if imagesExist}}
   <div class="imageSlider">
-    <div class="row">
-      <div class="col mx-1">
-        {{#if hasClass}}
-          <button type="button" class="btn btn-outline-secondary btn-block btn-sm m-1 showHideSlider">
-            <i class="fas fa-angle-double-up"></i><i class="fas fa-angle-double-up"></i><i class="fas fa-angle-double-up"></i> Click to show
-          </button>
-        {{else}}
-          <button type="button" class="btn btn-outline-secondary btn-sm btn-block m-1 showHideSlider">
-            <i class="fas fa-angle-double-down"></i><i class="fas fa-angle-double-down"></i><i class="fas fa-angle-double-down"></i> Click to hide
-          </button>
-        {{/if}}
-      </div>
-    </div>
     <div class="row-fluid ">
       <div class="col px-0">
         <div class="cover-container">
           {{#each images}}
-            <div class="cover-item" style="background-image: url('{{url}}')"></div>
+            <div class="cover-item" style="background-image: url('{{url}}')" data-toggle="modal" data-target="#sliderImage"></div>
+
           {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="sliderImage" tabindex="-1" role="dialog" aria-labelledby="title image" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body mx-auto p-0">
+          <img src="{{selectedImageId.url}}" class="img-fluid" alt="Image">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm goToTruck" data-dismiss="modal"><i class="fas fa-truck"></i> Show Truck</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"> <i class="fas fa-times" aria-hidden="true"></i> </button>
         </div>
       </div>
     </div>

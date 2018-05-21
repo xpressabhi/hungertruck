@@ -20,19 +20,22 @@ const canDisplay = ({start, end, days}) => {
   if (days.indexOf(getDay(dt.getDay())) > 0) {
     let dtStart = new Date();
     let dtEnd = new Date();
+
     let [startHours, startMins, startApm] = start.split(' ');
     startHours = startApm === 'PM'
       ? Number(startHours) + 12
       : startHours;
     dtStart.setHours(startHours, startMins, 0);
+
     let [endHours, endMins, endApm] = end.split(' ');
     endHours = endApm === 'PM'
       ? Number(endHours) + 12
       : endHours
     dtEnd.setHours(endHours, endMins, 0);
+
     if (endApm === 'AM' && Number(endHours) < 6)
       dtEnd.setDate(dtEnd.getDate() + 1);
-    console.log(days, dt, dtStart, dtEnd);
+  //  console.log(days, dt, dtStart, dtEnd);
     return dt > dtStart && dt < dtEnd;
   }
   return false;
@@ -99,6 +102,7 @@ Template.alltrucks.onCreated(function() {
   this.hasClass = new ReactiveVar(false);
   this.selectedUserId = new ReactiveVar();
   this.showControl = new ReactiveVar(true);
+  this.selectedImageId = new ReactiveVar();
 
   const self = this;
   let markers = [];
@@ -143,6 +147,15 @@ Template.alltrucks.onCreated(function() {
       scaledSize: new google.maps.Size(35, 35),
       setMyLocationEnabled: true
     };
+    const haleemTruck = {
+      url: 'haleem.png',
+      size: new google.maps.Size(35, 35),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(35, 35),
+      setMyLocationEnabled: true
+    };
+
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
@@ -174,19 +187,24 @@ Template.alltrucks.onCreated(function() {
             }
           });
           const truck = Trucks.findOne({userId: p.userId});
+          let image;
           if (truck) {
-            console.log(schText);
-            const marker = new google.maps.Marker({
-              title: truck.name,
-              //  animation: google.maps.Animation.DROP,
-              draggable: p.userId === Meteor.userId(),
-              icon: p.userId === Meteor.userId()
+            if (truck.category && truck.category === 'Haleem') {
+              image= haleemTruck;
+            } else {
+              image = p.userId === Meteor.userId()
                 ? p.state
                   ? myTruckOn
                   : myTruck
                 : p.state
                   ? truckImageOn
-                  : truckImage,
+                  : truckImage;
+            }
+            const marker = new google.maps.Marker({
+              title: truck.name,
+              //  animation: google.maps.Animation.DROP,
+              draggable: p.userId === Meteor.userId(),
+              icon: image,
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
               id: p._id,
@@ -221,9 +239,9 @@ Template.alltrucks.onCreated(function() {
               content: content,
               closeWhenOthersOpen: true,
               edgeOffset: {
-                top: 60,
+                top: 20,
                 right: 20,
-                bottom: 100,
+                bottom: 150,
                 left: 20
               },
               maxHeight: 500,
@@ -365,6 +383,9 @@ Template.alltrucks.helpers({
       //    console.log('not loaded');
     }
 
+  },
+  selectedImageId(){
+    return Template.instance().selectedImageId.get();
   }
 });
 
@@ -397,16 +418,28 @@ Template.alltrucks.events({
     }
   },
   'click .cover-item' (event, templateInstance) {
-    event.preventDefault();
-    markersArray.find((e) => {
-      if (e.userId === this.owner) {
-        google.maps.event.trigger(e, 'click');
-        return;
-      }
-    });
+    // event.preventDefault();
+    // markersArray.find((e) => {
+    //   if (e.userId === this.owner) {
+    //     google.maps.event.trigger(e, 'click');
+    //     return;
+    //   }
+    // });
+    templateInstance.selectedImageId.set(this);
   },
   'click .showHideSlider' (event, templateInstance) {
     $('.imageSlider').toggleClass('imageSliderDisplay');
     templateInstance.hasClass.set($('.imageSlider').hasClass('imageSliderDisplay'));
+  },
+  'click .goToTruck'(event, templateInstance) {
+    const img=templateInstance.selectedImageId.get();
+    markersArray.find((e) => {
+      if (e.userId === img.owner) {
+        google.maps.event.trigger(e, 'click');
+        return;
+      }
+    });
+
   }
+
 });

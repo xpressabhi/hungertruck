@@ -16,6 +16,9 @@ Trucks.schema = new SimpleSchema({
     type : String,
     max:500
   },
+  category:{
+    type:String
+  },
   createdAt: {
     type: Date,
     autoValue: function() {

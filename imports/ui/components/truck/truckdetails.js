@@ -25,7 +25,8 @@ Template.truckdetails.events({
     const name = event.target.truckName.value;
     const mobile = event.target.mobileNumber.value.replace(/^0+/, '');
     const address = event.target.address.value;
-    Meteor.call('trucks.insert', name, mobile, address, () => {
+    const category = event.target.category.value;
+    Meteor.call('trucks.insert', name, mobile, address, category, () => {
       templateInstance.editTruckBasic.set(false);
     });
   },
