@@ -18,22 +18,24 @@ const canDisplay = (sch) => {
   let dt = new Date();
   let dtStart = new Date();
   let dtEnd = new Date();
-  let startSplit = sch.start.split(' ');
-  let endSplit = sch.end.split(' ');
+  const [startHours, startMins, startApm] = sch.start.split(' ');
+  const [endHours, endMins, endApm] = sch.end.split(' ');
   dtStart.setHours(
-    startSplit[2] === 'PM'
-    ? Number(startSplit[0]) + 12
-    : startSplit[0]);
-  dtStart.setMinutes(startSplit[1]);
+    startApm === 'PM'
+    ? Number(startHours) + 12
+    : startHours);
+  dtStart.setMinutes(startMins);
   dtStart.setSeconds(0);
   dtEnd.setHours(
-    endSplit[2] === 'PM'
-    ? Number(endSplit[0]) + 12
-    : endSplit[0]);
-  dtEnd.setMinutes(sch.end.split(' ')[1]);
+    endApm === 'PM'
+    ? Number(endHours) + 12
+    : endHours);
+  dtEnd.setMinutes(endMins);
   dtEnd.setSeconds(0);
-  if (endSplit[2] === 'AM' && Number(endSplit[0]) < 6)
+  if (endApm === 'AM' && Number(endHours) < 6)
     dtEnd.setDate(dtEnd.getDate() + 1);
+
+  console.log(sch, dt, dtStart, dtEnd);
   return dt > dtStart && dt < dtEnd;
 }
 const expandViewportToFitPlace = function(map, place) {
@@ -134,14 +136,6 @@ Template.alltrucks.onCreated(function() {
         ]
       }, {
         "featureType": "administrative.locality",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      }, {
-        "featureType": "administrative.locality",
         "elementType": "labels.text.stroke",
         "stylers": [
           {
@@ -161,82 +155,11 @@ Template.alltrucks.onCreated(function() {
           }
         ]
       }, {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      }, {
-        "featureType": "poi.attraction",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
         "featureType": "poi.business",
         "elementType": "all",
         "stylers": [
           {
             "visibility": "off"
-          }
-        ]
-      }, {
-        "featureType": "poi.government",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "poi.medical",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "poi.park",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "poi.place_of_worship",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "poi.school",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
-          }
-        ]
-      }, {
-        "featureType": "poi.sports_complex",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "on",
-            "color": "#aaaaaa"
           }
         ]
       }, {
@@ -260,22 +183,6 @@ Template.alltrucks.onCreated(function() {
       }, {
         "featureType": "road.arterial",
         "elementType": "labels.icon",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      }, {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      }, {
-        "featureType": "transit.line",
-        "elementType": "labels.text",
         "stylers": [
           {
             "visibility": "off"
@@ -331,11 +238,11 @@ Template.alltrucks.onCreated(function() {
       setMyLocationEnabled: true
     };
 
-    let infowindow;
+
     // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-        //console.log('markers count ', markers.length);
+        console.log('markers count ', markers.length);
         let tempMarkers = [];
         if (markers) {
           for (i in markers) {
@@ -346,7 +253,7 @@ Template.alltrucks.onCreated(function() {
               tempMarkers.push(markers[i]);
             }
           }
-        markers = tempMarkers;
+        markers = [...tempMarkers];
         let locIds = markers.map(p => p.id);
         //console.log(locIds);
         Locations.find({
@@ -357,7 +264,7 @@ Template.alltrucks.onCreated(function() {
         }).forEach((p) => {
 
           let canShowTruck = false;
-          let schText='';
+          let schText = '';
           Schedules.find({userId: p.userId}).map((sch) => {
             if (!canShowTruck) {
               canShowTruck = canDisplay(sch);
@@ -406,7 +313,7 @@ Template.alltrucks.onCreated(function() {
             });
             content += `</dl><p class="card-text">Enjoy delicious food on the way.</p>
               <hr><em>https://hungertruck.in</em></div></div>`;
-            infowindow = new SnazzyInfoWindow({
+            let infowindow = new SnazzyInfoWindow({
               marker: marker,
               content: content,
               closeWhenOthersOpen: true,
