@@ -32,9 +32,9 @@ const canDisplay = ({start, end, days}) => {
       : endHours
     dtEnd.setHours(endHours, endMins, 0);
 
-    if (endApm === 'AM' && Number(endHours) < 6) 
+    if (endApm === 'AM' && Number(endHours) < 6)
       dtEnd.setDate(dtEnd.getDate() + 1);
-    
+
     //  console.log(days, dt, dtStart, dtEnd);
     return dt > dtStart && dt < dtEnd;
   }
@@ -57,11 +57,11 @@ const route = function(t) {
   //  }
   const map = GoogleMaps.maps.map.instance;
   //  clearOverlays();
-  if (!directionsService) 
+  if (!directionsService)
     directionsService = new google.maps.DirectionsService;
-  if (!directionsDisplay) 
+  if (!directionsDisplay)
     directionsDisplay = new google.maps.DirectionsRenderer;
-  
+
   //  directionsDisplay.setMap(null);
   directionsDisplay.setMap(map);
   //  directionsDisplay.set('directions', null);
@@ -158,13 +158,15 @@ Template.alltrucks.onCreated(function() {
 
     self.autorun(function() {
       if (self.subscriptionsReady()) {
+      //  console.log('markers count ', markers.length);
         markers = markers.filter((marker) => {
           const locExist = Locations.findOne({_id: marker.id, lastLocation: true});
-          if (!locExist || locExist.state !== marker.state || locExist.lat !== marker.position.lat() || locExist.lng !== marker.position.lng()) {
+          if (!locExist || locExist.state !== marker.state || locExist.lat !== marker.position.lat()) {
             marker.setMap(null);
           }
           return marker.map;
         });
+    //    console.log('markers count ', markers.length);
         const locIds = markers.map(p => p.id);
         //console.log(locIds);
         Locations.find({
