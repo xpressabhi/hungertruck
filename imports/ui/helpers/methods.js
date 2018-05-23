@@ -96,44 +96,17 @@ export const getStyledMapType = function() {
 }
 
 export const getDay = function(num) {
-  let day = 'Sun';
-  switch (num) {
-    case 0:
-      {
-        day = 'Sun';
-        break;
-      }
-    case 1:
-      {
-        day = 'Mon';
-        break;
-      }
-    case 2:
-      {
-        day = 'Tue';
-        break;
-      }
-    case 3:
-      {
-        day = 'Wed';
-        break;
-      }
-    case 4:
-      {
-        day = 'Thu';
-        break;
-      }
-    case 5:
-      {
-        day = 'Fri';
-        break;
-      }
-    case 6:
-      {
-        day = 'Sat';
-        break;
-      }
-  }
-  return day;
-
+  if (num === 1)
+    return 'Mon';
+  if (num === 2)
+    return 'Tue';
+  if (num === 3)
+    return 'Wed';
+  if (num === 4)
+    return 'Thu';
+  if (num === 5)
+    return 'Fri';
+  if (num === 6)
+    return 'Sat';
+  return 'Sun';
 }

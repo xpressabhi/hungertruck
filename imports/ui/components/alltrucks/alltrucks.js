@@ -20,7 +20,6 @@ const canDisplay = ({start, end, days}) => {
   if (days.indexOf(getDay(dt.getDay())) > 0) {
     let dtStart = new Date();
     let dtEnd = new Date();
-
     let [startHours, startMins, startApm] = start.split(' ');
     startHours = startApm === 'PM'
       ? Number(startHours) + 12
@@ -33,9 +32,10 @@ const canDisplay = ({start, end, days}) => {
       : endHours
     dtEnd.setHours(endHours, endMins, 0);
 
-    if (endApm === 'AM' && Number(endHours) < 6)
+    if (endApm === 'AM' && Number(endHours) < 6) 
       dtEnd.setDate(dtEnd.getDate() + 1);
-  //  console.log(days, dt, dtStart, dtEnd);
+    
+    //  console.log(days, dt, dtStart, dtEnd);
     return dt > dtStart && dt < dtEnd;
   }
   return false;
@@ -57,11 +57,11 @@ const route = function(t) {
   //  }
   const map = GoogleMaps.maps.map.instance;
   //  clearOverlays();
-  if (!directionsService)
+  if (!directionsService) 
     directionsService = new google.maps.DirectionsService;
-  if (!directionsDisplay)
+  if (!directionsDisplay) 
     directionsDisplay = new google.maps.DirectionsRenderer;
-
+  
   //  directionsDisplay.setMap(null);
   directionsDisplay.setMap(map);
   //  directionsDisplay.set('directions', null);
@@ -156,20 +156,15 @@ Template.alltrucks.onCreated(function() {
       setMyLocationEnabled: true
     };
 
-    // Create and move the marker when latLng changes.
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-        console.log('markers count ', markers.length);
-        let tempMarkers = [];
-        markers.forEach((marker) => {
+        markers = markers.filter((marker) => {
           const locExist = Locations.findOne({_id: marker.id, lastLocation: true});
-          if (!locExist || locExist.state !== marker.state)
+          if (!locExist || locExist.state !== marker.state || locExist.lat !== marker.position.lat() || locExist.lng !== marker.position.lng()) {
             marker.setMap(null);
-          else
-            tempMarkers.push(marker);
           }
-        );
-        markers = [...tempMarkers];
+          return marker.map;
+        });
         const locIds = markers.map(p => p.id);
         //console.log(locIds);
         Locations.find({
@@ -190,7 +185,7 @@ Template.alltrucks.onCreated(function() {
           let image;
           if (truck) {
             if (truck.category && truck.category === 'Haleem') {
-              image= haleemTruck;
+              image = haleemTruck;
             } else {
               image = p.userId === Meteor.userId()
                 ? p.state
@@ -223,10 +218,12 @@ Template.alltrucks.onCreated(function() {
               content += `<img class='card-img-top' src='${img.url()}' alt='Truck Pic'>`;
             }
             content += `<div class='card-body'>
-              <h4 class='card-title text-info'>${truck.name}</h4>
-              <h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-phone-square'></i>
-              <a href='tel:${truck.mobile}' class='text-secondary'>${truck.mobile}</a></h6>
-              <h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
+              <h4 class='card-title text-info'>${truck.name}</h4>`;
+            if (truck.mobile) {
+              content += `<h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-phone-square'></i>
+                <a href='tel:${truck.mobile}' class='text-secondary'>${truck.mobile}</a></h6>`;
+            }
+            content += `<h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
               ${truckStatus} ${schText} </h6><dl class='row font-weight-light small mx-0 w-100'>`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class='col-8 pl-0'><i class='fas fa-utensils'></i> : ${i.name}</dt>
@@ -384,7 +381,7 @@ Template.alltrucks.helpers({
     }
 
   },
-  selectedImageId(){
+  selectedImageId() {
     return Template.instance().selectedImageId.get();
   }
 });
@@ -431,8 +428,8 @@ Template.alltrucks.events({
     $('.imageSlider').toggleClass('imageSliderDisplay');
     templateInstance.hasClass.set($('.imageSlider').hasClass('imageSliderDisplay'));
   },
-  'click .goToTruck'(event, templateInstance) {
-    const img=templateInstance.selectedImageId.get();
+  'click .goToTruck' (event, templateInstance) {
+    const img = templateInstance.selectedImageId.get();
     markersArray.find((e) => {
       if (e.userId === img.owner) {
         google.maps.event.trigger(e, 'click');

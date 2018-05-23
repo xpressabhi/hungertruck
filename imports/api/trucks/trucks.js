@@ -10,7 +10,8 @@ Trucks.schema = new SimpleSchema({
   },
   mobile:{
     type : String,
-    max:20
+    max:20,
+    optional:true
   },
   address:{
     type : String,

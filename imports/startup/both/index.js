@@ -33,7 +33,7 @@ AccountsTemplates.configureRoute('signIn', {
   layoutTemplate: 'App_body',
   layoutRegions: {nav: 'nav',footer:'footer'},
   contentRegion: 'main',
-  redirect: '/faqs'
+  redirect: '/'
 });
 AccountsTemplates.configureRoute('signUp', {
   layoutType: 'blaze',
