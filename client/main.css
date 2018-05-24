@@ -14,7 +14,7 @@
   position: absolute;
   z-index: 100;
   left:10px;
-  top: 70px;
+  top: 50px;
 }
 
 .loadingDiv{
@@ -45,7 +45,7 @@
   position: absolute;
   z-index: 100;
   left:10px;
-  top: 110px;
+  top: 90px;
 }
 .imageSlider{
   position: absolute;
@@ -102,5 +102,5 @@
   position: absolute;
   z-index: 100;
   right:10px;
-  top: 70px;
+  top: 50px;
 }

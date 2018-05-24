@@ -1,3 +1,4 @@
+
 export const getStyledMapType = function() {
   return new google.maps.StyledMapType([
     {
@@ -52,7 +53,7 @@ export const getStyledMapType = function() {
       'elementType': 'all',
       'stylers': [
         {
-          'visibility': 'off'
+          'visibility': 'on'
         }
       ]
     }, {

@@ -439,6 +439,16 @@ Template.alltrucks.events({
       }
     });
 
+  },
+  'click .showDirection'(event, templateInstance) {
+    const img = templateInstance.selectedImageId.get();
+    markersArray.find((e) => {
+      if (e.userId === img.owner) {
+        templateInstance.destination_latLng.set({lat: e.position.lat(), lng: e.position.lng(), name: 'place name', address: 'truck address'});
+        route(templateInstance);
+        google.maps.event.trigger(e, 'click');
+        return;
+      }
+    });
   }
-
 });

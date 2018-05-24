@@ -17,8 +17,8 @@
             <button type="button" class="btn btn-success btn-sm goOnline">Go Online</button>
           {{/if}}
         {{else}}
-          <a class="btn btn-primary btn-sm" href="tel:7842740174" role="button">Contact admin for verification</a>
-          <a class="btn btn-success my-2 btn-sm" href="/mytruck" role="button">Update truck details</a>
+          <a class="btn btn-primary btn-sm" href="tel:7842740174" role="button">Verify Account</a>
+          <a class="btn btn-success my-2 btn-sm" href="/mytruck" role="button">Update Truck</a>
         {{/if}}
       {{else}}
         <div class="input-group input-group-sm mb-3">
@@ -27,7 +27,7 @@
               <i class="fas fa-map-marker-alt"></i>
             </span>
           </div>
-          <input type="text" class="form-control destination-input" name="destination-input" placeholder="Destination" aria-label="Destination" aria-describedby="basic-addon1">
+          <input type="text" class="form-control destination-input" name="destination-input" placeholder="Destination    Get food trucks along your way" aria-label="Destination" aria-describedby="basic-addon1">
         </div>
       {{/if}}
     </div>
@@ -51,7 +51,10 @@
           <div class="modal-body mx-auto p-0">
             <img src="{{selectedImageId.url}}" class="img-fluid" alt="Image">
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer mx-auto">
+            <button type="button" class="btn btn-info btn-sm showDirection" data-dismiss="modal">
+              <i class="fas fa-compass"></i>
+              Show Directions</button>
             <button type="button" class="btn btn-primary btn-sm goToTruck" data-dismiss="modal">
               <i class="fas fa-truck"></i>
               Show Truck</button>
