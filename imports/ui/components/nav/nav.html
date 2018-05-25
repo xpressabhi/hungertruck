@@ -1,68 +1,81 @@
 <template name="nav">
-  <nav class="navbar navbar-expand navbar-dark bg-dark shadow-lg py-md-0 py-0">
-    <div class="container">
-      <a class="navbar-brand small" href="/">
-        hungertruck</a>
-      <div class="collapse navbar-collapse small" id="navbarNav">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="/faqs">
-              FAQs
-            </a>
-          </li>
-          {{#if isInRole 'admin'}}
-            <li class="nav-item">
-              <a class="nav-link" href="/users">
-                <i class="fas fa-users"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/dashboard">
-                <i class="fas fa-tachometer-alt"></i>
-              </a>
-            </li>
-          {{/if}}
-          {{#if isInRole 'truck'}}
-            <li class="nav-item">
-              <a class="nav-link" href="/mytruck">
-                My
-                <i class="fas fa-truck"></i>
-              </a>
-            </li>
-          {{/if}}
-        </ul>
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-          {{#if currentUser}}
-            <li class="nav-item">
-              <a class="nav-link mx-2" href="/profile">
-                <i class="fas fa-user" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link logout" href="#">
-                <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-              </a>
-            </li>
-          {{else}}
-            <li class="nav-item py-0">
-              <a href="/login" class="nav-link">
-                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                Login</a>
-            </li>
-            <li class="nav-item py-0">
-              <a href="/join" class="nav-link">
-                <i class="fas fa-user-plus" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li class="nav-item py-0">
-              <a href="/join?type=truck" class="nav-link">
-                <i class="fas fa-plus" aria-hidden="true"></i>
-                <i class="fas fa-truck" aria-hidden="true"></i>
-              </a>
-            </li>
-          {{/if}}
-        </ul>
-      </div>
-    </div>
+  <div class="showNav">
+    <button type="button" id="sidebarCollapse">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+  </div>
+  <nav id="sidebar">
+    <img class="img-fluid p-2 shadow-lg" src="logo.jpg" alt="hungertruck logo">
+    <ul class="list-group list-group-flush small">
+      <li class="list-group-item">
+        <a href="/">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+      </li>
+      <li class="list-group-item">
+        <a href="/faqs">
+          <i class="fas fa-question"></i>
+          FAQs
+        </a>
+      </li>
+      {{#if isInRole 'admin'}}
+        <li class="list-group-item">
+          <a href="/users">
+            <i class="fas fa-users"></i>
+            Users
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            Dashboard
+          </a>
+        </li>
+      {{/if}}
+      {{#if isInRole 'truck'}}
+        <li class="list-group-item">
+          <a href="/mytruck">
+            My
+            <i class="fas fa-truck"></i>
+          </a>
+        </li>
+      {{/if}}
+      {{#if currentUser}}
+        <li class="list-group-item">
+          <a href="/profile">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            Profile
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a class="logout" href="#">
+            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+            Sign Out
+          </a>
+        </li>
+      {{else}}
+        <li class="list-group-item">
+          <a href="/login">
+            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+            Login</a>
+        </li>
+        <li class="list-group-item">
+          <a href="/join">
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+            New
+          </a>
+        </li>
+        <li class="list-group-item">
+          <a href="/join?type=truck">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+            <i class="fas fa-truck" aria-hidden="true"></i>
+            Truck
+          </a>
+        </li>
+      {{/if}}
+    </ul>
   </nav>
 </template>

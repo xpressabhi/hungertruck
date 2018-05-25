@@ -39,6 +39,9 @@ Template.nav.events({
   'click .nav-link' (event, templateInstance) {
     $('.active').removeClass('active');
     $(event.currentTarget).addClass('active');
+  },
+  'click #sidebarCollapse'(event, templateInstance) {
+    $('#sidebar').toggleClass('active');
+    $('#sidebarCollapse').toggleClass('active');
   }
-
 });
