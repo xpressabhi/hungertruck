@@ -1,63 +1,62 @@
 <template name="accountsPhone">
-  {{#if currentUser}}
-    <p class="lead">
-      You are in.
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3 my-5">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a href="/">Check food trucks</a>
-            </li>
-            <li class="list-group-item">
-              <a href="/faqs">Check FAQs</a>
-            </li>
-            <li class="list-group-item">
-              <a href="/profile">Check Profile</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </p>
-  {{else}}
-    {{#if loginByEmailPass}}
-      {{> fullPageAtForm}}
-      <hr>
-      <button type="button" class="btn btn-primary byPhone">Login using Phone and OTP</button>
-    {{else}}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 my-5">
-            <p class="lead">
-              Sign up or login with your Phone
-            </p>
-            {{#if loginError}}
-              <div class="alert alert-danger" role="alert">
-                <strong>Oh snap!</strong>
-                {{loginError}}.
-              </div>
-            {{/if}}
-            <form class="createUserOrLogin">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Mobile Number</label>
-                <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
-              </div>
-              {{#if otpSent}}
-                <div class="form-group">
-                  <label for="exampleInputPassword1">One Time Password (OTP)</label>
-                  <input type="number" name="otp" class="form-control" id="exampleInputPassword1" placeholder="OTP" min="1000" max="9999" required="required">
-                </div>
-                <button type="submit" class="btn btn-primary">Login/Create</button>
-              {{else}}
-                <button type="submit" class="btn btn-primary">Send OTP</button>
-              {{/if}}
-            </form>
-            <!-- <form class="sendOtp"> <input type="text" name="phone" value=""> <button type="submit" class="btn btn-primary">Send OTP</button> </form> <form class="loginwithphone"> <input type="text" name="phone" value=""> <input type="text" name="otp"
-            value=""> <button type="submit" class="btn btn-primary">Login with Phone</button> </form> -->
+  <div class="row my-3">
+    <div class="col-sm-6 my-3">
+     <img src="logo.jpg" class="img-fluid shadow-lg" alt="Site Logo">
+    </div>
+    <div class="col-sm-6 my-3 shadow-lg p-4">
+      {{#if currentUser}}
+        <p class="lead">
+          You are in.
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <a href="/">Check food trucks</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="/faqs">Check FAQs</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="/profile">Check Profile</a>
+                </li>
+              </ul>
+        </p>
+      {{else}}
+        {{#if loginByEmailPass}}
+          {{> atForm}}
+          <hr>
+          <button type="button" class="btn btn-info byPhone">Login using Phone and OTP</button>
+        {{else}}
+          <div>
+                <p class="lead">
+                  Sign up or login with your Phone
+                </p>
+                {{#if loginError}}
+                  <div class="alert alert-danger" role="alert">
+                    <strong>Oh snap!</strong>
+                    {{loginError}}.
+                  </div>
+                {{/if}}
+                <form class="createUserOrLogin">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Mobile Number</label>
+                    <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
+                  </div>
+                  {{#if otpSent}}
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">One Time Password (OTP)</label>
+                      <input type="number" name="otp" class="form-control" id="exampleInputPassword1" placeholder="OTP" min="1000" max="9999" required="required">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login/Create</button>
+                  {{else}}
+                    <button type="submit" class="btn btn-primary">Send OTP</button>
+                  {{/if}}
+                </form>
+                <!-- <form class="sendOtp"> <input type="text" name="phone" value=""> <button type="submit" class="btn btn-primary">Send OTP</button> </form> <form class="loginwithphone"> <input type="text" name="phone" value=""> <input type="text" name="otp"
+                value=""> <button type="submit" class="btn btn-primary">Login with Phone</button> </form> -->
+            <hr>
+            <button type="button" class="btn btn-info byEmail">Login using Email and Password</button>
           </div>
-        </div>
-        <hr>
-        <button type="button" class="btn btn-primary byEmail">Login using Email and Password</button>
-      </div>
-    {{/if}}
-  {{/if}}
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
 </template>
