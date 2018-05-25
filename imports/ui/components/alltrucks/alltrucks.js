@@ -36,7 +36,8 @@ const canDisplay = ({start, end, days}) => {
       dtEnd.setDate(dtEnd.getDate() + 1);
 
     //  console.log(days, dt, dtStart, dtEnd);
-    return dt > dtStart && dt < dtEnd;
+
+    return {display:dt > dtStart && dt < dtEnd, txt: `<br>Open at: ${moment(dtStart).calendar()}<br>Close At: ${moment(dtEnd).calendar()}`};
   }
   return false;
 }
@@ -180,9 +181,12 @@ Template.alltrucks.onCreated(function() {
           let schText = '';
           Schedules.find({userId: p.userId}).map((sch) => {
             if (!canShowTruck) {
-              canShowTruck = canDisplay(sch);
+              let res= canDisplay(sch);
+              canShowTruck = res.display;
+              if(res.txt) schText +=res.txt;
             }
           });
+          schText = schText || '';
           const truck = Trucks.findOne({userId: p.userId});
           let image;
           if (truck) {
@@ -226,7 +230,9 @@ Template.alltrucks.onCreated(function() {
                 <a href='tel:${truck.mobile}' class='text-secondary'>${truck.mobile}</a></h6>`;
             }
             content += `<h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
-              ${truckStatus} ${schText} </h6><dl class='row font-weight-light small mx-0 w-100'>`;
+              ${truckStatus}</h6>`;
+              if(schText) content+=`<span class="small font-weight-light">${schText}<span><hr class="my-2">`;
+              content+=`<dl class='row font-weight-light small mx-0 w-100'>`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class='col-8 pl-0'><i class='fas fa-utensils'></i> : ${i.name}</dt>
                 <dd class='col-4 text-right pr-0'><i class='fas fa-rupee-sign'></i> ${i.rate}.00</dd>`;
