@@ -1,7 +1,7 @@
 <template name="accountsPhone">
   <div class="row my-3">
     <div class="col-sm-6 my-3">
-     <img src="logo.jpg" class="img-fluid shadow-lg" alt="Site Logo">
+     <img src="logo.jpg" class="img-fluid shadow-lg p-4" alt="Site Logo">
     </div>
     <div class="col-sm-6 my-3 shadow-lg p-4">
       {{#if currentUser}}
@@ -23,7 +23,7 @@
         {{#if loginByEmailPass}}
           {{> atForm}}
           <hr>
-          <button type="button" class="btn btn-info byPhone">Login using Phone and OTP</button>
+          <button type="button" class="btn btn-info byPhone btn-sm">Login using Phone and OTP</button>
         {{else}}
           <div>
                 <p class="lead">
@@ -53,7 +53,7 @@
                 <!-- <form class="sendOtp"> <input type="text" name="phone" value=""> <button type="submit" class="btn btn-primary">Send OTP</button> </form> <form class="loginwithphone"> <input type="text" name="phone" value=""> <input type="text" name="otp"
                 value=""> <button type="submit" class="btn btn-primary">Login with Phone</button> </form> -->
             <hr>
-            <button type="button" class="btn btn-info byEmail">Login using Email and Password</button>
+            <button type="button" class="btn btn-info byEmail btn-sm">Login using Email and Password</button>
           </div>
         {{/if}}
       {{/if}}
