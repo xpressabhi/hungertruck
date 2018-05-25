@@ -5,10 +5,10 @@
   <hr>
   {{#each users}}
     <div class="card my-1 shadow-lg">
-      <div class="card-header setSelectedId" data-toggle="collapse" data-target="#collapse-{{_id}}">
+      <div class="card-header setSelectedId font-weight-light small" data-toggle="collapse" data-target="#collapse-{{_id}}">
         <i class="fas fa-chevron-down float-right" aria-hidden="true"></i>
         <i class="fas fa-user"></i>
-        {{useremail}}{{this.username}}
+        {{useremail}}{{this.username}} <small class="float-right mx-2">{{betterDateTime createdAt}}</small>
         {{#if isAdmin}}
           : Admin
         {{/if}}

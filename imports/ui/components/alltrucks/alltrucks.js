@@ -423,13 +423,6 @@ Template.alltrucks.events({
     }
   },
   'click .cover-item' (event, templateInstance) {
-    // event.preventDefault();
-    // markersArray.find((e) => {
-    //   if (e.userId === this.owner) {
-    //     google.maps.event.trigger(e, 'click');
-    //     return;
-    //   }
-    // });
     templateInstance.selectedImageId.set(this);
   },
   'click .showHideSlider' (event, templateInstance) {
