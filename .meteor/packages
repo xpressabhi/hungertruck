@@ -52,3 +52,4 @@ cfs:ui
 cfs:graphicsmagick
 okgrow:analytics
 http
+percolate:synced-cron
