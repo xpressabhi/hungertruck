@@ -7,13 +7,14 @@
     "pretest": "npm run lint --silent"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.47",
+    "@babel/runtime": "^7.0.0-beta.49",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "bootstrap": "^4.1.1",
+    "driver.js": "^0.5.2",
     "jquery": "^3.3.1",
-    "libphonenumber-js": "^1.2.9",
+    "libphonenumber-js": "^1.2.12",
     "meteor-node-stubs": "^0.3.3",
     "mobile-detect": "^1.4.1",
     "msg91": "0.0.6",
