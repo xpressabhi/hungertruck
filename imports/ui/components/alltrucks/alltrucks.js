@@ -380,6 +380,7 @@ Template.alltrucks.helpers({
         rotateControl: false,
         fullscreenControl: false,
         zoomControl: true,
+        gestureHandling :'greedy',
         zoomControlOptions: {
           position: google.maps.ControlPosition.RIGHT_TOP
         }
