@@ -53,7 +53,7 @@ export const getStyledMapType = function() {
       'elementType': 'all',
       'stylers': [
         {
-          'visibility': 'on'
+          'visibility': 'off'
         }
       ]
     }, {
