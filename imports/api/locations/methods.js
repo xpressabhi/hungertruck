@@ -50,19 +50,27 @@ Meteor.methods({
       }
     }, {multi: true});
   },
-  "locations.update" (lat, lng) {
+  "locations.update" (id, lat, lng) {
     check(lat, Number);
     check(lng, Number);
-    if (this.userId) {
-      return Locations.update({
-        userId: this.userId,
-        state: true
-      }, {
+    check(id, String);
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      return Locations.update(id, {
         $set: {
           lat,
           lng
         }
       });
+    } else {
+      const loc = Locations.findOne(id);
+      if (this.userId === loc.userId) {
+        return Locations.update(id, {
+          $set: {
+            lat,
+            lng
+          }
+        });
+      }
     }
   },
   "locations.updatelastLocation" () {
@@ -103,7 +111,7 @@ Meteor.methods({
           ? Number(endHours) + 12
           : endHours
         dtEnd.setHours(endHours, endMins, 0);
-        if ((dt - dtEnd) > 0) 
+        if ((dt - dtEnd) > 0)
           Locations.update({
             userId: sch.userId,
             state: true

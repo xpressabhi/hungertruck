@@ -180,7 +180,7 @@ Template.alltrucks.onCreated(function() {
             const marker = new google.maps.Marker({
               title: truck.name,
               animation: google.maps.Animation.DROP,
-              draggable: p.userId === Meteor.userId(),
+              draggable: p.userId === Meteor.userId() || Roles.userIsInRole(Meteor.userId(),'admin'),
               icon: image,
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
@@ -249,7 +249,7 @@ Template.alltrucks.onCreated(function() {
             });
             //    infowindows.push(infowindow);
             marker.addListener('dragend', function(event) {
-              Meteor.call('locations.update', event.latLng.lat(), event.latLng.lng());
+              Meteor.call('locations.update', p._id, event.latLng.lat(), event.latLng.lng());
             });
             markers.push(marker);
           }
