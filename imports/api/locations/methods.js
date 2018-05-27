@@ -54,7 +54,7 @@ Meteor.methods({
     check(lat, Number);
     check(lng, Number);
     check(id, String);
-    if (Roles.userIsInRole(this.userId, 'admin')) {
+    if (Roles.userIsInRole(this.userId, 'editor')) {
       return Locations.update(id, {
         $set: {
           lat,

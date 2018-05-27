@@ -78,7 +78,10 @@ Template.users.events({
   },
   'click .toggleVerifiedTruck' (event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'verified-truck', () => {});
-    Meteor.call('locations.allOffline', this._id, () => {})
+    Meteor.call('locations.allOffline', this._id, () => {});
+  },
+  'click .toggleEditor'(event, templateInstance) {
+    Meteor.call('user.toggleRole', this._id, 'editor', () => {});
   },
   'click .setDefaultPass' (event, templateInstance) {
     Meteor.call('user.setDefaultPass', this._id, () => {});

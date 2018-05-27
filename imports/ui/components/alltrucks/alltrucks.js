@@ -32,9 +32,9 @@ const canDisplay = ({start, end, days}) => {
       : endHours
     dtEnd.setHours(endHours, endMins, 0);
 
-    if (endApm === 'AM' && Number(endHours) < 6) 
+    if (endApm === 'AM' && Number(endHours) < 6)
       dtEnd.setDate(dtEnd.getDate() + 1);
-    
+
     //  console.log(days, dt, dtStart, dtEnd);
 
     return {
@@ -61,11 +61,11 @@ const route = function(t) {
   //  }
   const map = GoogleMaps.maps.map.instance;
   //  clearOverlays();
-  if (!directionsService) 
+  if (!directionsService)
     directionsService = new google.maps.DirectionsService;
-  if (!directionsDisplay) 
+  if (!directionsDisplay)
     directionsDisplay = new google.maps.DirectionsRenderer;
-  
+
   //  directionsDisplay.setMap(null);
   directionsDisplay.setMap(map);
   //  directionsDisplay.set('directions', null);
@@ -159,7 +159,7 @@ Template.alltrucks.onCreated(function() {
             if (!canShowTruck) {
               let res = canDisplay(sch);
               canShowTruck = res.display;
-              if (res.txt) 
+              if (res.txt)
                 schText += res.txt;
               }
             });
@@ -180,7 +180,7 @@ Template.alltrucks.onCreated(function() {
             const marker = new google.maps.Marker({
               title: truck.name,
               //  animation: google.maps.Animation.DROP,
-              draggable: p.userId === Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'admin'),
+              draggable: p.userId === Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'editor'),
               icon: image,
               position: new google.maps.LatLng(p.lat, p.lng),
               map: map.instance,
@@ -207,7 +207,7 @@ Template.alltrucks.onCreated(function() {
             }
             content += `<h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
               ${truckStatus}</h6>`;
-            if (schText) 
+            if (schText)
               content += `<span class="small font-weight-light">${schText}<span><hr class="my-2">`;
             content += `<dl class='row font-weight-light small mx-0 w-100'>`;
             Items.find({userId: p.userId}).map((i) => {
