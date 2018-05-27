@@ -5,7 +5,7 @@ import {Schedules} from '/imports/api/schedules/schedules.js';
 import {Items} from '/imports/api/items/items.js';
 import {Images} from '/imports/api/images/images.js';
 import {getDay, getStyledMapType} from '/imports/ui/helpers/methods.js';
-const ZOOM = 14;
+const ZOOM = 15;
 let directionsService;
 let directionsDisplay;
 let markersArray;
@@ -37,7 +37,10 @@ const canDisplay = ({start, end, days}) => {
 
     //  console.log(days, dt, dtStart, dtEnd);
 
-    return {display:dt > dtStart && dt < dtEnd, txt: `<br>Open at: ${moment(dtStart).calendar()}<br>Close At: ${moment(dtEnd).calendar()}`};
+    return {
+      display: dt > dtStart && dt < dtEnd,
+      txt: `<br>Open at: ${moment(dtStart).calendar()}<br>Close At: ${moment(dtEnd).calendar()}`
+    };
   }
   return false;
 }
@@ -117,53 +120,22 @@ Template.alltrucks.onCreated(function() {
     const styledMapType = getStyledMapType();
     let usermarker;
     const image = {
-      url: 'large.png'
-    };
-    const truckImage = {
-      url: 'food-truck.png',
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35),
-      setMyLocationEnabled: true
-    };
-    const truckImageOn = {
-      url: 'food-truck-on.png',
-      size: new google.maps.Size(30, 30),
+      url: 'large.png',
+      // size: new google.maps.Size(70, 70),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(17, 34),
       scaledSize: new google.maps.Size(30, 30),
       setMyLocationEnabled: true
     };
-
-    const myTruck = {
-      url: 'my_truck.png',
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35),
-      setMyLocationEnabled: true
-    };
-    const myTruckOn = {
-      url: 'my_truck_on.png',
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35),
-      setMyLocationEnabled: true
-    };
-    const haleemTruck = {
-      url: 'haleem.png',
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35),
-      setMyLocationEnabled: true
-    };
+    const truckImage = 'food-truck.png';
+    const truckImageOn = 'food-truck-on.png';
+    const myTruck = 'my_truck.png';
+    const myTruckOn = 'my_truck_on.png';
+    const haleemTruck = 'haleem.png';
 
     self.autorun(function() {
       if (self.subscriptionsReady()) {
-      //  console.log('markers count ', markers.length);
+        //  console.log('markers count ', markers.length);
         markers = markers.filter((marker) => {
           const locExist = Locations.findOne({_id: marker.id, lastLocation: true});
           if (!locExist || locExist.state !== marker.state || locExist.lat !== marker.position.lat()) {
@@ -171,7 +143,7 @@ Template.alltrucks.onCreated(function() {
           }
           return marker.map;
         });
-    //    console.log('markers count ', markers.length);
+        //    console.log('markers count ', markers.length);
         const locIds = markers.map(p => p.id);
         //console.log(locIds);
         Locations.find({
@@ -185,19 +157,19 @@ Template.alltrucks.onCreated(function() {
           let schText = '';
           Schedules.find({userId: p.userId}).map((sch) => {
             if (!canShowTruck) {
-              let res= canDisplay(sch);
+              let res = canDisplay(sch);
               canShowTruck = res.display;
-              if(res.txt) schText +=res.txt;
-            }
-          });
+              if (res.txt)
+                schText += res.txt;
+              }
+            });
           schText = schText || '';
           const truck = Trucks.findOne({userId: p.userId});
-          let image;
           if (truck) {
             if (truck.category && truck.category === 'Haleem') {
-              image = haleemTruck;
+              //              image.url = haleemTruck;
             } else {
-              image = p.userId === Meteor.userId()
+              image.url = p.userId === Meteor.userId()
                 ? p.state
                   ? myTruckOn
                   : myTruck
@@ -207,7 +179,7 @@ Template.alltrucks.onCreated(function() {
             }
             const marker = new google.maps.Marker({
               title: truck.name,
-              //  animation: google.maps.Animation.DROP,
+              animation: google.maps.Animation.DROP,
               draggable: p.userId === Meteor.userId(),
               icon: image,
               position: new google.maps.LatLng(p.lat, p.lng),
@@ -235,8 +207,9 @@ Template.alltrucks.onCreated(function() {
             }
             content += `<h6 class='card-subtitle mb-1 text-muted'><i class='fas fa-clock'></i>
               ${truckStatus}</h6>`;
-              if(schText) content+=`<span class="small font-weight-light">${schText}<span><hr class="my-2">`;
-              content+=`<dl class='row font-weight-light small mx-0 w-100'>`;
+            if (schText)
+              content += `<span class="small font-weight-light">${schText}<span><hr class="my-2">`;
+            content += `<dl class='row font-weight-light small mx-0 w-100'>`;
             Items.find({userId: p.userId}).map((i) => {
               content += `<dt class='col-8 pl-0'><i class='fas fa-utensils'></i> : ${i.name}</dt>
                 <dd class='col-4 text-right pr-0'><i class='fas fa-rupee-sign'></i> ${i.rate}.00</dd>`;
@@ -289,9 +262,8 @@ Template.alltrucks.onCreated(function() {
             usermarker = new google.maps.Marker({
               position: new google.maps.LatLng(latLng.lat, latLng.lng),
               map: map.instance,
-              icon: image
+              icon: 'large.png'
             });
-            //  markersArray.push(marker);  The marker already exists, so we'll just change its position.);
           } else {
             usermarker.setPosition(latLng);
           }
@@ -386,7 +358,7 @@ Template.alltrucks.helpers({
         rotateControl: false,
         fullscreenControl: false,
         zoomControl: true,
-        gestureHandling :'greedy',
+        gestureHandling: 'greedy',
         zoomControlOptions: {
           position: google.maps.ControlPosition.RIGHT_TOP
         }
@@ -450,7 +422,7 @@ Template.alltrucks.events({
     });
 
   },
-  'click .showDirection'(event, templateInstance) {
+  'click .showDirection' (event, templateInstance) {
     const img = templateInstance.selectedImageId.get();
     markersArray.find((e) => {
       if (e.userId === img.owner) {
