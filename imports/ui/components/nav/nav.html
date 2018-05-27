@@ -1,78 +1,77 @@
 <template name="nav">
   <div class="showNav">
-    <button type="button" id="sidebarCollapse" class="btn btn-outline-secondary">
+    <button type="button" id="sidebarCollapse" class="btn btn-outline-secondary border-0">
         <span></span>
         <span></span>
         <span></span>
     </button>
   </div>
-  <nav id="sidebar">
-    <img class="img-fluid p-2 shadow-lg" src="logo.jpg" alt="hungertruck logo">
+  <nav id="sidebar" class="active shadow-lg">
+    <img class="img-fluid p-2" src="logo.jpg" alt="hungertruck logo">
     <ul class="list-group list-group-flush small">
       <li class="list-group-item">
-        <a href="/">
-          <i class="fas fa-home"></i>
+        <a class="nav-link" href="/">
+          <i class="fas fa-home fa-fw"></i>
           Home
         </a>
       </li>
       <li class="list-group-item">
-        <a href="/faqs">
-          <i class="fas fa-question"></i>
+        <a class="nav-link" href="/faqs">
+          <i class="fas fa-question fa-fw"></i>
           FAQs
         </a>
       </li>
       {{#if isInRole 'admin'}}
         <li class="list-group-item">
-          <a href="/users">
-            <i class="fas fa-users"></i>
+          <a class="nav-link" href="/users">
+            <i class="fas fa-users fa-fw"></i>
             Users
           </a>
         </li>
         <li class="list-group-item">
-          <a href="/dashboard">
-            <i class="fas fa-tachometer-alt"></i>
+          <a class="nav-link" href="/dashboard">
+            <i class="fas fa-tachometer-alt fa-fw"></i>
             Dashboard
           </a>
         </li>
       {{/if}}
       {{#if isInRole 'truck'}}
         <li class="list-group-item">
-          <a href="/mytruck">
-            My
-            <i class="fas fa-truck"></i>
+          <a class="nav-link" href="/mytruck">
+            <i class="fas fa-truck fa-fw"></i>
+            My Truck
           </a>
         </li>
       {{/if}}
       {{#if currentUser}}
         <li class="list-group-item">
-          <a href="/profile">
-            <i class="fas fa-user" aria-hidden="true"></i>
+          <a class="nav-link" href="/profile">
+            <i class="fas fa-user fa-fw" aria-hidden="true"></i>
             Profile
           </a>
         </li>
         <li class="list-group-item">
-          <a class="logout" href="#">
-            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+          <a class="nav-link logout" href="#">
+            <i class="fas fa-sign-out-alt fa-fw" aria-hidden="true"></i>
             Sign Out
           </a>
         </li>
       {{else}}
         <li class="list-group-item">
-          <a href="/login">
-            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+          <a class="nav-link" href="/login">
+            <i class="fas fa-sign-in-alt fa-fw" aria-hidden="true"></i>
             Login</a>
         </li>
         <li class="list-group-item">
-          <a href="/join">
-            <i class="fas fa-user-plus" aria-hidden="true"></i>
-            New
+          <a class="nav-link" href="/join">
+            <i class="fas fa-user-plus fa-fw" aria-hidden="true"></i>
+            New User
           </a>
         </li>
         <li class="list-group-item">
-          <a href="/join?type=truck">
-            <i class="fas fa-plus" aria-hidden="true"></i>
-            <i class="fas fa-truck" aria-hidden="true"></i>
-            Truck
+          <a class="nav-link" href="/join?type=truck">
+            <i class="fas fa-truck fa-fw" aria-hidden="true"></i>
+            New Truck
           </a>
         </li>
       {{/if}}

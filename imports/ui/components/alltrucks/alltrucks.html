@@ -51,13 +51,13 @@
           <div class="modal-body mx-auto p-0">
             <img src="{{selectedImageId.url}}" class="img-fluid" alt="Image">
           </div>
-          <div class="modal-footer mx-auto">
+          <div class="modal-footer mx-auto p-1">
             <button type="button" class="btn btn-info btn-sm showDirection" data-dismiss="modal">
               <i class="fas fa-compass"></i>
-              Show Directions</button>
+              Directions</button>
             <button type="button" class="btn btn-primary btn-sm goToTruck" data-dismiss="modal">
               <i class="fas fa-truck"></i>
-              Show Truck</button>
+              Truck</button>
             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
               <i class="fas fa-times" aria-hidden="true"></i>
             </button>
@@ -69,7 +69,7 @@
   <!-- {{#unless Template.subscriptionsReady}} <div class="loadingDiv"></div> <div class="loadingIcon"> <div class="fa-6x"> <i class="fas fa-spinner fa-pulse"></i> </div> </div> {{/unless}} -->
   {{#if showControl}}
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-outline-primary introButton" data-toggle="modal" data-target="#exampleModalCenter">
+    <button type="button" class="btn btn-outline-primary btn-sm introButton" data-toggle="modal" data-target="#exampleModalCenter">
       <i class="fas fa-question"></i>
     </button>
 

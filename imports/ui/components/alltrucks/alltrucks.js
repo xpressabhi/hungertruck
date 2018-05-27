@@ -109,6 +109,10 @@ Template.alltrucks.onCreated(function() {
   let markers = [];
 
   GoogleMaps.ready('map', function(map) {
+    map.instance.addListener('click', () => {
+      $('#sidebar').addClass('active');
+      $('#sidebarCollapse').addClass('active');
+    });
     const SnazzyInfoWindow = require('snazzy-info-window');
     const styledMapType = getStyledMapType();
     let usermarker;
@@ -245,15 +249,17 @@ Template.alltrucks.onCreated(function() {
               closeWhenOthersOpen: true,
               edgeOffset: {
                 top: 20,
-                right: 20,
+                right: 40,
                 bottom: 150,
-                left: 20
+                left: 40
               },
               maxHeight: 500,
               border: false,
               callbacks: {
                 beforeOpen: function() {
                   $('.imageSlider').addClass('imageSliderDisplay');
+                  $('#sidebar').addClass('active');
+                  $('#sidebarCollapse').addClass('active');
                   self.selectedUserId.set(this._marker.userId);
                   self.showControl.set(false);
                   self.hasClass.set(true);
@@ -398,6 +404,8 @@ Template.alltrucks.helpers({
 Template.alltrucks.events({
   'click .setCenteredMap' (event, templateInstance) {
     templateInstance.resetMap.set(true);
+    $('#sidebar').addClass('active');
+    $('#sidebarCollapse').addClass('active');
   },
   'click .goOnline' (event, templateInstance) {
     const latLng = templateInstance.latlng.get();
@@ -425,6 +433,8 @@ Template.alltrucks.events({
   },
   'click .cover-item' (event, templateInstance) {
     templateInstance.selectedImageId.set(this);
+    $('#sidebar').addClass('active');
+    $('#sidebarCollapse').addClass('active');
   },
   'click .showHideSlider' (event, templateInstance) {
     $('.imageSlider').toggleClass('imageSliderDisplay');

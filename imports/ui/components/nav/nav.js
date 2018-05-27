@@ -37,8 +37,8 @@ Template.nav.events({
     FlowRouter.go('/');
   },
   'click .nav-link' (event, templateInstance) {
-    $('.active').removeClass('active');
-    $(event.currentTarget).addClass('active');
+    $('#sidebar').toggleClass('active');
+    $('#sidebarCollapse').toggleClass('active');
   },
   'click #sidebarCollapse'(event, templateInstance) {
     $('#sidebar').toggleClass('active');
