@@ -179,7 +179,7 @@ Template.alltrucks.onCreated(function() {
             }
             const marker = new google.maps.Marker({
               title: truck.name,
-              animation: google.maps.Animation.DROP,
+              //  animation: google.maps.Animation.DROP,
               draggable: p.userId === Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'admin'),
               icon: image,
               position: new google.maps.LatLng(p.lat, p.lng),
