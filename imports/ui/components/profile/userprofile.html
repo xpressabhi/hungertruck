@@ -47,21 +47,36 @@
         <input type="number" class="form-control" name="phone" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Mobile Number" min="6000000000" max="9999999999" required="required">
       </div>
       {{#if otpSent}}
-      <div class="form-group">
-        <label for="exampleInputPassword1">One Time Password (OTP)</label>
-        <input type="number" name="otp" class="form-control" id="exampleInputPassword1" placeholder="OTP" min="1000" max="9999" required="required">
-      </div>
-      <button type="submit" class="btn btn-success btn-sm">Add Phone</button>
-        {{else}}
+        <div class="form-group">
+          <label for="exampleInputPassword1">One Time Password (OTP)</label>
+          <input type="number" name="otp" class="form-control" id="exampleInputPassword1" placeholder="OTP" min="1000" max="9999" required="required">
+        </div>
+        <button type="submit" class="btn btn-success btn-sm">Add Phone</button>
+      {{else}}
         <button type="submit" class="btn btn-info btn-sm">Send OTP</button>
       {{/if}}
     </form>
-    {{#if isInRole 'truck'}}
-      {{#if isInRole 'verified-truck'}}
+    <div class="my-3 p-4 shadow-lg">
+      {{#if isInRole 'truck'}}
+        {{#if isInRole 'verified-truck'}}
+          <p class="lead">
+            Your truck details are verified.
+          </p>
+          <a href="/mytruck">Update truck details (if any)</a>
+        {{else}}
+          <p class="small lead">
+            <a href="/mytruck">Update truck details</a>
+            (basic details, schedules, images and menu) then contact admin for truck verification.
+            <br>
+            Call 7842740174
+          </p>
+        {{/if}}
+      {{else}}
         <p class="lead">
-          Your truck details are verified.
+          I am a truck owner, allow me to list.
         </p>
+        <button type="button" class="btn btn-primary my-2 addTruckRole">Allow me</button>
       {{/if}}
-    {{/if}}
+    </div>
   {{/with}}
 </template>

@@ -58,5 +58,10 @@ Template.userprofile.events({
       );
     }
 
+  },
+  'click .addTruckRole'(event, templateInstance) {
+    Meteor.call('users.makeMeTruck',() => {
+
+    });
   }
 });

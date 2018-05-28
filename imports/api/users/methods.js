@@ -71,5 +71,8 @@ Meteor.methods({
     check(otp, String);
     phone = Accounts.verifyPhoneOtp(phone, otp);
     Accounts.addPhone(this.userId, phone, true);
+  },
+  'users.makeMeTruck'(){
+    return Roles.addUsersToRoles(this.userId, 'truck');
   }
 });
