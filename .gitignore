@@ -1,6 +1,2 @@
 node_modules/
-.deploy/mup.js
-
-.deploy/settings.json
-
 .DS_Store

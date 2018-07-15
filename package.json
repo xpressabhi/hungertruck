@@ -7,16 +7,16 @@
     "pretest": "npm run lint --silent"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.49",
+    "@babel/runtime": "^7.0.0-beta.53",
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.1.2",
     "driver.js": "^0.5.2",
     "jquery": "^3.3.1",
-    "libphonenumber-js": "^1.2.12",
+    "libphonenumber-js": "^1.2.21",
     "meteor-node-stubs": "^0.3.3",
-    "mobile-detect": "^1.4.1",
+    "mobile-detect": "^1.4.2",
     "msg91": "0.0.6",
     "popper.js": "^1.14.3",
     "ramda": "^0.25.0",
@@ -26,14 +26,14 @@
   },
   "devDependencies": {
     "@meteorjs/eslint-config-meteor": "^1.0.5",
-    "babel-eslint": "^8.2.3",
+    "babel-eslint": "^8.2.6",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-meteor": "^4.2.2",
-    "eslint-plugin-react": "^7.8.2"
+    "eslint-plugin-react": "^7.10.0"
   },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"

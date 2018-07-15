@@ -9,5 +9,5 @@ Meteor.publish("trucks.one", function(){
 
 Meteor.publish("trucks.all", function(userIds){
   check(userIds, [String]);
-  return Trucks.find({userId:{$in:userIds}});
+  return Trucks.find({userId:{$in:userIds},category:{$ne:'Haleem'}});
 });
