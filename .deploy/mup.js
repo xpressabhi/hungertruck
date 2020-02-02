@@ -3,7 +3,6 @@ module.exports = {
     one: {
       host: '139.59.2.104',
       username: 'root',
-      password: 'Abh!$hek1'
     }
   },
 
