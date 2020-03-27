@@ -2,8 +2,6 @@ import './userprofile.html';
 import './changePwd.js';
 import './../../helpers/helpers.js';
 
-import R from 'ramda';
-
 Template.userprofile.onCreated(function() {
   this.otpSent = new ReactiveVar(false);
   this.addError = new ReactiveVar();
@@ -31,10 +29,10 @@ Template.userprofile.helpers({
 
 Template.userprofile.events({
   "event": function(event, templateInstance) {},
-  'click .deletePhone' (event, templateInstance) {
+  'click .deletePhone'(event, templateInstance) {
     Meteor.call('user.deletePhoneByUser', this.number, () => {});
   },
-  'submit .addPhone' (event, templateInstance) {
+  'submit .addPhone'(event, templateInstance) {
     event.preventDefault();
     templateInstance.addError.set();
     let phone = event.target.phone.value;
@@ -46,21 +44,19 @@ Template.userprofile.events({
           templateInstance.addError.set(err.reason);
         if (!err)
           event.target.phone.value = '';
-          event.target.otp.value = '';
-          templateInstance.otpSent.set(false);
-        }
-      );
+        event.target.otp.value = '';
+        templateInstance.otpSent.set(false);
+      });
     } else {
       Meteor.call('user.setPhoneOtp', phone, (err) => {
         if (!err)
           templateInstance.otpSent.set(true);
-        }
-      );
+      });
     }
 
   },
   'click .addTruckRole'(event, templateInstance) {
-    Meteor.call('users.makeMeTruck',() => {
+    Meteor.call('users.makeMeTruck', () => {
 
     });
   }

@@ -1,5 +1,3 @@
-import R from 'ramda';
-
 Template.registerHelper('higherBytes', (bytes) => {
   const units = [
     'Bytes',
@@ -16,15 +14,14 @@ Template.registerHelper('higherBytes', (bytes) => {
     l++;
   }
   return (parseFloat(n.toFixed(
-    n > 0
-    ? 1
-    : 0)) + ' ' + units[l]);
+    n > 0 ?
+    1 :
+    0)) + ' ' + units[l]);
 });
 
 
-Template.registerHelper( 'firstCapital', (str) => {
-  const fn= p=> R.toUpper(R.head(p))+R.tail(p);
-  return fn(str);
+Template.registerHelper('firstCapital', (str) => {
+  return str;
 });
 
 Template.registerHelper('userIsInRole', function(user, role) {
@@ -54,7 +51,7 @@ Template.registerHelper('betterDate', (dt) => {
 });
 Template.registerHelper('dateTime', (dt) => {
   return moment(dt).format('MMMM Do YYYY, h:mm a');
-//  return moment(dt).format("ddd MMM Do YYYY");
+  //  return moment(dt).format("ddd MMM Do YYYY");
 });
 
 Template.registerHelper('betterDateTime', (dt) => {
@@ -62,19 +59,21 @@ Template.registerHelper('betterDateTime', (dt) => {
 });
 
 Template.registerHelper('userEmail', (id) => {
-  const user = Meteor.users.findOne({_id:id});
+  const user = Meteor.users.findOne({
+    _id: id
+  });
   return user && user.emails && user.emails[0].address;
 });
 
-Template.registerHelper('getCount',function(str){
+Template.registerHelper('getCount', function(str) {
   console.log(str, Counts.get(str));
   return Counts.get(str);
 });
 
-Template.registerHelper('getCountDiff',function(str1,str2){
+Template.registerHelper('getCountDiff', function(str1, str2) {
   return Counts.get(str1) - Counts.get(str2);
 });
 
-Template.registerHelper('getCountSum',function(str1,str2){
+Template.registerHelper('getCountSum', function(str1, str2) {
   return Counts.get(str1) + Counts.get(str2);
 });

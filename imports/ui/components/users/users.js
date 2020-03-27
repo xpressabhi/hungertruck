@@ -1,7 +1,8 @@
-import {Meteor} from 'meteor/meteor';
+import {
+  Meteor
+} from 'meteor/meteor';
 import './users.html';
 import './../../helpers/helpers.js';
-import R from 'ramda';
 
 Template.users.onCreated(function() {
   // counter starts at 0
@@ -21,10 +22,10 @@ Template.users.onCreated(function() {
 });
 
 Template.users.helpers({
-  selectedId(){
+  selectedId() {
     return Template.instance().selectedId.get();
   },
-  userSelected(){
+  userSelected() {
     return Template.instance().selectedId.get() === this._id;
   },
   addPhone() {
@@ -52,60 +53,58 @@ Template.users.helpers({
 });
 
 Template.users.events({
-  'click .addPhoneNumber' (event, templateInstance) {
+  'click .addPhoneNumber'(event, templateInstance) {
     templateInstance.selectedId.set(this._id);
     templateInstance.addPhone.set(true);
   },
-  'click .deleteUser' (event, templateInstance) {
+  'click .deleteUser'(event, templateInstance) {
     Meteor.call('users.remove', this._id, (e, r) => {
       if (e)
         console.log(e);
       if (r)
         console.log(r);
-      }
-    );
+    });
   },
-  'keyup input[name="users"]' (event, templateInstance) {
+  'keyup input[name="users"]'(event, templateInstance) {
     const txt = ev.target.value.trim();
     t.searchQuery.set(txt);
     t.searching.set(true);
   },
-  'click .toggleTruck' (event, templateInstance) {
+  'click .toggleTruck'(event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'truck');
   },
-  'click .toggleUser' (event, templateInstance) {
+  'click .toggleUser'(event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'user');
   },
-  'click .toggleVerifiedTruck' (event, templateInstance) {
+  'click .toggleVerifiedTruck'(event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'verified-truck', () => {});
     Meteor.call('locations.allOffline', this._id, () => {});
   },
   'click .toggleEditor'(event, templateInstance) {
     Meteor.call('user.toggleRole', this._id, 'editor', () => {});
   },
-  'click .setDefaultPass' (event, templateInstance) {
+  'click .setDefaultPass'(event, templateInstance) {
     Meteor.call('user.setDefaultPass', this._id, () => {});
   },
-  'submit .addPhone' (event, templateInstance) {
+  'submit .addPhone'(event, templateInstance) {
     event.preventDefault();
     let phone = event.target.phone.value;
     Meteor.call('user.addPhone', this._id, phone, (err, res) => {
       console.log(err);
       err && templateInstance.addPhoneError.set(err);
-      if(!err){
+      if (!err) {
         templateInstance.addPhoneError.set();
         templateInstance.selectedId.set();
         templateInstance.addPhone.set(false);
       }
     });
   },
-  'click .deletePhone' (event, templateInstance) {
+  'click .deletePhone'(event, templateInstance) {
     let userId = Template.instance().selectedId.get();
     if (userId) {
       Meteor.call('user.deletePhone', userId, this.number, (err, res) => {
         err && console.log(err);
-        }
-      );
+      });
     }
   },
   'click .cancelAddPhone'(event, templateInstance) {
