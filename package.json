@@ -12,6 +12,7 @@
     "driver.js": "^0.5.2",
     "jquery": "^3.4.1",
     "libphonenumber-js": "^1.7.48",
+    "meteor-accounts-t9n": "^2.5.2",
     "meteor-node-stubs": "^0.3.3",
     "mobile-detect": "^1.4.4",
     "moment": "^2.24.0",
