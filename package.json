@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.9.2",
     "bootstrap": "^4.4.1",
     "driver.js": "^0.5.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "libphonenumber-js": "^1.7.48",
     "meteor-accounts-t9n": "^2.5.2",
     "meteor-node-stubs": "^0.3.3",
