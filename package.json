@@ -15,7 +15,7 @@
     "meteor-accounts-t9n": "^2.5.2",
     "meteor-node-stubs": "^0.3.3",
     "mobile-detect": "^1.4.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "msg91": "0.0.6",
     "popper.js": "^1.16.1",
     "simpl-schema": "^0.4.2",
